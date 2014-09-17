@@ -1,0 +1,6 @@
+
+
+FindRelNum()
+{
+ printf("FindRelNum \n ");
+}

@@ -1,0 +1,17 @@
+
+
+Oct 21, 1995
+
+Version IBM 
+-----------
+
+
+>  Compiler path : /bin/xlc
+
+>  makefile      : have to set var CC=xlc to invoke the C compiler
+
+>  make.1        : have to use xlc
+
+>  checking      : has been checked with dummy functions.
+
+

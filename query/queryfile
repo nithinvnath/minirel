@@ -1,0 +1,44 @@
+; Sample Query file
+
+; create and open a database
+createdb /tmp/test;
+opendb /tmp/test;
+ 
+; create a relation
+create students (sname = s24, sid = i, gpa = f);
+create profs (pname = s24, pid = i, salary = f, status = s24);
+create teachassist (sid = i, fid = i, ptime = i);
+
+; build indexes
+buildindex for students on sname;
+
+; load the relation
+load students from /home/MINIREL/data/binary/Students;
+load profs from /home/MINIREL/data/binary/Profs;
+load teachassist from /home/MINIREL/data/binary/Teachassist;
+ 
+; print the relation
+print students;
+
+; perform queries
+select into goodstudents from students where (sgpa > 3.0);
+print goodstudents;
+project into salstat from profs (salary, status);
+print salstat;
+join into tastudent (students.sid, teachassist.sid);
+print tastudent;
+insert into students (sname = "Late Comer", sid = 101, gpa = 0.1);
+print students;
+delete from goodstudents where (sname < "john");
+print goodstudents;
+
+; drop indexes
+dropindex for students;
+
+; exit the database 
+closedb;
+destroydb /tmp/test;
+quit;
+
+; End of Query
+

@@ -1,0 +1,22 @@
+
+
+Oct 3, 1995
+
+Version SPARC
+-------------
+
+
+>  Compiler path : /usr/CC/sun4/CC
+
+>  fes.c         : require to include memory.h since memcpy has been
+                   used. 
+
+>  makefile      : have to set var CC=CC to invoke the C++ compiler
+                   instead of the C compiler while using default
+                   makefile rules.
+
+>  make.1        : have to use CC
+
+>  checking       : has been checked with dummy functions.
+
+

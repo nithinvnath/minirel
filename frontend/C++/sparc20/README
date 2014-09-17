@@ -1,0 +1,24 @@
+
+
+Oct 6, 1995
+
+Version SPARC20
+---------------
+
+>  Compiler path : /opt/SUNWspro/bin/CC
+
+>  make path     : /usr/ccs/bin/make
+
+>  makefile      : have to set var CC=CC to invoke the C++ compiler
+                   instead of the C compiler while using default
+                   makefile rules.
+
+>  make.1        : have to use CC.
+
+>  fes.c         : have to include a 'return 1' statement
+		   in parser() to satisfy the compiler.
+
+>  checking      : has been checked with dummy functions.
+
+
+

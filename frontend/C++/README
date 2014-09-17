@@ -1,0 +1,12 @@
+
+
+
+
+sources          : contains the source files along with the 
+                   makefiles reqd.
+
+ibm,indigo,sparc,sparc20 :
+                   contain the corresponding object files
+                   with README's describing the changes
+                   to be made in the sources to port
+                   to the corresponding platform.

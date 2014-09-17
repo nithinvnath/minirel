@@ -1,0 +1,17 @@
+
+
+Nov 9, 1995
+
+Version INDIGO 
+--------------
+
+
+>  Compiler path : /usr/bin/cc
+
+>  makefile      : have to set var CC=cc to invoke the C compiler.
+
+>  make.1        : have to use cc
+
+>  checking      : has been checked with dummy functions.
+
+

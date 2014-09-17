@@ -1,0 +1,64 @@
+/************************INCLUDES*******************************/
+
+/************************EXTERNS********************************/
+
+
+/************************LOCAL DEFINES**************************/
+
+
+/*------------------------------------------------------------
+
+FUNCTION Foo (argc, argv)
+
+PARAMETER DESCRIPTION:
+
+FUNCTION DESCRIPTION:
+
+ALGORITHM:
+       
+WRITTEN ON:
+
+AUTHOR:
+
+BUGS:
+
+ERRORS REPORTED:
+
+GLOBAL VARIABLES MODIFIED:
+
+IMPLEMENTATION NOTES (IF ANY):
+
+------------------------------------------------------------*/
+
+Foo (argc, argv)
+int	argc;
+char	**argv;
+
+{
+    /************************LOCAL VARIABLES***********************/
+
+    /**************************************************************/
+
+#ifdef TRACEARGS                /* if TRACEARGS on */ 
+    /* print command line arguments */
+    short	k;		/* iteration counter	    */
+    printf ("%s:\n", argv[0]);
+    for (k = 1 ; k < argc; ++k)
+	printf ("\targv[%d] = %s\n", k, argv[k]);
+#endif
+
+#ifdef FUNCTRACE		/* if FUNCTRACE on */
+    printf ("Entering Foo \n");
+#endif
+
+
+     < C statements >
+
+
+#ifdef FUNCTRACE		/* if FUNCTRACE on */
+    printf ("Exiting  Foo \n");
+#endif
+
+}  /* foo */
+
+

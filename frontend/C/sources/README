@@ -1,0 +1,11 @@
+
+
+This dir contains the sources which are acceptable to the
+C compiler. The makefiles help build the minirel executable
+which can then be tested. To run, make the changes suggested
+by the README files in the corresponding platform dir and then
+
+$ make
+$ make -f make.1
+$ minirel
+

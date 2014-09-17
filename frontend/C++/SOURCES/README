@@ -1,0 +1,25 @@
+
+
+This dir contains the sources which are acceptable to the
+C++ compiler. The makefiles help build the minirel executable
+which can then be tested. To run, make the changes suggested
+by the README files in the corresponding platform dir and then
+
+$ make
+$ make -f make.1
+$ minirel
+
+Warning messages maybe ignored.
+
+
+
+
+
+sources          : contains the source files along with the 
+                   makefiles reqd.
+
+ibm,indigo,sparc,sparc20 :
+                   contain the corresponding object files
+                   with README's describing the changes
+                   to be made in the sources to port
+                   to the corresponding platform.

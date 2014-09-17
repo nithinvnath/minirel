@@ -1,0 +1,15 @@
+
+
+# makefile for creating the minirel executable for
+# testing purposes.
+
+# compiler name
+CC=CC
+
+minirel : FES.o dummy.o
+	$(CC) FES.o dummy.o -o minirel
+
+dummy.o : dummy.c
+	$(CC) -c dummy.c
+
+# end of make.1
