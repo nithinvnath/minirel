@@ -29,3 +29,4 @@
 
 doc/
 inst/
+*.DS_Store
