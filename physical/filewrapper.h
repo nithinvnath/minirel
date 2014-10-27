@@ -15,5 +15,6 @@ int delete_file(char*, char*);
 int delete_dir(char*);
 int append_to_file(char*, char*, char*, int);
 int write_to_file(char*, char*, long, char*, int);
+int read_from_file(char*, char*, long, char*, int);
 
 #endif

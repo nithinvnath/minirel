@@ -139,9 +139,9 @@ int append_to_file(char* file_name, char* dir_name, char* data, int data_len)
 /*
  * Function:  write_to_file
  * ----------------------
- * appends given data to the given file
+ * writes given data to the given file
  *
- * file_name: name of the file to which data should be appended
+ * file_name: name of the file to which data should be written
  * dir_name: name of the directory in which file resides
  * offset: from where, in file, the data should be written
  * data: the data, as a character pointer to an array
@@ -166,6 +166,43 @@ int write_to_file(char* file_name, char* dir_name, long offset, char* data, int 
     file_pointer = fopen(full_file_path,"rb+");
     fseek(file_pointer, offset, SEEK_SET);
     fwrite(data, 1, data_len, file_pointer);
+    fclose(file_pointer);
+    return 0;
+}
+
+/*
+ * Function:  read_from_file
+ * ----------------------
+ * reads a file and copy content to given character pointer
+ *
+ * file_name: name of the file to which data should be read
+ * dir_name: name of the directory in which file resides
+ * offset: from where, in file, the data should be read
+ * data: the data, as a character pointer to an array
+ * data_len: length of the data to be read
+ *  
+ *  returns: 0 upon successful reading
+ *           error code otherwise
+ *           105: directory/file does not exist
+ *           106: EOF reached before reading given number of bytes
+ */
+
+int read_from_file(char* file_name, char* dir_name, long offset, char* data, int data_len)
+{
+    FILE *file_pointer;
+    char full_file_path[3 * NAME_MAX_LENGTH];
+
+    sprintf(full_file_path,"%s/%s/%s",PATH,dir_name,file_name);
+
+    if( access(full_file_path, F_OK) == -1){
+        return 105;
+    } /* File/Directory does not exist*/
+
+    file_pointer = fopen(full_file_path,"rb+");
+    fseek(file_pointer, offset, SEEK_SET);
+    if( fread(data, 1, data_len, file_pointer) != data_len ){
+        return 106;
+    } /* Error in reading, EOF reached */
     fclose(file_pointer);
     return 0;
 }
