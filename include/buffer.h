@@ -11,6 +11,7 @@
 #include "defs.h"
 
 typedef struct buffer{
+    short pid;
     bool dirty;
     Page page;
 }Buffer;
