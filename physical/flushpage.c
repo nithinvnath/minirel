@@ -1,6 +1,6 @@
+#include "globals.h"
 
-
-FlushPage()
+FlushPage(int relNum)
 {
- printf("FlushPage \n ");
+
 }
