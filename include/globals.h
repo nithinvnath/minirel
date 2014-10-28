@@ -1,7 +1,10 @@
 /****************************************************************
-		GLOBAL VARIABLE DECLARATIONS
+        GLOBAL VARIABLE DECLARATIONS
 ****************************************************************/
 
-CacheEntry	catcache[MAXOPEN];	/* catalog cache */
-Buffer		buffer[MAXOPEN];        /* buffer pool */
+#include "cache.h"
+#include "buffer.h"
+
+CacheEntry  g_catcache[MAXOPEN];      /* catalog cache */
+Buffer      g_buffer[MAXOPEN];        /* buffer pool */
 

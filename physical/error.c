@@ -1,6 +1,6 @@
+#include "../include/error.h"
 
-
-ErrorMsgs()
+ErrorMsgs(int errorId)
 {
- printf("ErrorMsgs \n ");
+
 }
