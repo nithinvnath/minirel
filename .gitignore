@@ -30,3 +30,6 @@
 doc/
 inst/
 *.DS_Store
+.metadata/
+.project
+.cproject
