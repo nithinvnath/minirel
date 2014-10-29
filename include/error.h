@@ -8,3 +8,4 @@
 #define RELNOEXIST  101   /* Relation does not exist */
 #define ATTRNOEXIST 102   /* Attribute does not exist */
 #define RELNUM_OUT_OF_BOUND 103 /* Relation number is out of bound */
+#define NO_ATTRS_FOUND 104      /* No attributes found in relation */
