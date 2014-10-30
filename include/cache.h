@@ -12,8 +12,8 @@
 
 /* Attribute catalog structure*/
 struct attrCatalog {
-    unsigned short offset;      //offset of attribute within record
-    unsigned short length;      //length of attribute
+    unsigned int offset;      //offset of attribute within record
+    unsigned int length;      //length of attribute
     datatype type;              //attribute type: i, f, or s
     char attrName[RELNAME];     //name of attribute
     char relName[RELNAME];      //name of relation
@@ -24,9 +24,9 @@ struct attrCatalog {
 /* Relation cache structure */
 typedef struct relCache {
     char relName[RELNAME];      //Relation name
-    unsigned short recLength;   //record length
-    unsigned short recsPerPg;   //records per page
-    unsigned short numAttrs;    //number of attributes
+    unsigned int recLength;   //record length
+    unsigned int recsPerPg;   //records per page
+    unsigned int numAttrs;    //number of attributes
     unsigned int numRecs;       //total number of records
     unsigned int numPgs;        //total number of pages
 
