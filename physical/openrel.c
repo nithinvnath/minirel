@@ -5,46 +5,19 @@
  *      Author: Dheeraj
  */
 
-
 #include "../include/cache.h"
 #include "../include/globals.h"
 #include "../include/readpage.h"
 #include "../include/error.h"
+#include "../include/helpers.h"
+#include "../include/defs.h"
 
 #include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
 
-//FIXME use the generic code for datatye conversion
-//FIXME line 103, code after updaterec implementation
-
-/*
- * Function:  bin_to_int
- * ----------------------
- * Converts binary data stored as char array (takes first 4 bytes) to integer
- *
- *  bin_data : char pointer at which binary data starts
- *  
- *  returns: converted integer
- */
-int bin_to_int(char* bin_data)
-{
-    return bin_data[0] | bin_data[1]>>8 | bin_data[2]>>16 | bin_data[3]>>24 ;    
-}
-
-/*
- * Function:  bin_to_short
- * ----------------------
- * Converts binary data stored as char array (takes first 2 bytes) to short
- *
- *  bin_data : char pointer at which binary data starts
- *  
- *  returns: converted short
- */
-short bin_to_short(char* bin_data)
-{
-    return bin_data[0] | bin_data[1]>>8;    
-}
+//FIXME line 81, code after updaterec implementation
 /*
  * Function:  OpenRel 
  * ----------------------
@@ -61,7 +34,7 @@ int OpenRel(char* RelName)
 
     Rid start, *found;
     char* bin_data;
-    char full_rel_path[ 3*NAME_MAX_LENGTH ];
+    char full_rel_path[ 3*RELNAME ];
     struct attrCatalog *temp=NULL, *newnode=NULL;
     bool first_exec = TRUE;
     int i,j;
@@ -69,7 +42,7 @@ int OpenRel(char* RelName)
     start.pid = 1;
     start.slotnum = 0;
 
-    FindRec(0, &start, found, bin_data, 's', RELNAME, 0, RelName, 501);
+    FindRec(0, &start, found, bin_data, 's', RELNAME, 0, RelName, EQ);
 
     if(found == NULL){
         return RELNOEXIST;
@@ -112,11 +85,11 @@ int OpenRel(char* RelName)
 
         /* position i is available */
         strcpy(g_catcache[i].relName, RelName);
-        g_catcache[i].recLength = bin_to_short(bin_data + 20);
-        g_catcache[i].recsPerPg = bin_to_short(bin_data + 22);
-        g_catcache[i].numAttrs  = bin_to_short(bin_data + 24);
-        g_catcache[i].numRecs   = bin_to_int(bin_data + 26);
-        g_catcache[i].numPgs    = bin_to_int(bin_data + 30);
+        g_catcache[i].recLength = readIntFromByteArray(bin_data, 20);
+        g_catcache[i].recsPerPg = readIntFromByteArray(bin_data, 24);
+        g_catcache[i].numAttrs  = readIntFromByteArray(bin_data, 28);
+        g_catcache[i].numRecs   = readIntFromByteArray(bin_data, 32);
+        g_catcache[i].numPgs    = readIntFromByteArray(bin_data, 36);
 
         g_catcache[i].relcatRid = *found;
         g_catcache[i].dirty = FALSE;
@@ -124,7 +97,7 @@ int OpenRel(char* RelName)
         sprintf(full_rel_path,"%s/%s/%s",PATH,g_db_name,RelName);
         g_catcache[i].relFile = open(full_rel_path,O_RDWR);
 
-        FindRec(1, &start, found, bin_data, 's', RELNAME, 28, RelName, 501);
+        FindRec(1, &start, found, bin_data, 's', RELNAME, 32, RelName, EQ);
 
         if(found == NULL){
             return NO_ATTRS_FOUND;
@@ -143,15 +116,15 @@ int OpenRel(char* RelName)
                 temp = newnode;
             }
 
-            temp->offset = bin_to_short(bin_data);
-            temp->length = bin_to_short(bin_data + 2);
-            temp->type   = bin_to_int(bin_data + 4);
-            strncpy(temp->attrName,bin_data + 8, RELNAME);
-            strncpy(temp->relName,RelName, RELNAME);
+            temp->offset = readIntFromByteArray(bin_data, 0);
+            temp->length = readIntFromByteArray(bin_data, 4);
+            temp->type   = readIntFromByteArray(bin_data, 8);
+            readStringFromByteArray(temp->attrName, bin_data, 12, RELNAME);
+            readStringFromByteArray(temp->relName, bin_data, 32, RELNAME);
 
             start = *found;
             free(found);
-            FindRec(1, &start, found, bin_data, 's', RELNAME, 28, RelName, 501);
+            FindRec(1, &start, found, bin_data, 's', RELNAME, 32, RelName, EQ);
         }
     return i;
     }

@@ -3,7 +3,7 @@
     */
 #ifndef DEFS_H_
 #define DEFS_H_
-
+//FIXME move PATH to better location
 /*************************************************************
         CONSTANTS
 *************************************************************/
@@ -20,6 +20,9 @@
 
 #define RELCAT        "relcat"   /* name of the relation catalog file */
 #define ATTRCAT        "attrcat"  /* name of the attribute catalog file */
+
+
+#define PATH ".minirel_data"
 
 /*************************************************************
         COMPARISON OPERATORS
