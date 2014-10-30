@@ -10,6 +10,6 @@
 
 Rid getNextRid(short curPid, short curSlot, int recsPerPg, int numPgs);
 
-int GetNextRec(int relNum, Rid *startRid, Rid *foundRid, char *recPtr);
+int GetNextRec(const int relNum, const Rid *startRid, Rid *foundRid, char *recPtr);
 
 #endif /* GETNEXTREC_H_ */

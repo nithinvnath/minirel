@@ -1,9 +1,13 @@
 #include <string.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "../include/globals.h"
 #include "../include/error.h"
-#include "../include/filewrapper.h"
 #include "../include/readpage.h"
 #include "../include/flushpage.h"
+#include "../include/readpage.h"
+#include "../include/helpers.h"
 
 /**
  * Read page pid of the open relation specified by relNum
@@ -14,8 +18,6 @@
  * @param pid -Page identifier
  * @author nithin
  */
-
-//TODO Test
 int ReadPage(int relNum, short pid) {
     if (relNum < 0 || relNum >= MAXOPEN) {
         return RELNUM_OUT_OF_BOUND;
@@ -28,11 +30,16 @@ int ReadPage(int relNum, short pid) {
         int offset = (pid - 1) * PAGESIZE;
         char page[PAGESIZE];
 
-        read_from_file(g_catcache[relNum], g_db_name, offset, page, PAGESIZE);
+        /*Seek in file */
+        const int fd = g_catcache[relNum].relFile;
+        if (lseek(fd, offset, SEEK_SET) < 0) {
+            return NOTOK;
+        }
+        read(fd, page, PAGESIZE); //Read Page
 
         /*Copy the contents of page to buffer*/
-        g_buffer[relNum].page.slotmap = page[0] | page[1] << 8 | page[2] << 16 | page[3] << 24;
-        memcpy(g_buffer[relNum].page.contents, PAGESIZE - MAXRECORD, MAXRECORD);
+        g_buffer[relNum].page.slotmap = readIntFromByteArray(page, 0);
+        memcpy(g_buffer[relNum].page.contents, page + (PAGESIZE - MAXRECORD), MAXRECORD);
 
         /* set the dirty bits and pid */
         g_buffer[relNum].pid = pid;

@@ -27,6 +27,9 @@ void ErrorMsgs(int errorId) {
         case INVALID_COMP_OP:
             printf("Invalid comparison operator!\n");
             break;
+        case FILE_SEEK_ERROR:
+            printf("Error while seeking!\n");
+            break;
         default:
             printf("Unexpected error!\n");
             break;

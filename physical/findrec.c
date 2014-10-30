@@ -1,7 +1,10 @@
+#include <stdlib.h>
+
 #include "../include/globals.h"
 #include "../include/error.h"
-#include "helpers.c"
-#include <stdlib.h>
+#include "../include/getnextrec.h"
+#include "../include/findrec.h"
+#include "../include/helpers.h"
 
 /**
  * Starting at record startRid in relation relNum, find the RID of the next
@@ -19,34 +22,45 @@
  * @param valuePtr   - A pointer to a byte array which contains the search value
  * @param compOp     - Comparison operator
  */
-void FindRec(int relNum, const Rid *startRid, Rid *foundRid, char *recPtr, const char attrType,
+int FindRec(int relNum, const Rid *startRid, Rid *foundRid, char *recPtr, const char attrType,
         const int attrSize, const int attrOffset, const char *valuePtr, const int compOp) {
 
     unsigned short pid = startRid->pid;
     ReadPage(relNum, pid);
-    int intAttr;
-    float floatAttr;
-    char* stringAttr;
+    int intAttr, intAttr2;
+    float floatAttr, floatAttr2;
+    char *stringAttr, *stringAttr2;
+    stringAttr = (char *) malloc(sizeof(char) * attrSize);
+    stringAttr2 = (char *) malloc(sizeof(char) * attrSize);
 
-    switch (attrType) {
-        case 'i':
-            intAttr = readIntFromByteArray(recPtr,attrOffset);
-            break;
-        case 'f':
-            floatAttr = readFloatFromByteArray(recPtr, attrOffset);
-            break;
-        case 's':
-            stringAttr = (char *) malloc(sizeof(char)*attrSize);
-            readStringFromByteArray(stringAttr,recPtr, attrOffset, attrSize);
-            break;
-        default:
-            ErrorMsgs(INVALID_ATTR_TYPE);
-            return;
-            break;
+    while (GetNextRec(relNum, startRid, foundRid, recPtr)) {
+        switch (attrType) {
+            case 'i':
+                intAttr = readIntFromByteArray(valuePtr, 0);
+                intAttr2 = readIntFromByteArray(recPtr, attrOffset);
+                if (compareNum((float) intAttr, (float) intAttr2, compOp)) {
+                    return OK;
+                }
+                break;
+            case 'f':
+                floatAttr = readFloatFromByteArray(valuePtr, 0);
+                floatAttr2 = readFloatFromByteArray(recPtr, attrOffset);
+                if (compareNum(floatAttr, floatAttr2, compOp)) {
+                    return OK;
+                }
+                break;
+            case 's':
+                readStringFromByteArray(stringAttr, valuePtr, 0, attrSize);
+                readStringFromByteArray(stringAttr2, recPtr, attrOffset, attrSize);
+                if (compareStrings(stringAttr, stringAttr2, compOp)) {
+                    return OK;
+                }
+                break;
+            default:
+                ErrorMsgs(INVALID_ATTR_TYPE);
+                return NOTOK;
+                break;
+        }
     }
-
-    while(GetNextRec(relNum,startRid,foundRid,recPtr)){
-
-    }
-
+    return NOTOK;
 }
