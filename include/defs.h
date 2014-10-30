@@ -1,3 +1,6 @@
+#ifndef DEFS_H_
+#define DEFS_H_
+
     /* 
     This is the basic definition file.
     */
@@ -61,7 +64,7 @@ typedef enum type{
     STRING='s'
 }datatype;
 
-
+#endif
 /*****************************************************************/
 
 #endif /* DEFS_H_ */
