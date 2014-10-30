@@ -12,7 +12,7 @@
 
 //FIXME Move to another folder?
 void readStringFromByteArray(char * string, const char *byteArray, const int offset, const int size) {
-    if (byteArray == NULL) {
+    if (byteArray == NULL || string == NULL) {
         ErrorMsgs(NULL_POINTER_EXCEPTION);
         return;
     }
@@ -25,7 +25,7 @@ int readIntFromByteArray(const char *byteArray, const int offset) {
         ErrorMsgs(NULL_POINTER_EXCEPTION);
         return 0;
     } else {
-        char *offsetedByteArray = byteArray + offset;
+        const char *offsetedByteArray = byteArray + offset;
         return (offsetedByteArray[0]) | (offsetedByteArray[1] << 8) | (offsetedByteArray[2] << 16)
                 | (offsetedByteArray[3] << 24);
     }
