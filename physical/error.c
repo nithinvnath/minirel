@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "../include/error.h"
 
 /**
@@ -5,7 +6,7 @@
  *
  * @param errorId
  */
-ErrorMsgs(int errorId) {
+void ErrorMsgs(int errorId) {
     printf("<ERROR %d>: ", errorId);
     switch (errorId) {
         case RELNOEXIST:
