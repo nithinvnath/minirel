@@ -63,6 +63,7 @@ int GetNextRec(const int relNum, const Rid *startRid, Rid *foundRid, char *recPt
  * @return  the nextRid
  *          {0,0} if no next
  */
+//FIXME clean this logic
 Rid getNextRid(short curPid, short curSlot, int recsPerPg, int numPgs) {
     Rid nextRid = { 0, 0 };
     if (curSlot == recsPerPg && curPid == numPgs) {
@@ -71,8 +72,8 @@ Rid getNextRid(short curPid, short curSlot, int recsPerPg, int numPgs) {
         nextRid.slotnum = 1;
         nextRid.pid = curPid + 1;
     } else {
-        nextRid.pid = curPid;
-        nextRid.slotnum = curSlot;
+        nextRid.pid = curPid==0 ? 1 : curPid;
+        nextRid.slotnum = curSlot+1;
     }
     return nextRid;
 }
