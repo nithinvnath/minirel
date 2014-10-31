@@ -12,5 +12,5 @@
 #define NULL_POINTER_EXCEPTION 105 /* Null pointer exception */
 #define INVALID_ATTR_TYPE 106       /* Invalid attribute type   */
 #define INVALID_COMP_OP 107        /* Invalid comparison operator */
-
+#define FILE_SEEK_ERROR 108      /* Error while seeking file */
 

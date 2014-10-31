@@ -8,6 +8,6 @@
 #ifndef FLUSHPAGE_H_
 #define FLUSHPAGE_H_
 
-FlushPage(int relNum);
+int FlushPage(int relNum);
 
 #endif /* FLUSHPAGE_H_ */

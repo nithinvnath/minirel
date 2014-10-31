@@ -1,28 +1,30 @@
+#include<stdlib.h>
+
 #include "../include/globals.h"
 #include "../include/getnextrec.h"
 #include "../include/readpage.h"
 
-#define FOUND 1
-#define NOT_FOUND 0
 
 /**
  * Gets the next record in sequential scan
- * @param relNum
- * @param startRid
- * @param foundRid
- * @param recPtr
+ * @param relNum    - The relation number
+ * @param startRid  - The Rid from which to begin search for next record (not including startRid).
+ * @param foundRid  - The Rid of the first record after the one specified by startRid.
+ * @param recPtr    - A pointer to a record-sized byte array into which the contents of the next
+ *                    record (if any) will be put.
  *
  * @return flag - Found or not found
  */
-int GetNextRec(int relNum, Rid *startRid, Rid *foundRid, char *recPtr) {
+int GetNextRec(const int relNum, const Rid *startRid, Rid *foundRid, char *recPtr) {
     int recsPerPg = g_catcache[relNum].recsPerPg;
     int numPgs = g_catcache[relNum].numPgs;
-    int flag = NOT_FOUND;
+    int flag = NOTOK;
 
     Rid curRid = getNextRid(startRid->pid, startRid->slotnum, recsPerPg, numPgs);
     Rid prevRid = curRid;
+    foundRid = recPtr = NULL;
 
-    while (curRid.pid <= numPgs && flag == NOT_FOUND) {
+    while (curRid.pid <= numPgs && flag == NOTOK) {
         if (curRid.pid == 0) { //Reached the end of records
             break;
         }
@@ -31,7 +33,9 @@ int GetNextRec(int relNum, Rid *startRid, Rid *foundRid, char *recPtr) {
 
             /*Check the slotmap to see if it is in use*/
             if (g_buffer[relNum].page.slotmap & (1 << curRid.slotnum)) {
-                flag = FOUND;
+                flag = OK;
+                foundRid = (Rid *)malloc(sizeof(Rid));
+                (*foundRid) = curRid;
                 int offset = g_catcache[relNum].recLength * (curRid.slotnum - 1);
                 recPtr = g_buffer[relNum].page.contents + offset;
                 break;

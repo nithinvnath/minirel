@@ -1,6 +1,8 @@
 #include <string.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "../include/globals.h"
-#include "../include/filewrapper.h"
 #include "../include/error.h"
 
 /**
@@ -10,12 +12,10 @@
  * @param relNum - the relation number
  * @author nithin
  */
-
-//TODO Test
-FlushPage(int relNum) {
+int FlushPage(int relNum) {
     if (relNum < 0 || relNum >= MAXOPEN) {
-            return RELNUM_OUT_OF_BOUND;
-        }
+        return RELNUM_OUT_OF_BOUND;
+    }
 
     char slotmapbytes[4] = { 0 };
     char page[PAGESIZE] = { 0 };
@@ -34,7 +34,13 @@ FlushPage(int relNum) {
         memcpy(page + (PAGESIZE - MAXRECORD), g_buffer[relNum].page.contents, MAXRECORD);
 
         int offset = (g_buffer[relNum].pid - 1) * PAGESIZE;
-        write_to_file(g_catcache[relNum].relName, g_db_name, offset, page, PAGESIZE);
+
+        const int fd = g_catcache[relNum].relFile;
+        if (lseek(fd, offset, SEEK_SET) < 0) {
+            ErrorMsgs(FILE_SEEK_ERROR);
+            return NOTOK;
+        }
+        write(fd, page, PAGESIZE);
     }
     g_buffer[relNum].dirty = FALSE;
     g_buffer[relNum].pid = 0;

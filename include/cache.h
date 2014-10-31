@@ -24,9 +24,9 @@ struct attrCatalog {
 /* Relation cache structure */
 typedef struct relCache {
     char relName[RELNAME];      //Relation name
-    unsigned int recLength;   //record length
-    unsigned int recsPerPg;   //records per page
-    unsigned int numAttrs;    //number of attributes
+    unsigned int recLength;     //record length
+    unsigned int recsPerPg;     //records per page
+    unsigned int numAttrs;      //number of attributes
     unsigned int numRecs;       //total number of records
     unsigned int numPgs;        //total number of pages
 
