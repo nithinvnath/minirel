@@ -14,7 +14,8 @@
  */
 int FlushPage(int relNum) {
     if (relNum < 0 || relNum >= MAXOPEN) {
-        return RELNUM_OUT_OF_BOUND;
+        ErrorMsgs(RELNUM_OUT_OF_BOUND);
+        return NOTOK;
     }
 
     char slotmapbytes[4] = { 0 };
@@ -40,7 +41,10 @@ int FlushPage(int relNum) {
             ErrorMsgs(FILE_SEEK_ERROR);
             return NOTOK;
         }
-        write(fd, page, PAGESIZE);
+        if(write(fd, page, PAGESIZE) < 0){
+            ErrorMsgs(WRITE_DISK_ERROR);
+            return NOTOK;
+        }
     }
     g_buffer[relNum].dirty = FALSE;
     g_buffer[relNum].pid = 0;

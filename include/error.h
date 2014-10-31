@@ -17,7 +17,8 @@
 #define INVALID_COMP_OP             107     /* Invalid comparison operator */
 #define FILE_SEEK_ERROR             108     /* Error while seeking file */
 #define NULL_ARGUMENT_RECEIVED      110     /* Null argument received where non null was expected */
-
+#define WRITE_DISK_ERROR            112     /* Error occurred while making write system call */
+#define READ_DISK_ERROR             113     /* Error occurred while making read system call */
 void ErrorMsgs(int errorId);
 
 #endif

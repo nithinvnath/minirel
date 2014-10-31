@@ -16,10 +16,10 @@ int InsertRec(const int relNum, const char*recPtr) {
     /* Insert record    */
     getNextFreeSlot(relNum, startRid, &foundRid);
     unsigned int recLength = g_catcache[relNum].recLength;
-    int i;
+    int i, j;
     int offset = (foundRid.slotnum - 1) * recLength;
-    for (i = offset; i < recLength; ++i) {
-        g_buffer[relNum].page.contents[i] = recPtr[i];
+    for (i = offset, j = 0; j < recLength; ++i, j++) {
+        g_buffer[relNum].page.contents[i] = recPtr[j];
     }
 
     /*  Update dirty bits and slotmap*/
