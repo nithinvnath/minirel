@@ -22,7 +22,8 @@ int GetNextRec(const int relNum, const Rid *startRid, Rid *foundRid, char *recPt
 
     Rid curRid = getNextRid(startRid->pid, startRid->slotnum, recsPerPg, numPgs);
     Rid prevRid = curRid;
-    foundRid = recPtr = NULL;
+    recPtr = NULL;
+    foundRid = NULL;
 
     while (curRid.pid <= numPgs && flag == NOTOK) {
         if (curRid.pid == 0) { //Reached the end of records

@@ -5,6 +5,7 @@
 #include "../include/getnextrec.h"
 #include "../include/findrec.h"
 #include "../include/helpers.h"
+#include "../include/readpage.h"
 
 /**
  * Starting at record startRid in relation relNum, find the RID of the next
@@ -24,9 +25,11 @@
  */
 int FindRec(int relNum, const Rid *startRid, Rid *foundRid, char *recPtr, const char attrType,
         const int attrSize, const int attrOffset, const char *valuePtr, const int compOp) {
-
+    printf("Reached point 0\n");
     unsigned short pid = startRid->pid;
+    printf("Reached point 1\n");
     ReadPage(relNum, pid);
+    printf("Reached point 2\n");
     int intAttr, intAttr2;
     float floatAttr, floatAttr2;
     char *stringAttr, *stringAttr2;

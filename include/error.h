@@ -1,3 +1,6 @@
+#ifndef ERROR_H_
+#define ERROR_H_
+
 /************************************************************
    This file contains the error constants that are
    used by the routine that reports error messages.
@@ -14,3 +17,6 @@
 #define INVALID_COMP_OP 107        /* Invalid comparison operator */
 #define FILE_SEEK_ERROR 108      /* Error while seeking file */
 
+void ErrorMsgs(int errorId);
+
+#endif

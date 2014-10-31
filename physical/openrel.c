@@ -11,6 +11,7 @@
 #include "../include/error.h"
 #include "../include/helpers.h"
 #include "../include/defs.h"
+#include "../include/findrec.h" 
 
 #include <string.h>
 #include <stdio.h>
