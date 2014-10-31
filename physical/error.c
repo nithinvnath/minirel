@@ -30,6 +30,9 @@ void ErrorMsgs(int errorId) {
         case FILE_SEEK_ERROR:
             printf("Error while seeking!\n");
             break;
+        case NULL_ARGUMENT_RECEIVED:
+            printf("A NULL argument was received where non-NULL was required!\n");
+            break;
         default:
             printf("Unexpected error!\n");
             break;

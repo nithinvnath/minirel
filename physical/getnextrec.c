@@ -3,7 +3,7 @@
 #include "../include/globals.h"
 #include "../include/getnextrec.h"
 #include "../include/readpage.h"
-
+#include "../include/helpers.h"
 
 /**
  * Gets the next record in sequential scan
@@ -20,7 +20,8 @@ int GetNextRec(const int relNum, const Rid *startRid, Rid *foundRid, char *recPt
     int numPgs = g_catcache[relNum].numPgs;
     int flag = NOTOK;
 
-    Rid curRid = getNextRid(startRid->pid, startRid->slotnum, recsPerPg, numPgs);
+    Rid curRid = getNextRid(startRid->pid, startRid->slotnum, recsPerPg, numPgs,
+            getLastRid(relNum));
     Rid prevRid = curRid;
     recPtr = NULL;
     foundRid = NULL;
@@ -35,7 +36,7 @@ int GetNextRec(const int relNum, const Rid *startRid, Rid *foundRid, char *recPt
             /*Check the slotmap to see if it is in use*/
             if (g_buffer[relNum].page.slotmap & (1 << curRid.slotnum)) {
                 flag = OK;
-                foundRid = (Rid *)malloc(sizeof(Rid));
+                foundRid = (Rid *) malloc(sizeof(Rid));
                 (*foundRid) = curRid;
                 int offset = g_catcache[relNum].recLength * (curRid.slotnum - 1);
                 recPtr = g_buffer[relNum].page.contents + offset;
@@ -43,8 +44,8 @@ int GetNextRec(const int relNum, const Rid *startRid, Rid *foundRid, char *recPt
             }
 
             prevRid = curRid;
-            curRid = getNextRid(curRid.pid, curRid.slotnum, recsPerPg, numPgs);
-            if (curRid.slotnum == 0) { //Reached the end of records
+            curRid = getNextRid(curRid.pid, curRid.slotnum, recsPerPg, numPgs, getLastRid(relNum));
+            if (curRid.slotnum == 0) { //Reached the end of records in current page
                 break;
             }
 
@@ -63,10 +64,11 @@ int GetNextRec(const int relNum, const Rid *startRid, Rid *foundRid, char *recPt
  * @return  the nextRid
  *          {0,0} if no next
  */
+
 //FIXME clean this logic
-Rid getNextRid(short curPid, short curSlot, int recsPerPg, int numPgs) {
+Rid getNextRid(short curPid, short curSlot, int recsPerPg, int numPgs, Rid lastRid) {
     Rid nextRid = { 0, 0 };
-    if (curSlot == recsPerPg && curPid == numPgs) {
+    if (curSlot == lastRid.slotnum && curPid == lastRid.pid) { //Reached the end
         return nextRid;
     } else if (curSlot == recsPerPg) {
         nextRid.slotnum = 1;

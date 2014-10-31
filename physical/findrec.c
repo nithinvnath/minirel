@@ -34,6 +34,7 @@ int FindRec(int relNum, const Rid *startRid, Rid *foundRid, char *recPtr, const 
     stringAttr2 = (char *) malloc(sizeof(char) * attrSize);
 
     while (GetNextRec(relNum, startRid, foundRid, recPtr)==OK) {
+        //TODO change to use the datatype struct
         switch (attrType) {
             case 'i':
                 intAttr = readIntFromByteArray(valuePtr, 0);

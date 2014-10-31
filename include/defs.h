@@ -3,7 +3,7 @@
     */
 #ifndef DEFS_H_
 #define DEFS_H_
-//FIXME move PATH to better location
+//FIXME move PATH to better location?
 /*************************************************************
         CONSTANTS
 *************************************************************/

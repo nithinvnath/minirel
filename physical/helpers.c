@@ -84,3 +84,16 @@ bool compareStrings(char *s1, char *s2, int compOp) {
             }
             return FALSE;
 }
+/**
+ *
+ * @param   relNum
+ * @return  last valid Rid
+ */
+Rid getLastRid(int relNum){
+    int numRecs = g_catcache[relNum].numRecs;
+    int recsPerPg = g_catcache[relNum].recsPerPg;
+    Rid last;
+    last.pid = numRecs/recsPerPg + 1;
+    last.slotnum = numRecs % recsPerPg + 1;
+    return last;
+}

@@ -18,7 +18,6 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-//FIXME line 81, code after updaterec implementation
 /*
  * Function:  OpenRel 
  * ----------------------
@@ -80,6 +79,7 @@ int OpenRel(char* RelName)
             }
 
             if(g_catcache[i].dirty == TRUE ){
+                //TODO code after updaterec implementation
                 /*update numRecs, numPgs in RelCat relation, from g_catcache[i] entry*/ 
             }
         }/* Replaced an existing cat_cahe enty*/

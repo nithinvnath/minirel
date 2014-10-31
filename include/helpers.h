@@ -18,4 +18,6 @@ bool compareNum(float val1, float val2, int compOp);
 
 bool compareStrings(char *s1, char *s2, int compOp);
 
+Rid getLastRid(int relNum);
+
 #endif /* HELPERS_H_ */
