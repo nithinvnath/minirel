@@ -15,4 +15,4 @@
 
 int DeleteRec(const int relNum, const Rid *rid);
 
-#endif /* DELETEREC_H_ *
+#endif /* DELETEREC_H_ */

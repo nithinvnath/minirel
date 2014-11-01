@@ -16,7 +16,8 @@
  *           NOTOK on failure
  */
 
-int CreateRelCat(){
+int CreateRelCat()
+{
     FILE *file_pointer;
     char full_file_path[3 * RELNAME];
     char content[PAGESIZE];
@@ -68,7 +69,8 @@ int CreateRelCat(){
  *           NOTOK on failure
  */
 
-int CreateAttrCat(){
+int CreateAttrCat()
+{
     FILE *file_pointer;
     char full_file_path[3 * RELNAME];
     char content[PAGESIZE*2];

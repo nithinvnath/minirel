@@ -1,5 +1,5 @@
 /*
- *  opencats.c
+ * opencats.c
  *
  *  Created on: 30-Oct-2014
  *      Author: Dheeraj
@@ -8,15 +8,15 @@
 #include "../include/opencats.h"
 
 /*
- * Function:  create_attr_cat_attrcat
- * ----------------------------------
+ * Function:  create_attr_cat_attrcat()
+ * ------------------------------------
  *  create linkedlist form of attr_cat of attrcat relation
  *  
  *  returns: pointer to the head of linkedlist
  */
 
-struct attrCatalog* create_attr_cat_attrcat(){
-
+struct attrCatalog* create_attr_cat_attrcat()
+{
     struct attrCatalog *temp, *newnode; 
 
     newnode = malloc(sizeof(struct attrCatalog));
@@ -75,8 +75,8 @@ struct attrCatalog* create_attr_cat_attrcat(){
  *  returns: pointer to the head of linkedlist
  */
 
-struct attrCatalog* create_attr_cat_relcat(){
-
+struct attrCatalog* create_attr_cat_relcat()
+{
     struct attrCatalog *temp, *newnode; 
 
     newnode = malloc(sizeof(struct attrCatalog));
@@ -148,7 +148,6 @@ struct attrCatalog* create_attr_cat_relcat(){
 
 int OpenCats()
 {
-
     char *recPtr;
     int i,j, ret_value;
     int num_recs_relcat;
@@ -196,7 +195,7 @@ int OpenCats()
 
     g_catcache[0].numRecs   = num_recs_relcat;
     g_catcache[0].numPgs    = num_pages_relcat;
-   
+    
     /* Creating cache[1] entry for attrcat */
     sprintf(full_rel_path,"%s/%s/%s",PATH,g_db_name,"attrcat");
 

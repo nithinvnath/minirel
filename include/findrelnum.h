@@ -17,4 +17,4 @@
 
 int FindRelNum();
 
-#endif
+#endif /* OPENREL_H_ */

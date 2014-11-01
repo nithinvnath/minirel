@@ -23,4 +23,4 @@ int CreateRelCat();
 int CreateAttrCat();
 int CreateCats();
 
-#endif
+#endif /* CREATECATS_H_ */

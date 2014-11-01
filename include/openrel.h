@@ -1,7 +1,7 @@
 /*
  * openrel.h
  *
- *  Created on: 31-Oct-2014
+ *  Created on: 28-Oct-2014
  *      Author: Dheeraj
  */
 
@@ -23,4 +23,4 @@
 
 int OpenRel(char* RelName);
 
-#endif
+#endif /* OPENREL_H_ */

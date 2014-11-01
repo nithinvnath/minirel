@@ -21,4 +21,4 @@
  
 int CloseRel(int relNum);
 
-#endif
+#endif /*OPENREL_H_*/

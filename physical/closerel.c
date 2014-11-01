@@ -43,6 +43,8 @@ int CloseRel(int relNum)
 
             struct attrCatalog *temp, *linked_list_head = g_catcache[relNum].attrList;
             g_catcache[relNum].dirty = FALSE;
+            g_cache_in_use[relNum] = FALSE;
+            g_cache_timestamp[relNum] = 0;
             close(g_catcache[relNum].relFile);
 
             temp = linked_list_head;

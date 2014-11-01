@@ -21,4 +21,3 @@ int InsertRec(const int relNum, const char*recPtr);
 int getNextFreeSlot(const int relNum, const Rid startRid, Rid *foundRid);
 
 #endif /* INSERTREC_H_ */
-

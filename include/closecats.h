@@ -1,13 +1,13 @@
 /*
- * opencats.h
+ * closecats.h
  *
- *  Created on: 31-Oct-2014
+ *  Created on: 1-Nov-2014
  *      Author: Dheeraj
  */
 
 #ifndef CLOSECATS_H_
 #define CLOSECATS_H_
 
+#include "closerel.h"
 
-
-#endif
+#endif /* CLOSECATS_H_ */
