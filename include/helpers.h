@@ -18,4 +18,6 @@ bool compareNum(float val1, float val2, int compOp);
 
 bool compareStrings(char *s1, char *s2, int compOp);
 
+void convertIntToByteArray(int value, char *byteArray);
+
 #endif /* HELPERS_H_ */

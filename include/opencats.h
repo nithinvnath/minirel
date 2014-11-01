@@ -16,6 +16,12 @@
 #include "readpage.h"
 #include "helpers.h"
 #include "findrec.h"
+#include "error.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h> 
 
 struct attrCatalog* create_attr_cat_attrcat();
 struct attrCatalog* create_attr_cat_relcat();

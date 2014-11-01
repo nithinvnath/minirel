@@ -19,15 +19,15 @@ void readStringFromByteArray(char * string, const char *byteArray, const int off
     strncpy(string, (byteArray + offset), size);
 }
 
-//FIXME for negative integers
 int readIntFromByteArray(const char *byteArray, const int offset) {
     if (byteArray == NULL) {
         ErrorMsgs(NULL_POINTER_EXCEPTION);
         return 0;
     } else {
         const char *offsetedByteArray = byteArray + offset;
-        return (offsetedByteArray[0]) | (offsetedByteArray[1] << 8) | (offsetedByteArray[2] << 16)
-                | (offsetedByteArray[3] << 24);
+
+        return ((offsetedByteArray[0]<<24) & 0xFF000000) | ((offsetedByteArray[1]<<16) & 0x00FF0000) | 
+        ((offsetedByteArray[2]<<8) & 0x0000FF00) | (offsetedByteArray[3] & 0x000000FF);
     }
 }
 
@@ -38,6 +38,12 @@ float readFloatFromByteArray(const char* byteArray, const int offset) {
 
 }
 
+void convertIntToByteArray(int value, char *byteArray){
+    byteArray[0] = (value>>24) & 0xFF;
+    byteArray[1] = (value>>16) & 0xFF;
+    byteArray[2] = (value>>8) & 0xFF;
+    byteArray[3] = value & 0xFF;
+}
 /*************************************************************
  COMPARISONS
  *************************************************************/

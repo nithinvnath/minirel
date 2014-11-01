@@ -30,6 +30,15 @@ void ErrorMsgs(int errorId) {
         case FILE_SEEK_ERROR:
             printf("Error while seeking!\n");
             break;
+        case NO_ATTRS_FOUND:    
+            printf("No attributes found for the relation!\n");
+            break;
+        case NO_CATALOG_FOUND:
+            printf("No catalog found in the database!\n");
+            break;
+        case CAT_FILE_ALREADY_EXIST:
+            printf("catalog file(s) already exist in the database!\n");
+            break;
         default:
             printf("Unexpected error!\n");
             break;

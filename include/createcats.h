@@ -11,6 +11,7 @@
 #include "error.h"
 #include "defs.h"
 #include "globals.h"
+#include "helpers.h"
  
 #include <stdio.h>
 #include <unistd.h>
@@ -18,6 +19,8 @@
 #include <string.h>
 #include <dirent.h>
 
+int CreateRelCat();
+int CreateAttrCat();
 int CreateCats();
 
 #endif

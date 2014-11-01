@@ -1,21 +1,28 @@
-#include "filewrapper.h"
+#include <stdio.h>
+#include <string.h>
 
-int main()
-{
-//    char data[4];
-//    printf("%d\n",read_from_file("xyz.bin","test",3,data,3));
-//    data[3]='\0';
-//    printf("%s\n", data);
+#include "../include/buffer.h"
+#include "../include/cache.h"
+#include "../include/defs.h"
+#include "../include/error.h"
+#include "../include/findrec.h"
+#include "../include/flushpage.h"
+#include "../include/getnextrec.h"
+#include "../include/globals.h"
+#include "../include/helpers.h"
+#include "../include/readpage.h"
+#include "../include/opencats.h"
+#include "../include/openrel.h"
+#include "../include/findrelnum.h"
+#include "../include/closerel.h"
 
-//    printf("%d\n",create_file("xyz.bin","test"));
+int main(){
+    strcpy(g_db_name,"sample_db");
+//    OpenCats();
+//    printf("%d\n",FindRelNum("relcat"));
 
-//    printf("%d\n",append_to_file("xyz.bin","test","aaaa",4));
+    CloseRel(1);
 
-//    printf("%d\n",write_to_file("xyz.bin","test",4,"bb",2));
-
-//    printf("%d\n",delete_file("xyz","test"));
-
-//    printf("%d\n",delete_dir("abc"));
-
-    return 0;
+//    printf("%d\n",OpenRel("abc"));
+   return 0;
 }

@@ -1,14 +1,9 @@
 /*
- *  opencats.c
+ * opencats.c
  *
  *  Created on: 30-Oct-2014
  *      Author: Dheeraj
  */
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <fcntl.h>
 
 #include "../include/opencats.h"
 
@@ -27,7 +22,7 @@ struct attrCatalog* create_attr_cat_attrcat(){
     newnode = malloc(sizeof(struct attrCatalog));
     (*newnode).offset = 32;
     (*newnode).length = 20;
-    (*newnode).type   = 's';
+    (*newnode).type   = STRING;
     strcpy( (*newnode).attrName, "relName");
     strcpy( (*newnode).relName,  "attrcat");
     (*newnode).next = NULL;
@@ -36,7 +31,7 @@ struct attrCatalog* create_attr_cat_attrcat(){
     newnode = malloc(sizeof(struct attrCatalog));
     (*newnode).offset = 12;
     (*newnode).length = 20;
-    (*newnode).type   = 's';
+    (*newnode).type   = STRING;
     strcpy( (*newnode).attrName, "attrName");
     strcpy( (*newnode).relName,  "attrcat");
     (*newnode).next = temp;
@@ -45,7 +40,7 @@ struct attrCatalog* create_attr_cat_attrcat(){
     newnode = malloc(sizeof(struct attrCatalog));
     (*newnode).offset = 8;
     (*newnode).length = 4;
-    (*newnode).type   = 'i';
+    (*newnode).type   = INTEGER;
     strcpy( (*newnode).attrName, "type");
     strcpy( (*newnode).relName,  "attrcat");
     (*newnode).next = temp;
@@ -54,7 +49,7 @@ struct attrCatalog* create_attr_cat_attrcat(){
     newnode = malloc(sizeof(struct attrCatalog));
     (*newnode).offset = 4;
     (*newnode).length = 4;
-    (*newnode).type   = 'i';
+    (*newnode).type   = INTEGER;
     strcpy( (*newnode).attrName, "length");
     strcpy( (*newnode).relName,  "attrcat");
     (*newnode).next = temp;
@@ -63,7 +58,7 @@ struct attrCatalog* create_attr_cat_attrcat(){
     newnode = malloc(sizeof(struct attrCatalog));
     (*newnode).offset = 0;
     (*newnode).length = 4;
-    (*newnode).type   = 'i';
+    (*newnode).type   = INTEGER;
     strcpy( (*newnode).attrName, "offset");
     strcpy( (*newnode).relName,  "attrcat");
     (*newnode).next = temp;
@@ -87,7 +82,7 @@ struct attrCatalog* create_attr_cat_relcat(){
     newnode = malloc(sizeof(struct attrCatalog));
     (*newnode).offset = 36;
     (*newnode).length = 4;
-    (*newnode).type   = 'i';
+    (*newnode).type   = INTEGER;
     strcpy( (*newnode).attrName, "numPgs");
     strcpy( (*newnode).relName,  "relcat");
     (*newnode).next = NULL;
@@ -96,7 +91,7 @@ struct attrCatalog* create_attr_cat_relcat(){
     newnode = malloc(sizeof(struct attrCatalog));
     (*newnode).offset = 32;
     (*newnode).length = 4;
-    (*newnode).type   = 'i';
+    (*newnode).type   = INTEGER;
     strcpy( (*newnode).attrName, "numRecs");
     strcpy( (*newnode).relName,  "relcat");
     (*newnode).next = temp;
@@ -105,7 +100,7 @@ struct attrCatalog* create_attr_cat_relcat(){
     newnode = malloc(sizeof(struct attrCatalog));
     (*newnode).offset = 28;
     (*newnode).length = 4;
-    (*newnode).type   = 'i';
+    (*newnode).type   = INTEGER;
     strcpy( (*newnode).attrName, "numAttrs");
     strcpy( (*newnode).relName,  "relcat");
     (*newnode).next = NULL;
@@ -114,7 +109,7 @@ struct attrCatalog* create_attr_cat_relcat(){
     newnode = malloc(sizeof(struct attrCatalog));
     (*newnode).offset = 24;
     (*newnode).length = 4;
-    (*newnode).type   = 'i';
+    (*newnode).type   = INTEGER;
     strcpy( (*newnode).attrName, "recsPerPg");
     strcpy( (*newnode).relName,  "relcat");
     (*newnode).next = NULL;
@@ -123,7 +118,7 @@ struct attrCatalog* create_attr_cat_relcat(){
     newnode = malloc(sizeof(struct attrCatalog));
     (*newnode).offset = 20;
     (*newnode).length = 4;
-    (*newnode).type   = 'i';
+    (*newnode).type   = INTEGER;
     strcpy( (*newnode).attrName, "recLength");
     strcpy( (*newnode).relName,  "relcat");
     (*newnode).next = NULL;
@@ -132,7 +127,7 @@ struct attrCatalog* create_attr_cat_relcat(){
     newnode = malloc(sizeof(struct attrCatalog));
     (*newnode).offset = 0;
     (*newnode).length = 20;
-    (*newnode).type   = 's';
+    (*newnode).type   = STRING;
     strcpy( (*newnode).attrName, "relName");
     strcpy( (*newnode).relName,  "relcat");
     (*newnode).next = NULL;
@@ -155,7 +150,7 @@ int OpenCats()
 {
 
     char *recPtr;
-    int i,j;
+    int i,j, ret_value;
     int num_recs_relcat;
     int num_pages_relcat;
     int num_recs_attrcat;
@@ -189,17 +184,19 @@ int OpenCats()
     g_catcache[0].relFile   = open(full_rel_path,O_RDWR);
     g_catcache[0].dirty     = FALSE;
     g_catcache[0].attrList  = create_attr_cat_relcat();
-
-    FindRec(0, &startRid, foundRid, recPtr, STRING, RELNAME, 0, "relcat", EQ);
-    if(foundRid == NULL)
+ 
+    ret_value = FindRec(0, &startRid, foundRid, recPtr, STRING, RELNAME, 0, "relcat", EQ);
+    if(ret_value == NOTOK){
+        ErrorMsgs(NO_CATALOG_FOUND);
         return NOTOK;
+    }
 
     num_recs_relcat  = readIntFromByteArray(recPtr, 32);
     num_pages_relcat = readIntFromByteArray(recPtr, 36);
 
     g_catcache[0].numRecs   = num_recs_relcat;
     g_catcache[0].numPgs    = num_pages_relcat;
-    
+   
     /* Creating cache[1] entry for attrcat */
     sprintf(full_rel_path,"%s/%s/%s",PATH,g_db_name,"attrcat");
 
@@ -217,9 +214,11 @@ int OpenCats()
     g_catcache[1].dirty     = FALSE;
     g_catcache[1].attrList  = create_attr_cat_attrcat();
 
-    FindRec(0, &startRid, foundRid, recPtr, STRING, RELNAME, 0, "attrcat", EQ);
-    if(foundRid == NULL)
+    ret_value =FindRec(0, &startRid, foundRid, recPtr, STRING, RELNAME, 0, "attrcat", EQ);
+    if(ret_value == NOTOK){
+        ErrorMsgs(NO_CATALOG_FOUND);
         return NOTOK;
+    }
 
     num_recs_relcat  = readIntFromByteArray(recPtr, 32);
     num_pages_relcat = readIntFromByteArray(recPtr, 36);
