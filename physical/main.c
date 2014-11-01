@@ -20,9 +20,14 @@ int main(){
     strcpy(g_db_name,"sample_db");
 //    OpenCats();
 //    printf("%d\n",FindRelNum("relcat"));
+//    CloseRel(1);
 
-    CloseRel(1);
-
-//    printf("%d\n",OpenRel("abc"));
-   return 0;
+    char bin_data[4];
+    float val;
+    printf("Enter a float number: ");
+    scanf("%f",&val);
+    convertFloatToByteArray(val, bin_data);
+    printf("Binary data: %x %x %x %x\n",bin_data[0], bin_data[1], bin_data[2], bin_data[3]);
+    printf("Original data: %f\nConvertd data: %f\n",val,readFloatFromByteArray(bin_data,0));
+    return 0;
 }

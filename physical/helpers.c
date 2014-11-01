@@ -33,11 +33,11 @@ int readIntFromByteArray(const char *byteArray, const int offset) {
     }
 }
 
-//FIXME Float conversion
 float readFloatFromByteArray(const char* byteArray, const int offset) {
 
-    return 1.0;
-
+    Flip converter;
+    converter.int_val = readIntFromByteArray(byteArray, offset);
+    return converter.float_val;
 }
 
 void convertIntToByteArray(int value, char *byteArray){
@@ -46,6 +46,13 @@ void convertIntToByteArray(int value, char *byteArray){
     byteArray[2] = (value>>8) & 0xFF;
     byteArray[3] = value & 0xFF;
 }
+
+void convertFloatToByteArray(float value, char *byteArray){
+    Flip converter;
+    converter.float_val = value;
+    convertIntToByteArray(converter.int_val,byteArray);
+}
+
 /*************************************************************
  COMPARISONS
  *************************************************************/
