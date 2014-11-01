@@ -15,6 +15,7 @@
 #include "helpers.h"
 #include "defs.h"
 #include "findrec.h" 
+#include "closerel.h"
 
 #include <string.h>
 #include <stdio.h>

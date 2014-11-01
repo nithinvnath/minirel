@@ -1,3 +1,4 @@
+#!/bin/bash
 gcc -c -g flushpage.c 
 gcc -c -g helpers.c 
 gcc -c -g readpage.c

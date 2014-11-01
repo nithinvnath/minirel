@@ -67,9 +67,10 @@ int OpenRel(char* RelName)
                 g_cache_timestamp[j]++;
             }
 
+            /* update numRecs, numPgs in RelCat relation from g_catcache[i] entry (if modified), and 
+            free the cache entry as well as buffer slot  */ 
             if(g_catcache[i].dirty == TRUE ){
-                //TODO code after updaterec implementation
-                /*update numRecs, numPgs in RelCat relation, from g_catcache[i] entry*/ 
+                CloseRel(i);
             }
         }/* Replaced an existing cat_cahe enty*/
 
