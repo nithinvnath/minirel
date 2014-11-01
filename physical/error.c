@@ -30,6 +30,15 @@ void ErrorMsgs(int errorId) {
         case FILE_SEEK_ERROR:
             printf("Error while seeking!\n");
             break;
+        case NULL_ARGUMENT_RECEIVED:
+            printf("A NULL argument was received where non-NULL was required!\n");
+            break;
+        case WRITE_DISK_ERROR:
+            printf("Error occurred while writing data to disk!\n");
+            break;
+        case READ_DISK_ERROR:
+            printf("Error occurred while reading data from disk!\n");
+			break;
         case NO_ATTRS_FOUND:    
             printf("No attributes found for the relation!\n");
             break;

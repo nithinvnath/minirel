@@ -20,4 +20,6 @@ bool compareStrings(char *s1, char *s2, int compOp);
 
 void convertIntToByteArray(int value, char *byteArray);
 
+Rid getLastRid(int relNum);
+
 #endif /* HELPERS_H_ */

@@ -20,11 +20,15 @@
  */
 int ReadPage(int relNum, short pid) {
     if (relNum < 0 || relNum >= MAXOPEN) {
-        return RELNUM_OUT_OF_BOUND;
+        ErrorMsgs(RELNUM_OUT_OF_BOUND);
+        return NOTOK;
     }
 
     if (g_buffer[relNum].pid != pid) {
-        FlushPage(relNum);
+
+        if (FlushPage(relNum) != OK) {//Flush page
+            return NOTOK;
+        }
 
         /* Calculating the offset */
         int offset = (pid - 1) * PAGESIZE;
@@ -35,7 +39,10 @@ int ReadPage(int relNum, short pid) {
         if (lseek(fd, offset, SEEK_SET) < 0) {
             return NOTOK;
         }
-        read(fd, page, PAGESIZE); //Read Page
+        if(read(fd, page, PAGESIZE)<0){//Read Page
+            ErrorMsgs(READ_DISK_ERROR);
+            return NOTOK;
+        }
 
         /*Copy the contents of page to buffer*/
         g_buffer[relNum].page.slotmap = readIntFromByteArray(page, 0);
