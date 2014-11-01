@@ -1,5 +1,5 @@
 /*
- * opencats.c
+ *  opencats.c
  *
  *  Created on: 30-Oct-2014
  *      Author: Dheeraj
@@ -184,7 +184,7 @@ int OpenCats()
     g_catcache[0].relFile   = open(full_rel_path,O_RDWR);
     g_catcache[0].dirty     = FALSE;
     g_catcache[0].attrList  = create_attr_cat_relcat();
- 
+
     ret_value = FindRec(0, &startRid, foundRid, recPtr, STRING, RELNAME, 0, "relcat", EQ);
     if(ret_value == NOTOK){
         ErrorMsgs(NO_CATALOG_FOUND);
