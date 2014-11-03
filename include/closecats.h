@@ -10,4 +10,6 @@
 
 #include "closerel.h"
 
+int CloseCats();
+
 #endif /* CLOSECATS_H_ */

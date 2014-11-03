@@ -29,7 +29,7 @@ int OpenRel(char* RelName) {
     start.pid = 1;
     start.slotnum = 0;
 
-    ret_value = FindRec(0, &start, found, bin_data, 's', RELNAME, 0, RelName, EQ);
+    ret_value = FindRec(0, &start, &found, &bin_data, 's', RELNAME, 0, RelName, EQ);
 
     if (ret_value == NOTOK) {
         return ErrorMsgs(RELNOEXIST, g_print_flag);
@@ -89,7 +89,7 @@ int OpenRel(char* RelName) {
         start.pid = 1;
         start.slotnum = 0;
 
-        ret_value = FindRec(1, &start, found, bin_data, 's', RELNAME, 32, RelName, EQ);
+        ret_value = FindRec(1, &start, &found, &bin_data, 's', RELNAME, 32, RelName, EQ);
 
         if (ret_value == NOTOK) {
             return ErrorMsgs(NO_ATTRS_FOUND, g_print_flag);
@@ -115,7 +115,7 @@ int OpenRel(char* RelName) {
 
             start = *found;
             free(found);
-            ret_value = FindRec(1, &start, found, bin_data, 's', RELNAME, 32, RelName, EQ);
+            ret_value = FindRec(1, &start, &found, &bin_data, 's', RELNAME, 32, RelName, EQ);
         }
         return i;
     }

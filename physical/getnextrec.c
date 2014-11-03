@@ -37,7 +37,7 @@ int GetNextRec(const int relNum, const Rid *startRid, Rid **foundRid, char **rec
             if (g_buffer[relNum].page.slotmap & (1 << (32 - curRid.slotnum))) {
                 flag = OK;
                 *foundRid = (Rid *) malloc(sizeof(Rid));
-                (*foundRid) = curRid;
+                (**foundRid) = curRid;
                 int offset = g_catcache[relNum].recLength * (curRid.slotnum - 1);
                 *recPtr = g_buffer[relNum].page.contents + offset;
                 break;
