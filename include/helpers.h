@@ -8,6 +8,8 @@
 #ifndef HELPERS_H_
 #define HELPERS_H_
 
+#include <string.h>
+
 void readStringFromByteArray(char * string, const char *byteArray, const int offset, const int size);
 
 int readIntFromByteArray(const char *byteArray, const int offset);

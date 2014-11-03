@@ -88,6 +88,9 @@ int OpenRel(char* RelName)
         sprintf(full_rel_path,"%s/%s/%s",PATH,g_db_name,RelName);
         g_catcache[i].relFile = open(full_rel_path,O_RDWR);
 
+        start.pid = 1;
+        start.slotnum = 0;
+
         ret_value = FindRec(1, &start, found, bin_data, 's', RELNAME, 32, RelName, EQ);
 
         if(ret_value == NOTOK){
