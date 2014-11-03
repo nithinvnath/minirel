@@ -15,7 +15,7 @@
  *
  * @return flag - Found or not found
  */
-int GetNextRec(const int relNum, const Rid *startRid, Rid *foundRid, char *recPtr) {
+int GetNextRec(const int relNum, const Rid *startRid, Rid **foundRid, char **recPtr) {
     int recsPerPg = g_catcache[relNum].recsPerPg;
     int numPgs = g_catcache[relNum].numPgs;
     int flag = NOTOK;
@@ -23,8 +23,8 @@ int GetNextRec(const int relNum, const Rid *startRid, Rid *foundRid, char *recPt
     Rid curRid = getNextRid(startRid->pid, startRid->slotnum, recsPerPg, numPgs,
             getLastRid(relNum));
     Rid prevRid = curRid;
-    recPtr = NULL;
-    foundRid = NULL;
+    *recPtr = NULL;
+    *foundRid = NULL;
 
     while (curRid.pid <= numPgs && flag == NOTOK) {
         if (curRid.pid == 0) { //Reached the end of records
@@ -34,12 +34,12 @@ int GetNextRec(const int relNum, const Rid *startRid, Rid *foundRid, char *recPt
         while (curRid.slotnum >= prevRid.slotnum) { //Loop till the end of cur page
 
             /*Check the slotmap to see if it is in use*/
-            if (g_buffer[relNum].page.slotmap & (1 << curRid.slotnum)) {
+            if (g_buffer[relNum].page.slotmap & (1 << (32 - curRid.slotnum))) {
                 flag = OK;
-                foundRid = (Rid *) malloc(sizeof(Rid));
+                *foundRid = (Rid *) malloc(sizeof(Rid));
                 (*foundRid) = curRid;
                 int offset = g_catcache[relNum].recLength * (curRid.slotnum - 1);
-                recPtr = g_buffer[relNum].page.contents + offset;
+                *recPtr = g_buffer[relNum].page.contents + offset;
                 break;
             }
 
@@ -74,8 +74,8 @@ Rid getNextRid(short curPid, short curSlot, int recsPerPg, int numPgs, Rid lastR
         nextRid.slotnum = 1;
         nextRid.pid = curPid + 1;
     } else {
-        nextRid.pid = curPid==0 ? 1 : curPid;
-        nextRid.slotnum = curSlot+1;
+        nextRid.pid = curPid == 0 ? 1 : curPid;
+        nextRid.slotnum = curSlot + 1;
     }
     return nextRid;
 }

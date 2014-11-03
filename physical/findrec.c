@@ -23,7 +23,7 @@
  * @param valuePtr   - A pointer to a byte array which contains the search value
  * @param compOp     - Comparison operator
  */
-int FindRec(int relNum, const Rid *startRid, Rid *foundRid, char *recPtr, const char attrType,
+int FindRec(int relNum, Rid *startRid, Rid **foundRid, char **recPtr, const char attrType,
         const int attrSize, const int attrOffset, const char *valuePtr, const int compOp) {
     unsigned short pid = startRid->pid;
     ReadPage(relNum, pid);
@@ -32,28 +32,27 @@ int FindRec(int relNum, const Rid *startRid, Rid *foundRid, char *recPtr, const 
     char *stringAttr, *stringAttr2;
     stringAttr = (char *) malloc(sizeof(char) * attrSize);
     stringAttr2 = (char *) malloc(sizeof(char) * attrSize);
-    foundRid = NULL;
+    *foundRid = NULL;
 
     while (GetNextRec(relNum, startRid, foundRid, recPtr)==OK) {
-        //TODO change to use the datatype struct
         switch (attrType) {
             case INTEGER:
                 intAttr = readIntFromByteArray(valuePtr, 0);
-                intAttr2 = readIntFromByteArray(recPtr, attrOffset);
+                intAttr2 = readIntFromByteArray(*recPtr, attrOffset);
                 if (compareNum((float) intAttr, (float) intAttr2, compOp)) {
                     return OK;
                 }
                 break;
             case FLOAT:
                 floatAttr = readFloatFromByteArray(valuePtr, 0);
-                floatAttr2 = readFloatFromByteArray(recPtr, attrOffset);
+                floatAttr2 = readFloatFromByteArray(*recPtr, attrOffset);
                 if (compareNum(floatAttr, floatAttr2, compOp)) {
                     return OK;
                 }
                 break;
             case STRING:
                 readStringFromByteArray(stringAttr, valuePtr, 0, attrSize);
-                readStringFromByteArray(stringAttr2, recPtr, attrOffset, attrSize);
+                readStringFromByteArray(stringAttr2, *recPtr, attrOffset, attrSize);
                 if (compareStrings(stringAttr, stringAttr2, compOp)) {
                     return OK;
                 }
@@ -63,6 +62,7 @@ int FindRec(int relNum, const Rid *startRid, Rid *foundRid, char *recPtr, const 
                 return NOTOK;
                 break;
         }
+        startRid = *foundRid;
     }
     return NOTOK;
 }
