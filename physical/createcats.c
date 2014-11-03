@@ -69,13 +69,6 @@ int CreateRelCat()
  *  returns: OK on success
  *           NOTOK on failure
  */
-<<<<<<< HEAD
-CreateCats() {
-    extern char *g_db_name;
-    create_file(RELATION_CATALOG_NAME,g_db_name);
-=======
->>>>>>> dheeraj
-
 int CreateAttrCat()
 {
     FILE *file_pointer;
