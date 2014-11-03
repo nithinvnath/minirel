@@ -38,8 +38,8 @@ void ErrorMsgs(int errorId) {
             break;
         case READ_DISK_ERROR:
             printf("Error occurred while reading data from disk!\n");
-			break;
-        case NO_ATTRS_FOUND:    
+            break;
+        case NO_ATTRS_FOUND:
             printf("No attributes found for the relation!\n");
             break;
         case NO_CATALOG_FOUND:

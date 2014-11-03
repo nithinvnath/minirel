@@ -16,12 +16,16 @@
 #include "../include/findrelnum.h"
 #include "../include/closerel.h"
 #include "../include/createcats.h"
+#include "../include/closecats.h"
+
 
 int main(){
     strcpy(g_db_name,"sample_db");
 //    CreateCats();
     OpenCats();
-//    printf("%d\n",FindRelNum("relcat"));
+    printf("%d\n",FindRelNum("relcat"));
+    printf("%d\n",FindRelNum("attrcat"));
+    CloseCats();
 //    CloseRel(1);
 
     // char bin_data[4];

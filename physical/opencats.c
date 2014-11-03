@@ -184,7 +184,7 @@ int OpenCats()
     g_catcache[0].dirty     = FALSE;
     g_catcache[0].attrList  = create_attr_cat_relcat();
 
-    ret_value = FindRec(0, &startRid, foundRid, recPtr, STRING, RELNAME, 0, "relcat", EQ);
+    ret_value = FindRec(0, &startRid, &foundRid, &recPtr, STRING, RELNAME, 0, "relcat", EQ);
     if(ret_value == NOTOK){
         ErrorMsgs(NO_CATALOG_FOUND);
         return NOTOK;
@@ -213,7 +213,7 @@ int OpenCats()
     g_catcache[1].dirty     = FALSE;
     g_catcache[1].attrList  = create_attr_cat_attrcat();
 
-    ret_value =FindRec(0, &startRid, foundRid, recPtr, STRING, RELNAME, 0, "attrcat", EQ);
+    ret_value =FindRec(0, &startRid, &foundRid, &recPtr, STRING, RELNAME, 0, "attrcat", EQ);
     if(ret_value == NOTOK){
         ErrorMsgs(NO_CATALOG_FOUND);
         return NOTOK;
