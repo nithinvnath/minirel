@@ -5,18 +5,8 @@
  *      Author: Dheeraj
  */
 
-#include "../include/cache.h"
-#include "../include/globals.h"
-#include "../include/readpage.h"
-#include "../include/error.h"
-#include "../include/helpers.h"
-#include "../include/defs.h"
-#include "../include/findrec.h" 
+#include "../include/openrel.h"
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
 
 /*
  * Function:  OpenRel 
@@ -26,26 +16,26 @@
  *  RelName: name of the relation
  *  
  *  returns: RelNum
- *           error code otherwise
+ *           NOTOK on failure
  */
 
 int OpenRel(char* RelName)
 {
-
     Rid start, *found;
     char* bin_data;
     char full_rel_path[ 3*RELNAME ];
     struct attrCatalog *temp=NULL, *newnode=NULL;
     bool first_exec = TRUE;
-    int i,j;
+    int i,j,ret_value;
 
     start.pid = 1;
     start.slotnum = 0;
 
-    FindRec(0, &start, found, bin_data, 's', RELNAME, 0, RelName, EQ);
+    ret_value = FindRec(0, &start, found, bin_data, 's', RELNAME, 0, RelName, EQ);
 
-    if(found == NULL){
-        return RELNOEXIST;
+    if(ret_value == NOTOK){
+        ErrorMsgs(RELNOEXIST);
+        return NOTOK;
     }/* Relation does not exist with given Relation Name */
     else{
         /* -------Cache Management----------- 
@@ -69,7 +59,7 @@ int OpenRel(char* RelName)
         }/* Found an empty slot.*/
         else{
             for (i=2; i<MAXOPEN; i++){
-                if(g_cache_timestamp[i] == 18)
+                if(g_cache_timestamp[i] == MAXOPEN - 2)
                     break;
             }
 
@@ -78,9 +68,15 @@ int OpenRel(char* RelName)
                 g_cache_timestamp[j]++;
             }
 
+            /* update numRecs, numPgs in RelCat relation from g_catcache[i] entry (if modified), and 
+            free the cache entry as well as buffer slot  */ 
             if(g_catcache[i].dirty == TRUE ){
+<<<<<<< HEAD
                 //TODO code after updaterec implementation
                 /*update numRecs, numPgs in RelCat relation, from g_catcache[i] entry*/ 
+=======
+                CloseRel(i);
+>>>>>>> dheeraj
             }
         }/* Replaced an existing cat_cahe enty*/
 
@@ -98,13 +94,17 @@ int OpenRel(char* RelName)
         sprintf(full_rel_path,"%s/%s/%s",PATH,g_db_name,RelName);
         g_catcache[i].relFile = open(full_rel_path,O_RDWR);
 
-        FindRec(1, &start, found, bin_data, 's', RELNAME, 32, RelName, EQ);
+        start.pid = 1;
+        start.slotnum = 0;
 
-        if(found == NULL){
-            return NO_ATTRS_FOUND;
+        ret_value = FindRec(1, &start, found, bin_data, 's', RELNAME, 32, RelName, EQ);
+
+        if(ret_value == NOTOK){
+            ErrorMsgs(NO_ATTRS_FOUND);
+            return NOTOK;
         }
 
-        while(found!=NULL){
+        while(ret_value == OK){
             newnode = malloc(sizeof(struct attrCatalog));
 
             if(first_exec == TRUE){
@@ -125,7 +125,7 @@ int OpenRel(char* RelName)
 
             start = *found;
             free(found);
-            FindRec(1, &start, found, bin_data, 's', RELNAME, 32, RelName, EQ);
+            ret_value = FindRec(1, &start, found, bin_data, 's', RELNAME, 32, RelName, EQ);
         }
     return i;
     }

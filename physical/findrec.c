@@ -32,25 +32,26 @@ int FindRec(int relNum, const Rid *startRid, Rid *foundRid, char *recPtr, const 
     char *stringAttr, *stringAttr2;
     stringAttr = (char *) malloc(sizeof(char) * attrSize);
     stringAttr2 = (char *) malloc(sizeof(char) * attrSize);
+    foundRid = NULL;
 
     while (GetNextRec(relNum, startRid, foundRid, recPtr)==OK) {
         //TODO change to use the datatype struct
         switch (attrType) {
-            case 'i':
+            case INTEGER:
                 intAttr = readIntFromByteArray(valuePtr, 0);
                 intAttr2 = readIntFromByteArray(recPtr, attrOffset);
                 if (compareNum((float) intAttr, (float) intAttr2, compOp)) {
                     return OK;
                 }
                 break;
-            case 'f':
+            case FLOAT:
                 floatAttr = readFloatFromByteArray(valuePtr, 0);
                 floatAttr2 = readFloatFromByteArray(recPtr, attrOffset);
                 if (compareNum(floatAttr, floatAttr2, compOp)) {
                     return OK;
                 }
                 break;
-            case 's':
+            case STRING:
                 readStringFromByteArray(stringAttr, valuePtr, 0, attrSize);
                 readStringFromByteArray(stringAttr2, recPtr, attrOffset, attrSize);
                 if (compareStrings(stringAttr, stringAttr2, compOp)) {

@@ -16,7 +16,9 @@
 #define INVALID_ATTR_TYPE           106     /* Invalid attribute type   */
 #define INVALID_COMP_OP             107     /* Invalid comparison operator */
 #define FILE_SEEK_ERROR             108     /* Error while seeking file */
+#define NO_CATALOG_FOUND            109     /* No catalog found */
 #define NULL_ARGUMENT_RECEIVED      110     /* Null argument received where non null was expected */
+#define CAT_FILE_ALREADY_EXIST      111     /* Can't create cat files as they exists */
 #define WRITE_DISK_ERROR            112     /* Error occurred while making write system call */
 #define READ_DISK_ERROR             113     /* Error occurred while making read system call */
 void ErrorMsgs(int errorId);
