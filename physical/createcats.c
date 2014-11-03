@@ -28,18 +28,17 @@ int CreateRelCat()
         content[i] = 0;
 
     sprintf(full_file_path,"%s/%s/%s",PATH,g_db_name,"relcat");
-    
+
     if( access(full_file_path, F_OK) != -1){
-        ErrorMsgs(CAT_FILE_ALREADY_EXIST);
-        return NOTOK;
+        return ErrorMsgs(CAT_FILE_ALREADY_EXIST,g_print_flag);
     } /* Catalog Files Exists */
-    
+
     file_pointer = fopen(full_file_path,"wb");
 
     //Slotmap for Page 1
-    convertIntToByteArray(0xC0000000, content); 
+    convertIntToByteArray(0xC0000000, content);
 
-    strncpy(content + PAGESIZE - MAXRECORD,"relcat",6);   
+    strncpy(content + PAGESIZE - MAXRECORD,"relcat",6);
 
     convertIntToByteArray(40, content + 20 + PAGESIZE - MAXRECORD);
     convertIntToByteArray(12, content + 24 + PAGESIZE - MAXRECORD);
@@ -80,16 +79,15 @@ int CreateAttrCat()
         content[i] = 0;
 
     sprintf(full_file_path,"%s/%s/%s",PATH,g_db_name,"attrcat");
-    
+
     if( access(full_file_path, F_OK) != -1){
-        ErrorMsgs(CAT_FILE_ALREADY_EXIST);
-        return NOTOK;
+        return ErrorMsgs(CAT_FILE_ALREADY_EXIST,g_print_flag);
     } /* Catalog Files Exists */
-    
+
     file_pointer = fopen(full_file_path,"wb");
 
     //Slotmap for Page 1
-    convertIntToByteArray(0xFF800000, content); 
+    convertIntToByteArray(0xFF800000, content);
 
     convertIntToByteArray(0,     content + 0 + PAGESIZE - MAXRECORD);
     convertIntToByteArray(20,    content + 4 + PAGESIZE - MAXRECORD);
@@ -144,10 +142,10 @@ int CreateAttrCat()
     convertIntToByteArray(INTEGER, content + 8 + 52*8 + PAGESIZE - MAXRECORD);
     strncpy(content + 12 + 52*8 + PAGESIZE - MAXRECORD,"type",4);
     strncpy(content + 32 + 52*8 + PAGESIZE - MAXRECORD,"attrcat",7);
- 
+
     //New Page
     //Slotmap for Page 2 
-    convertIntToByteArray(0xC0000000, content + PAGESIZE); 
+    convertIntToByteArray(0xC0000000, content + PAGESIZE);
 
     convertIntToByteArray(12,      content + 0 + PAGESIZE*2 - MAXRECORD);
     convertIntToByteArray(20,      content + 4 + PAGESIZE*2 - MAXRECORD);
@@ -161,7 +159,7 @@ int CreateAttrCat()
     strncpy(content + 12 + PAGESIZE*2 - MAXRECORD,"relName",7);
     strncpy(content + 32 + PAGESIZE*2 - MAXRECORD,"attrcat",7);
 
-    fwrite(content,1,PAGESIZE*2,file_pointer);   
+    fwrite(content,1,PAGESIZE*2,file_pointer);
 
     fclose(file_pointer);
     return OK;
@@ -176,10 +174,10 @@ int CreateAttrCat()
  *           NOTOK on failure
  */
 
-int CreateCats() 
-{ 
-    if( CreateRelCat() == NOTOK || CreateAttrCat() == NOTOK )
-        return NOTOK;
-    else
+int CreateCats()
+{
+    if( CreateRelCat() == OK && CreateAttrCat() == OK )
         return OK;
+    else
+        return NOTOK;
 }

@@ -9,12 +9,10 @@
  */
 int DeleteRec(const int relNum, const Rid *rid) {
     if (rid == NULL) {
-        ErrorMsgs(NULL_ARGUMENT_RECEIVED);
-        return NOTOK;
+        return ErrorMsgs(NULL_ARGUMENT_RECEIVED,g_print_flag);
     }
     if (relNum < 0 || relNum > MAXOPEN) {
-        ErrorMsgs(RELNUM_OUT_OF_BOUND);
-        return NOTOK;
+        return ErrorMsgs(RELNUM_OUT_OF_BOUND,g_print_flag);
     }
 
     if (ReadPage(relNum, rid->pid) == OK) {

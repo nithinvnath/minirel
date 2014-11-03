@@ -10,7 +10,7 @@
 int InsertRec(const int relNum, const char*recPtr) {
 
     if (recPtr == NULL) {
-        ErrorMsgs(NULL_ARGUMENT_RECEIVED);
+        return ErrorMsgs(NULL_ARGUMENT_RECEIVED, g_print_flag);
     }
     Rid startRid = { 1, 0 }, foundRid;
     /* Insert record    */

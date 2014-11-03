@@ -186,8 +186,7 @@ int OpenCats()
 
     ret_value = FindRec(0, &startRid, foundRid, recPtr, STRING, RELNAME, 0, "relcat", EQ);
     if(ret_value == NOTOK){
-        ErrorMsgs(NO_CATALOG_FOUND);
-        return NOTOK;
+        return ErrorMsgs(NO_CATALOG_FOUND, g_print_flag);
     }
 
     num_recs_relcat  = readIntFromByteArray(recPtr, 32);
@@ -215,8 +214,7 @@ int OpenCats()
 
     ret_value =FindRec(0, &startRid, foundRid, recPtr, STRING, RELNAME, 0, "attrcat", EQ);
     if(ret_value == NOTOK){
-        ErrorMsgs(NO_CATALOG_FOUND);
-        return NOTOK;
+        return ErrorMsgs(NO_CATALOG_FOUND, g_print_flag);
     }
 
     num_recs_relcat  = readIntFromByteArray(recPtr, 32);
