@@ -30,9 +30,8 @@ int CloseRel(int relNum)
     if(g_catcache[relNum].dirty == FALSE)
         return OK;
     else{
-        if( FindRec(0, &startRid, &foundRid, &recPtr, STRING, RELNAME, 0, g_catcache[relNum].relName, EQ) == NOTOK ){
-            ErrorMsgs(RELNOEXIST);
-            return NOTOK;   
+        if( FindRec(0, &startRid, foundRid, recPtr, STRING, RELNAME, 0, g_catcache[relNum].relName, EQ) == NOTOK ){
+            return ErrorMsgs(RELNOEXIST, g_print_flag);
         }
         else{
             numPgs  = g_catcache[relNum].numPgs;

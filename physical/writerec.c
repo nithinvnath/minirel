@@ -11,12 +11,10 @@
  */
 int WriteRec(const int relNum, const char *recPtr, const Rid *RecId) {
     if (recPtr == NULL || RecId == NULL) {
-        ErrorMsgs(NULL_ARGUMENT_RECEIVED);
-        return NOTOK;
+        ErrorMsgs(NULL_ARGUMENT_RECEIVED, g_print_flag);
     }
     if (relNum < 0 || relNum > MAXOPEN) {
-        ErrorMsgs(RELNUM_OUT_OF_BOUND);
-        return NOTOK;
+        ErrorMsgs(RELNUM_OUT_OF_BOUND, g_print_flag);
     }
     /*  Write the contents  */
     ReadPage(relNum, RecId->pid);

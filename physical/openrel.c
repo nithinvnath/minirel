@@ -32,8 +32,7 @@ int OpenRel(char* RelName) {
     ret_value = FindRec(0, &start, &found, &bin_data, 's', RELNAME, 0, RelName, EQ);
 
     if (ret_value == NOTOK) {
-        ErrorMsgs(RELNOEXIST);
-        return NOTOK;
+        return ErrorMsgs(RELNOEXIST, g_print_flag);
     }/* Relation does not exist with given Relation Name */
     else {
         /* -------Cache Management----------- 
@@ -93,8 +92,7 @@ int OpenRel(char* RelName) {
         ret_value = FindRec(1, &start, &found, &bin_data, 's', RELNAME, 32, RelName, EQ);
 
         if (ret_value == NOTOK) {
-            ErrorMsgs(NO_ATTRS_FOUND);
-            return NOTOK;
+            return ErrorMsgs(NO_ATTRS_FOUND, g_print_flag);
         }
 
         while (ret_value == OK) {

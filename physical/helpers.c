@@ -12,24 +12,25 @@
  */
 
 //FIXME Move to another folder?
-void readStringFromByteArray(char * string, const char *byteArray, const int offset, const int size) {
+int readStringFromByteArray(char * string, const char *byteArray, const int offset, const int size) {
     if (byteArray == NULL || string == NULL) {
-        ErrorMsgs(NULL_POINTER_EXCEPTION);
-        return;
+        return ErrorMsgs(NULL_POINTER_EXCEPTION, g_print_flag);
     }
     strncpy(string, (byteArray + offset), size);
+    return OK;
 }
 
 int readIntFromByteArray(const char *byteArray, const int offset) {
 
     if (byteArray == NULL) {
-        ErrorMsgs(NULL_POINTER_EXCEPTION);
+        ErrorMsgs(NULL_POINTER_EXCEPTION, g_print_flag);
         return 0;
     } else {
         const char *offsetedByteArray = byteArray + offset;
 
-        return ((offsetedByteArray[0]<<24) & 0xFF000000) | ((offsetedByteArray[1]<<16) & 0x00FF0000) | 
-        ((offsetedByteArray[2]<<8) & 0x0000FF00) | (offsetedByteArray[3] & 0x000000FF);
+        return ((offsetedByteArray[0] << 24) & 0xFF000000)
+                | ((offsetedByteArray[1] << 16) & 0x00FF0000)
+                | ((offsetedByteArray[2] << 8) & 0x0000FF00) | (offsetedByteArray[3] & 0x000000FF);
     }
 }
 
@@ -40,17 +41,17 @@ float readFloatFromByteArray(const char* byteArray, const int offset) {
     return converter.float_val;
 }
 
-void convertIntToByteArray(int value, char *byteArray){
-    byteArray[0] = (value>>24) & 0xFF;
-    byteArray[1] = (value>>16) & 0xFF;
-    byteArray[2] = (value>>8) & 0xFF;
+void convertIntToByteArray(int value, char *byteArray) {
+    byteArray[0] = (value >> 24) & 0xFF;
+    byteArray[1] = (value >> 16) & 0xFF;
+    byteArray[2] = (value >> 8) & 0xFF;
     byteArray[3] = value & 0xFF;
 }
 
-void convertFloatToByteArray(float value, char *byteArray){
+void convertFloatToByteArray(float value, char *byteArray) {
     Flip converter;
     converter.float_val = value;
-    convertIntToByteArray(converter.int_val,byteArray);
+    convertIntToByteArray(converter.int_val, byteArray);
 }
 
 /*************************************************************
@@ -72,7 +73,7 @@ bool compareNum(float val1, float val2, int compOp) {
         case LT:
             return val1 < val2 ? TRUE : FALSE;
         default:
-            ErrorMsgs(INVALID_COMP_OP);
+            ErrorMsgs(INVALID_COMP_OP, g_print_flag);
             break;
     }
     return FALSE;
@@ -94,7 +95,7 @@ bool compareStrings(char *s1, char *s2, int compOp) {
         case LT:
             return (strcmp(s1, s2) < 0) ? TRUE : FALSE;
         default:
-            ErrorMsgs(INVALID_COMP_OP);
+            ErrorMsgs(INVALID_COMP_OP, g_print_flag);
             break;
     }
     return FALSE;

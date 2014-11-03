@@ -14,8 +14,7 @@
  */
 int FlushPage(int relNum) {
     if (relNum < 0 || relNum >= MAXOPEN) {
-        ErrorMsgs(RELNUM_OUT_OF_BOUND);
-        return NOTOK;
+        return ErrorMsgs(RELNUM_OUT_OF_BOUND, g_print_flag);
     }
 
     char slotmapbytes[4] = { 0 };
@@ -38,12 +37,10 @@ int FlushPage(int relNum) {
 
         const int fd = g_catcache[relNum].relFile;
         if (lseek(fd, offset, SEEK_SET) < 0) {
-            ErrorMsgs(FILE_SEEK_ERROR);
-            return NOTOK;
+            return ErrorMsgs(FILE_SEEK_ERROR, g_print_flag);
         }
-        if(write(fd, page, PAGESIZE) < 0){
-            ErrorMsgs(WRITE_DISK_ERROR);
-            return NOTOK;
+        if (write(fd, page, PAGESIZE) < 0) {
+            return ErrorMsgs(WRITE_DISK_ERROR, g_print_flag);
         }
     }
     g_buffer[relNum].dirty = FALSE;

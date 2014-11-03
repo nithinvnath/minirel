@@ -20,8 +20,7 @@
  */
 int ReadPage(int relNum, short pid) {
     if (relNum < 0 || relNum >= MAXOPEN) {
-        ErrorMsgs(RELNUM_OUT_OF_BOUND);
-        return NOTOK;
+        return ErrorMsgs(RELNUM_OUT_OF_BOUND, g_print_flag);
     }
 
     if (g_buffer[relNum].pid != pid) {
@@ -40,8 +39,7 @@ int ReadPage(int relNum, short pid) {
             return NOTOK;
         }
         if(read(fd, page, PAGESIZE)<0){//Read Page
-            ErrorMsgs(READ_DISK_ERROR);
-            return NOTOK;
+            return ErrorMsgs(READ_DISK_ERROR, g_print_flag);
         }
 
         /*Copy the contents of page to buffer*/
