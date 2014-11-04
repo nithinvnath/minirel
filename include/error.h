@@ -24,7 +24,7 @@
 #define FILE_SYSTEM_ERROR           114     /* Error while creating directory/file */
 #define DB_ALREADY_EXISTS           115     /* DB with same name already exists */
 #define ARGC_INSUFFICIENT           116     /* Number of arguments received is less than expected*/
-
+#define DBNAME_INVALID              117     /* Database with given name doesn't exist */
 int ErrorMsgs(int errorId, int printFlag);
 
 #endif

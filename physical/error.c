@@ -61,6 +61,8 @@ int ErrorMsgs(int errorId, int printFlag) {
             case FILE_SYSTEM_ERROR:
                 printf("Error occurred while trying to create file/directory. \
                         Please check file system permissions and try again.");
+            case DBNAME_INVALID:
+                printf("Database not found with given name! Please check the database name. \n");
                 break;
             default:
                 printf("Unexpected error!\n");
