@@ -21,6 +21,10 @@
 #define CAT_FILE_ALREADY_EXIST      111     /* Can't create cat files as they exists */
 #define WRITE_DISK_ERROR            112     /* Error occurred while making write system call */
 #define READ_DISK_ERROR             113     /* Error occurred while making read system call */
+#define FILE_SYSTEM_ERROR           114     /* Error while creating directory/file */
+#define DB_ALREADY_EXISTS           115     /* DB with same name already exists */
+#define ARGC_INSUFFICIENT           116     /* Number of arguments received is less than expected*/
+
 int ErrorMsgs(int errorId, int printFlag);
 
 #endif

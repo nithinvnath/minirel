@@ -50,6 +50,18 @@ int ErrorMsgs(int errorId, int printFlag) {
             case CAT_FILE_ALREADY_EXIST:
                 printf("catalog file(s) already exist in the database!\n");
                 break;
+            case DB_ALREADY_EXISTS:
+                printf("A DB with the given name already exists!\
+                        Please provide a different name and try again\n");
+                break;
+            case ARGC_INSUFFICIENT:
+                printf("Argument(s) missing! The number of arguments received is \
+                        less than required number of arguments!\n");
+                break;
+            case FILE_SYSTEM_ERROR:
+                printf("Error occurred while trying to create file/directory. \
+                        Please check file system permissions and try again.");
+                break;
             default:
                 printf("Unexpected error!\n");
                 break;
