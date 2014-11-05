@@ -56,11 +56,12 @@ int ErrorMsgs(int errorId, int printFlag) {
                 break;
             case ARGC_INSUFFICIENT:
                 printf("Argument(s) missing! The number of arguments received is \
-                        less than required number of arguments!\n");
+less than required number of arguments!\n");
                 break;
             case FILE_SYSTEM_ERROR:
                 printf("Error occurred while trying to create file/directory. \
-                        Please check file system permissions and try again.");
+Please check file system permissions and try again.\n");
+                break;
             case DBNAME_INVALID:
                 printf("Database not found with given name! Please check the database name. \n");
                 break;

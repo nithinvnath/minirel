@@ -1,6 +1,7 @@
 #include "../include/defs.h"
 #include "../include/error.h"
 #include "../include/globals.h"
+#include "../include/createcats.h"
 
 #include <stdio.h>
 #include <string.h>

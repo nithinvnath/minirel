@@ -1,18 +1,15 @@
+/*
+ * createcats.c
+ *
+ *  Created on: 5-Nov-2014
+ *      Author: Dheeraj
+ */
 
-#include "../include/defs.h"
-#include "../include/error.h"
-#include "../include/globals.h"
-
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <string.h>
-#include <dirent.h>
-#include <string.h>
+#include "../include/destroydb.h"
 
 /*
- * Function:  delete_file 
- * ----------------------
+ * Function:  delete_file() 
+ * ------------------------
  * deletes an existing file
  *
  *  file_name: name of the file that has to be deleted
@@ -72,12 +69,14 @@ int delete_dir(char* dir_name)
 /*
  * Function:  DetroyDB()
  * ------------------------
- * deletes an existing directory
+ * deletes an existing database
  *
- *  dir_name: name of the directory that has to be deleted
- *  
- *  returns: OK    upon successful deletion of directory.
- *           NOTOK directory does not exist
+ * argv[0] = “destroydb”
+ * argv[1] = database name
+ * argv[argc] = NIL
+ * 
+ * returns: OK    upon successful deletion of directory.
+ *          NOTOK directory does not exist
  */
 
 int DestroyDB(int argc,char **argv)

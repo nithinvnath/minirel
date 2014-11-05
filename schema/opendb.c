@@ -1,24 +1,51 @@
+/*
+ * createcats.c
+ *
+ *  Created on: 5-Nov-2014
+ *      Author: Dheeraj
+ */
 
-#include "../include/defs.h"
-#include "../include/error.h"
-#include "../include/globals.h"
-#include <stdio.h>
+#include "../include/opendb.h"
 
+/*
+ * Function: OpenDB()
+ * ------------------------
+ * changes the working directory to be the database directory, opens the catalogs and initializes 
+ * the various global data structures
+ *
+ * argv[0] = “opendb”
+ * argv[1] = database name
+ * argv[argc] = NIL
+ *
+ *  returns: OK    upon opening database
+ *           NOTOK database does not exist
+ */
 
-OpenDB (argc, argv)
-int	argc;
-char	**argv;
-
+int OpenDB (int argc, char **argv)
 {
+    DIR* dir_handler;
 
-    /* print command line arguments */
-    short	k;		/* iteration counter	    */
-    printf ("%s:\n", argv[0]);
-    for (k = 1 ; k < argc; ++k)
-	printf ("\targv[%d] = %s\n", k, argv[k]);
+    if(argc < 2)
+        return ErrorMsgs(ARGC_INSUFFICIENT,g_print_flag);
 
-     printf("OpenDB \n");
-     return (OK);  /* all's fine */
+//    CloseDB(1,"closedb");
+
+    char db_path[2 * RELNAME + 2];
+    sprintf(db_path, "%s/%s", PATH, argv[1]);
+
+    if( (dir_handler = opendir(db_path)) != NULL ){
+        closedir(dir_handler);
+ 
+        strcpy(g_db_name, argv[1]);
+
+        if(OpenCats() == NOTOK)
+            return NOTOK;
+    }/* database exists */
+    else{
+        return ErrorMsgs(DBNAME_INVALID,g_print_flag);
+    }/* database directoy couldn't open */
+
+    return OK;
 }
 
 
