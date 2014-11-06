@@ -25,6 +25,7 @@
 #define DB_ALREADY_EXISTS           115     /* DB with same name already exists */
 #define ARGC_INSUFFICIENT           116     /* Number of arguments received is less than expected*/
 #define DBNAME_INVALID              117     /* Database with given name doesn't exist */
+#define DB_NOT_CLOSED               120     /* tried to create/open db without closing current db */
 int ErrorMsgs(int errorId, int printFlag);
 
 #endif

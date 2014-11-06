@@ -26,16 +26,15 @@ int OpenDB (int argc, char **argv)
     DIR* dir_handler;
 
     if(argc < 2)
-        return ErrorMsgs(ARGC_INSUFFICIENT,g_print_flag);
+        return ErrorMsgs(ARGC_INSUFFICIENT, g_print_flag);
 
-//    CloseDB(1,"closedb");
+    if(strcmp(g_db_name,"") != 0)
+        return ErrorMsgs(DB_NOT_CLOSED, g_print_flag);
 
-    char db_path[2 * RELNAME + 2];
-    sprintf(db_path, "%s/%s", PATH, argv[1]);
-
-    if( (dir_handler = opendir(db_path)) != NULL ){
+    if( (dir_handler = opendir(argv[1])) != NULL ){
         closedir(dir_handler);
- 
+
+        // use the fn seperate() and modify this part. 
         strcpy(g_db_name, argv[1]);
 
         if(OpenCats() == NOTOK)

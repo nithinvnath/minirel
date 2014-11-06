@@ -26,4 +26,6 @@ void convertFloatToByteArray(float value, char *byteArray);
 
 Rid getLastRid(int relNum);
 
+int seperate_db_path(char* db_with_path, char* path, char* dbname);
+
 #endif /* HELPERS_H_ */

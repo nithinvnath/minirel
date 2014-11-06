@@ -22,7 +22,7 @@ int CreateDB(int argc, char **argv) {
     char current_db_name[RELNAME];
     strcpy(current_db_name,g_db_name);
 
-    if (mkdir(argv[0], S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == -1) {
+    if (mkdir(argv[1], S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == -1) {
         if (errno == EEXIST) {
             return ErrorMsgs(DB_ALREADY_EXISTS, g_print_flag);
         } else {
