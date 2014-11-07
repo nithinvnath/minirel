@@ -14,7 +14,11 @@
  * @return OK or NOTOK
  */
 int CloseDB(int argc, char **argv) {
+<<<<<<< HEAD
     if (strcmp(g_db_name, "") != 0) {
+=======
+    if (strcmp(g_db_name, "") == 0) {
+>>>>>>> nithin
         return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
     }
     if (CloseCats() == OK) {

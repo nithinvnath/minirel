@@ -12,7 +12,7 @@ int ErrorMsgs(int errorId, int printFlag) {
         printf("<ERROR %d>: ", errorId);
         switch (errorId) {
             case RELNOEXIST:
-                printf("Relation does not exist!\n");
+                printf("Relation does not exist! Please check the name and try again.\n");
                 break;
             case ATTRNOEXIST:
                 printf("Attribute does not exist!\n");
@@ -24,7 +24,7 @@ int ErrorMsgs(int errorId, int printFlag) {
                 printf("Null pointer exception!\n");
                 break;
             case INVALID_ATTR_TYPE:
-                printf("Invalid attribute type!\n");
+                printf("Invalid attribute type! Attribute type should be i, f or s.\n");
                 break;
             case INVALID_COMP_OP:
                 printf("Invalid comparison operator!\n");
@@ -69,6 +69,13 @@ Please check file system permissions and try again.\n");
                 printf("A relation with given already exists! Please try again with a different \
 name.\n");
                 break;
+            case INVALID_ATTR_NAME:
+                printf("An attribute or relation name is invalid! Names should start with alphabet \
+and can be at most 20 characters long.\n");
+                break;
+            case DB_NOT_OPEN:
+                printf("Please call opendb <DBNAME> to open a database first.\n");
+                break;
             case DB_NOT_CLOSED:
                 printf("Database not closed! Please call CloseDB() before open/create a db \n");
             case INVALID_ATTR_NAME:
@@ -77,6 +84,32 @@ and can be at most 20 characters long.\n");
                 break;
             case DB_NOT_OPEN:
                 printf("Please call opendb <DBNAME> to open a database first.\n");
+                break;
+            case NO_ATTRIBUTES_TO_INSERT:
+                printf("Insert has no attribute-value pairs to be inserted into the relation!\n");
+                break;
+            case ATTR_NOT_IN_REL:
+                printf("Attribute with the given name is not found in relation! Please check\
+if all attributes are named correctly.\n");
+                break;
+            case DUPLICATE_TUPLE:
+                printf("Tuple already exists in this relation! All tuples must be unique.\n");
+                break;
+            case METADATA_SECURITY:
+                printf("Permission denied! Meta data tables cannot be modified directly.\n");
+                break;
+            case INTEGER_EXPECTED:
+                printf("Integer value was expected but got string instead.\n");
+                break;
+            case FLOAT_EXPECTED:
+                printf("Float value was expected but got string instead.\n");
+                break;
+            case MAX_STRING_EXCEEDED:
+                printf("The maximum allowed string size is %d\n",MAX_STRING_SIZE);
+                break;
+            case PID_OUT_OF_BOUND:
+                printf("Trying to read a page which is greater than the number of \
+pages in the relation.\n");
                 break;
             default:
                 printf("Unexpected error!\n");

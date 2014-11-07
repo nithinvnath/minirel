@@ -23,6 +23,10 @@ int ReadPage(int relNum, short pid) {
         return ErrorMsgs(RELNUM_OUT_OF_BOUND, g_print_flag);
     }
 
+    if(pid>g_catcache[relNum]){
+        return ErrorMsgs(PID_OUT_OF_BOUND, g_print_flag);
+    }
+
     if (g_buffer[relNum].pid != pid) {
 
         if (FlushPage(relNum) != OK) {//Flush page

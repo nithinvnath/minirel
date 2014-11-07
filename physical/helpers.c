@@ -1,4 +1,5 @@
-#include<string.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "../include/globals.h"
 #include "../include/defs.h"
@@ -128,13 +129,13 @@ Rid getLastRid(int relNum) {
  *           NOTOK on failure
  */
 
-int seperate_db_path(char* db_with_path, char* path, char* dbname){
+int separate_db_path(char* db_with_path, char* path, char* dbname){
 
-    char db_path_copy[100], *temp;
+    char db_path_copy[MAXPATH], *temp;
     strcpy(db_path_copy, db_with_path);
 
-    temp = strtok(db_path_copy,"/");
-
+    char *temp = strtok(db_path_copy,"/");
+    //FIXME check if dbname is greater than 20 characters here
     strcpy(dbname,temp);
     strcpy(path,"");
 
@@ -151,4 +152,79 @@ int seperate_db_path(char* db_with_path, char* path, char* dbname){
     }
     path[ strlen(path)-1 ] ='\0';
     return OK;
+}
+
+/*************************************************************
+ HELPERS FOR SCHEMA LAYER
+ *************************************************************/
+
+/**
+ * Compares two records byte by byte
+ * 
+ * @param record1
+ * @param record2
+ * @param sizeOfRecord
+ * @return
+ */
+int compareRecords(char *record1, char *record2, int sizeOfRecord) {
+    int i;
+    for(i=0; i<sizeOfRecord; ++i){
+        if(record1[i]!=record2[i]){
+            break;
+        }
+    }
+    return (i!=sizeOfRecord) ? NOTOK : OK;
+}
+
+/**
+ *  Gets the N from sN
+ * @param sN
+ * @return
+ */
+int getN(char *sN) {
+    int i, N;
+    N = atoi(sN + 1);
+    return N;
+}
+
+/**
+ * Checks if the string is valid
+ * STRING: A character set that starts with an alphabet
+ * and is followed by an arbitrary number of alphabets and digits
+ *
+ * @param string
+ * @return OK if valid
+ */
+int isValidString(char *string) {
+    if (!isalpha(string[0])) {
+        return NOTOK;
+    } else if (strlen(string) >= RELNAME) {
+        return NOTOK;
+    } else {
+        return OK;
+    }
+}
+
+/**
+ * Get size of attribute from attributeFormat
+ *
+ * @param attrFormat
+ * @return size of the attribute
+ */
+int getSizeOfAttr(char *attrFormat) {
+    int size = 0;
+    switch (attrFormat[0]) {
+        case INTEGER:
+            size = sizeof(int);
+            break;
+        case STRING:
+            size = getN(attrFormat);
+            break;
+        case FLOAT:
+            size = sizeof(float);
+            break;
+        default:
+            break;
+    }
+    return size;
 }

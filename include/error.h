@@ -29,6 +29,16 @@
 #define INVALID_ATTR_NAME           119     /* string starts with num/length>20 */
 #define DB_NOT_CLOSED               120     /* tried to create/open db without closing current db */
 #define DB_NOT_OPEN                 121     /* Open the db first */
+#define NO_ATTRIBUTES_TO_INSERT     122     /* Insufficient number of arguments received */
+#define ATTR_NOT_IN_REL             123     /* The attribute name in insert is not part of relation */
+#define DUPLICATE_TUPLE             124     /* The tuple trying to be inserted already exists */
+#define METADATA_SECURITY           125     /* User trying to modify relcat or attrcat tables*/
+
+#define INTEGER_EXPECTED            127     /* Integer value was expected but got string */
+#define FLOAT_EXPECTED              128     /* Float value was expected but got string */
+#define MAX_STRING_EXCEEDED         129     /* String size given exceeded the defined one */
+#define PID_OUT_OF_BOUND            130     /* Trying to read a page out of bound */
+
 int ErrorMsgs(int errorId, int printFlag);
 
 #endif
