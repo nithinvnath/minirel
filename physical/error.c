@@ -12,7 +12,7 @@ int ErrorMsgs(int errorId, int printFlag) {
         printf("<ERROR %d>: ", errorId);
         switch (errorId) {
             case RELNOEXIST:
-                printf("Relation does not exist!\n");
+                printf("Relation does not exist! Please check the name and try again.\n");
                 break;
             case ATTRNOEXIST:
                 printf("Attribute does not exist!\n");
@@ -78,6 +78,19 @@ and can be at most 20 characters long.\n");
                 break;
             case DB_NOT_CLOSED:
                 printf("Database not closed! Please call CloseDB() before open/create a db \n");
+                break;
+            case NO_ATTRIBUTES_TO_INSERT:
+                printf("Insert has no attribute-value pairs to be inserted into the relation!\n");
+                break;
+            case ATTR_NOT_IN_REL:
+                printf("Attribute with the given name is not found in relation! Please check\
+if all attributes are named correctly.\n");
+                break;
+            case DUPLICATE_TUPLE:
+                printf("Tuple already exists in this relation! All tuples must be unique.\n");
+                break;
+            case METADATA_SECURITY:
+                printf("Permission denied! Meta data tables cannot be modified directly.\n");
                 break;
             default:
                 printf("Unexpected error!\n");
