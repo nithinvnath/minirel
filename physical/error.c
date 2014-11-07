@@ -76,6 +76,9 @@ and can be at most 20 characters long.\n");
             case DB_NOT_OPEN:
                 printf("Please call opendb <DBNAME> to open a database first.\n");
                 break;
+            case DB_NOT_CLOSED:
+                printf("Database not closed! Please call CloseDB() before open/create a db \n");
+                break;
             default:
                 printf("Unexpected error!\n");
                 break;

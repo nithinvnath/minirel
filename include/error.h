@@ -27,6 +27,7 @@
 #define DBNAME_INVALID              117     /* Database with given name doesn't exist */
 #define REL_ALREADY_EXISTS          118     /* Relation name already exists */
 #define INVALID_ATTR_NAME           119     /* string starts with num/length>20 */
+#define DB_NOT_CLOSED               120     /* tried to create/open db without closing current db */
 #define DB_NOT_OPEN                 121     /* Open the db first */
 int ErrorMsgs(int errorId, int printFlag);
 

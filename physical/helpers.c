@@ -114,3 +114,41 @@ Rid getLastRid(int relNum) {
     last.slotnum = numRecs % recsPerPg + 1;
     return last;
 }
+
+/*
+ * Function: seperate_db_path() 
+ * ----------------------------
+ * Seperates dbname and path from the the string, dbname with path
+ *
+ *  db_with_path : full path of database
+ *  path         : path of database without dbname
+ *  dbname       : database name
+ *
+ *  returns: OK on success
+ *           NOTOK on failure
+ */
+
+int seperate_db_path(char* db_with_path, char* path, char* dbname){
+
+    char db_path_copy[100];
+    strcpy(db_path_copy, db_with_path);
+
+    temp = strtok(db_path_copy,"/");
+
+    strcpy(dbname,temp);
+    strcpy(path,"");
+
+    if(db_with_path == NULL)
+        return NOTOK;
+
+    if(strlen(temp) != strlen(db_with_path)) {
+        while((temp = strtok(NULL,"/")) != NULL){
+            strcat(path,dbname);
+            strcat(path,"/");
+
+            strcpy(dbname, temp);
+        }
+    }
+    path[ strlen(path)-1 ] ='\0';
+    return OK;
+}
