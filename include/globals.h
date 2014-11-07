@@ -16,5 +16,7 @@ bool g_cache_in_use[MAXOPEN];        /* cache use bit map */
 int g_cache_timestamp[MAXOPEN];      /* The order at which they used */
 bool g_cache_dirty[MAXOPEN];         /* Cache Entry is dirty or not */
 
+char g_invoked_directory[MAXPATH];       /* The directory from which  */
+
 int g_print_flag;                    /* The error print flag */
 #endif

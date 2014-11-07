@@ -63,10 +63,20 @@ less than required number of arguments!\n");
 Please check file system permissions and try again.\n");
                 break;
             case DBNAME_INVALID:
-                printf("Database not found with given name! Please check the database name. \n");
+                printf("Database not found with given name! Please check the database name.\n");
+                break;
+            case REL_ALREADY_EXISTS:
+                printf("A relation with given already exists! Please try again with a different \
+name.\n");
                 break;
             case DB_NOT_CLOSED:
                 printf("Database not closed! Please call CloseDB() before open/create a db \n");
+            case INVALID_ATTR_NAME:
+                printf("An attribute or relation name is invalid! Names should start with alphabet \
+and can be at most 20 characters long.\n");
+                break;
+            case DB_NOT_OPEN:
+                printf("Please call opendb <DBNAME> to open a database first.\n");
                 break;
             default:
                 printf("Unexpected error!\n");
