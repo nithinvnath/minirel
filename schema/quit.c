@@ -1,23 +1,27 @@
+/*
+ * createcats.c
+ *
+ *  Created on: 7-Nov-2014
+ *      Author: Dheeraj
+ */
 
-#include "../include/defs.h"
-#include "../include/error.h"
-#include "../include/globals.h"
-#include <stdio.h>
+#include "../include/quit.h"
 
+/*
+ * Function:  Quit()
+ * ------------------------
+ * terminates the program after closing database, if open
+ *
+ * argv[0] = “quit”
+ * argv[argc] = NIL
+ * 
+ */
 
-Quit (argc, argv)
-int	argc;
-char	**argv;
-
+void Quit (int argc, char **argv)
 {
-    /* print command line arguments */
-    short	k;		/* iteration counter	    */
-    printf ("%s:\n", argv[0]);
-    for (k = 1 ; k < argc; ++k)
-	printf ("\targv[%d] = %s\n", k, argv[k]);
-
-     printf("Quit \n");
-     return (OK);  /* all's fine */
+    if(strcmp(g_db_name,"") != 0)
+        CloseDB();
+    exit(0);
 }
 
 

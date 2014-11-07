@@ -18,7 +18,7 @@
  * argv[argc] = NIL
  *
  *  returns: OK    upon opening database
- *           NOTOK database does not exist
+ *           NOTOK database does not exist, or unable to open catalog
  */
 
 int OpenDB (int argc, char **argv)
@@ -35,7 +35,7 @@ int OpenDB (int argc, char **argv)
     if( (dir_handler = opendir(argv[1])) != NULL ){
         closedir(dir_handler);
 
-        getcwd(g_invoked_directory, sizeof(g_invoked_directory));
+        getcwd(g_invoked_directory, MAXPATH);
 
         seperate_db_path(argv[1], path, g_db_name);
 

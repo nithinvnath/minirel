@@ -33,11 +33,12 @@
 #define ATTR_NOT_IN_REL             123     /* The attribute name in insert is not part of relation */
 #define DUPLICATE_TUPLE             124     /* The tuple trying to be inserted already exists */
 #define METADATA_SECURITY           125     /* User trying to modify relcat or attrcat tables*/
-
+#define DBNAME_EXCEED_LIMIT         126     /* Database Name Exceeded */
 #define INTEGER_EXPECTED            127     /* Integer value was expected but got string */
 #define FLOAT_EXPECTED              128     /* Float value was expected but got string */
 #define MAX_STRING_EXCEEDED         129     /* String size given exceeded the defined one */
 #define PID_OUT_OF_BOUND            130     /* Trying to read a page out of bound */
+#define TYPE_MISMATCH               131     /* Type Mismatch while performing join */ 
 
 int ErrorMsgs(int errorId, int printFlag);
 

@@ -68,7 +68,6 @@ Please check file system permissions and try again.\n");
             case REL_ALREADY_EXISTS:
                 printf("A relation with given already exists! Please try again with a different \
 name.\n");
-                break;
             case INVALID_ATTR_NAME:
                 printf("An attribute or relation name is invalid! Names should start with alphabet \
 and can be at most 20 characters long.\n");
@@ -78,12 +77,6 @@ and can be at most 20 characters long.\n");
                 break;
             case DB_NOT_CLOSED:
                 printf("Database not closed! Please call CloseDB() before open/create a db \n");
-            case INVALID_ATTR_NAME:
-                printf("An attribute or relation name is invalid! Names should start with alphabet \
-and can be at most 20 characters long.\n");
-                break;
-            case DB_NOT_OPEN:
-                printf("Please call opendb <DBNAME> to open a database first.\n");
                 break;
             case NO_ATTRIBUTES_TO_INSERT:
                 printf("Insert has no attribute-value pairs to be inserted into the relation!\n");
@@ -110,6 +103,11 @@ if all attributes are named correctly.\n");
             case PID_OUT_OF_BOUND:
                 printf("Trying to read a page which is greater than the number of \
 pages in the relation.\n");
+            case DBNAME_EXCEED_LIMIT:    
+                printf("Database Name exceeded the limit! Enter name within 20 characters.\n");
+                break;
+            case TYPE_MISMATCH:    
+                printf("Type Mismatch while performing Join! Please try similar attributes.\n");
                 break;
             default:
                 printf("Unexpected error!\n");

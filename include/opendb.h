@@ -1,5 +1,5 @@
 /*
- * createcats.c
+ * opendb.h
  *
  *  Created on: 5-Nov-2014
  *      Author: Dheeraj

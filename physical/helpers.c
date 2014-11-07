@@ -117,9 +117,9 @@ Rid getLastRid(int relNum) {
 }
 
 /*
- * Function: seperate_db_path() 
+ * Function: separate_db_path() 
  * ----------------------------
- * Seperates dbname and path from the the string, dbname with path
+ * Separates dbname and path from the the string, dbname with path
  *
  *  db_with_path : full path of database
  *  path         : path of database without dbname
@@ -131,11 +131,12 @@ Rid getLastRid(int relNum) {
 
 int separate_db_path(char* db_with_path, char* path, char* dbname){
 
-    char db_path_copy[MAXPATH], *temp;
+    char db_path_copy[MAXPATH];
     strcpy(db_path_copy, db_with_path);
 
     char *temp = strtok(db_path_copy,"/");
-    //FIXME check if dbname is greater than 20 characters here
+    if(strlen(temp) > RELNAME)
+        return ErrorMsgs(DBNAME_EXCEED_LIMIT, g_print_flag);
     strcpy(dbname,temp);
     strcpy(path,"");
 
