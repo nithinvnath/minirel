@@ -3,7 +3,7 @@
     */
 #ifndef DEFS_H_
 #define DEFS_H_
-//FIXME move PATH to better location?
+
 /*************************************************************
         CONSTANTS
 *************************************************************/
@@ -23,8 +23,6 @@
 
 #define RELCAT_CACHE    0
 #define ATTRCAT_CACHE   1
-
-#define PATH ".minirel_data"
 
 /*************************************************************
         COMPARISON OPERATORS

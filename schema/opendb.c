@@ -24,6 +24,7 @@
 int OpenDB (int argc, char **argv)
 {
     DIR* dir_handler;
+    char path[MAXPATH];
 
     if(argc < 2)
         return ErrorMsgs(ARGC_INSUFFICIENT, g_print_flag);
@@ -34,8 +35,11 @@ int OpenDB (int argc, char **argv)
     if( (dir_handler = opendir(argv[1])) != NULL ){
         closedir(dir_handler);
 
-        // use the fn seperate() and modify this part. 
-        strcpy(g_db_name, argv[1]);
+        getcwd(g_invoked_directory, sizeof(g_invoked_directory));
+
+        seperate_db_path(argv[1], path, g_db_name);
+
+        chdir(path);
 
         if(OpenCats() == NOTOK)
             return NOTOK;

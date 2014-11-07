@@ -130,7 +130,7 @@ Rid getLastRid(int relNum) {
 
 int seperate_db_path(char* db_with_path, char* path, char* dbname){
 
-    char db_path_copy[100];
+    char db_path_copy[100], *temp;
     strcpy(db_path_copy, db_with_path);
 
     temp = strtok(db_path_copy,"/");

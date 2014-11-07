@@ -25,7 +25,7 @@ int CreateDB(int argc, char **argv) {
     //TODO use helper function to find the db_name
     g_db_name;
     /* Stores the current working directory to be changed once done */
-    getcwd(g_invoked_directory, sizeof(g_invoked_directory));
+    getcwd(g_invoked_directory, MAXPATH);
     //TODO chdir
 
     if (mkdir(argv[1], S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == -1) {

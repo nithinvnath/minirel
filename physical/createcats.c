@@ -20,20 +20,17 @@
 int CreateRelCat()
 {
     FILE *file_pointer;
-    char full_file_path[3 * RELNAME];
     char content[PAGESIZE];
     int i;
 
     for(i=0; i<PAGESIZE; i++)
         content[i] = 0;
 
-    sprintf(full_file_path, "%s/%s/%s", PATH, g_db_name, RELCAT);
-
-    if( access(full_file_path, F_OK) != -1){
+    if( access(RELCAT, F_OK) != -1){
         return ErrorMsgs(CAT_FILE_ALREADY_EXIST,g_print_flag);
     } /* Catalog Files Exists */
 
-    file_pointer = fopen(full_file_path,"wb");
+    file_pointer = fopen(RELCAT,"wb");
 
     //Slotmap for Page 1
     convertIntToByteArray(0xC0000000, content);
@@ -71,20 +68,17 @@ int CreateRelCat()
 int CreateAttrCat()
 {
     FILE *file_pointer;
-    char full_file_path[3 * RELNAME];
     char content[PAGESIZE*2];
     int i;
 
     for(i=0; i<PAGESIZE*2; i++)
         content[i] = 0;
 
-    sprintf(full_file_path, "%s/%s/%s", PATH, g_db_name, ATTRCAT);
-
-    if( access(full_file_path, F_OK) != -1){
+    if( access(ATTRCAT, F_OK) != -1){
         return ErrorMsgs(CAT_FILE_ALREADY_EXIST,g_print_flag);
     } /* Catalog Files Exists */
 
-    file_pointer = fopen(full_file_path,"wb");
+    file_pointer = fopen(ATTRCAT,"wb");
 
     //Slotmap for Page 1
     convertIntToByteArray(0xFF800000, content);

@@ -21,7 +21,6 @@
 int OpenRel(char* RelName) {
     Rid start, *found;
     char* bin_data;
-    char full_rel_path[3 * RELNAME];
     struct attrCatalog *temp = NULL, *newnode = NULL;
     bool first_exec = TRUE;
     int i, j, ret_value;
@@ -83,8 +82,7 @@ int OpenRel(char* RelName) {
         g_catcache[i].relcatRid = *found;
         g_catcache[i].dirty = FALSE;
 
-        sprintf(full_rel_path, "%s/%s/%s", PATH, g_db_name, RelName);
-        g_catcache[i].relFile = open(full_rel_path, O_RDWR);
+        g_catcache[i].relFile = open(RelName, O_RDWR);
 
         start.pid = 1;
         start.slotnum = 0;
