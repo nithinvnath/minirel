@@ -24,7 +24,7 @@ int ErrorMsgs(int errorId, int printFlag) {
                 printf("Null pointer exception!\n");
                 break;
             case INVALID_ATTR_TYPE:
-                printf("Invalid attribute type!\n");
+                printf("Invalid attribute type! Attribute type should be i, f or s.\n");
                 break;
             case INVALID_COMP_OP:
                 printf("Invalid comparison operator!\n");
@@ -91,6 +91,19 @@ if all attributes are named correctly.\n");
                 break;
             case METADATA_SECURITY:
                 printf("Permission denied! Meta data tables cannot be modified directly.\n");
+                break;
+            case INTEGER_EXPECTED:
+                printf("Integer value was expected but got string instead.\n");
+                break;
+            case FLOAT_EXPECTED:
+                printf("Float value was expected but got string instead.\n");
+                break;
+            case MAX_STRING_EXCEEDED:
+                printf("The maximum allowed string size is %d\n",MAX_STRING_SIZE);
+                break;
+            case PID_OUT_OF_BOUND:
+                printf("Trying to read a page which is greater than the number of \
+pages in the relation.\n");
                 break;
             default:
                 printf("Unexpected error!\n");

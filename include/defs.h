@@ -23,6 +23,7 @@
 
 #define RELCAT_CACHE    0
 #define ATTRCAT_CACHE   1
+#define MAX_STRING_SIZE 50
 
 #define PATH ".minirel_data"
 

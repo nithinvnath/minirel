@@ -1,27 +1,4 @@
-#include "../include/defs.h"
-#include "../include/error.h"
-#include "../include/globals.h"
-#include "../include/helpers.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-struct attrCatalog* getAttrCatalog(struct attrCatalog *attrList, char *attrName) {
-    struct attrCatalog *list = attrList;
-    while (list != NULL) {
-        if (strcmp(attrName, list->attrName) == 0) {
-            break;
-        }
-        list = list->next;
-    }
-    return list;
-}
-
-void removeQuotes(char *quotedString) {
-    /* Values are passed as quoted string. We store it in memory after removing the quotes */
-    int length = strlen(quotedString);
-    strncpy(quotedString, quotedString + 1, length - 1);
-}
+#include "../include/insert.h"
 
 //TODO Should we throw error in case not all attributes are given?
 /**
@@ -38,14 +15,6 @@ void removeQuotes(char *quotedString) {
  * @return OK if success
  */
 int Insert(int argc, char **argv) {
-    /* print command line arguments
-     short k;  iteration counter
-     printf("%s:\n", argv[0]);
-     for (k = 1; k < argc; ++k)
-     printf("\targv[%d] = %s\n", k, argv[k]);
-
-     printf("Insert \n");*/
-
     if ((strcmp(argv[0], "insert") == 0)
             && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
         return ErrorMsgs(METADATA_SECURITY, g_print_flag);
@@ -70,7 +39,33 @@ int Insert(int argc, char **argv) {
             return ErrorMsgs(ATTR_NOT_IN_REL, g_print_flag);
         }
         removeQuotes(argv[i + 1]);
-        strncpy(recPtr + attr->offset, argv[i + 1], attr->length);
+        //TODO Check if the values are really ints or floats
+        char *nptr, *endptr;
+        int intval;
+        float floatval;
+        switch (attr->type) {
+            case INTEGER:
+                intval = strtol(argv[i + 1], &nptr, 10);
+                endptr = argv[i + 1] + (strlen(argv[i + 1] - 1));
+                if (nptr != endptr) {
+                    return ErrorMsgs(INTEGER_EXPECTED, g_print_flag);
+                }
+                convertIntToByteArray(intval, recPtr + attr->offset);
+                break;
+            case FLOAT:
+                floatval = strtof(argv[i + 1], &nptr);
+                endptr = argv[i + 1] + (strlen(argv[i + 1] - 1));
+                if (nptr != endptr) {
+                    return ErrorMsgs(FLOAT_EXPECTED, g_print_flag);
+                }
+                convertFloatToByteArray(floatval, recPtr + attr->offset);
+                break;
+            case STRING:
+                strncpy(recPtr + attr->offset, argv[i + 1], attr->length);
+                break;
+            default:
+                break;
+        }
     }
 
     /* Now checking for duplicates */
@@ -80,8 +75,26 @@ int Insert(int argc, char **argv) {
         if (compareRecords(record, recPtr, attr->length) == OK) {
             return ErrorMsgs(DUPLICATE_TUPLE, g_print_flag);
         }
+        startRid = *foundRid;
+        free(foundRid);
     }
 
     return InsertRec(relNum, recPtr);
 }
 
+struct attrCatalog* getAttrCatalog(struct attrCatalog *attrList, char *attrName) {
+    struct attrCatalog *list = attrList;
+    while (list != NULL) {
+        if (strcmp(attrName, list->attrName) == 0) {
+            break;
+        }
+        list = list->next;
+    }
+    return list;
+}
+
+void removeQuotes(char *quotedString) {
+    /* Values are passed as quoted string. We store it in memory after removing the quotes */
+    int length = strlen(quotedString);
+    strncpy(quotedString, quotedString + 1, length - 2);
+}
