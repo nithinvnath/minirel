@@ -120,8 +120,8 @@ void createTemplate(int cacheIndex, char ***args, char *relName, int *arraySize)
     int i;
     struct attrCatalog *attrList = g_catcache[cacheIndex].attrList;
     *arraySize = (2 * g_catcache[cacheIndex].numAttrs + 2);
-    //FIXME
-    ***args = (char **) malloc(*arraySize * sizeof(char *));
+
+    *args = (char **) malloc(*arraySize * sizeof(char *));
     *args[0] = (char *) malloc(strlen("_insert") * sizeof(char));
     strcpy(*args[0], "_insert");
     *args[1] = (char *) malloc(strlen(relName) * sizeof(char));

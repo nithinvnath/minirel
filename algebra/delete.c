@@ -5,12 +5,7 @@
  *      Author: Dheeraj
  */
 
-#include "../include/defs.h"
-#include "../include/error.h"
-#include "../include/globals.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "../include/delete.h"
 
 /*
  * Function:  Delete() 
@@ -28,7 +23,7 @@
  *           NOTOK: otherwise
  */
 
-int Select (int argc, char **argv)
+int Delete (int argc, char **argv)
 {
     int relNum, numAttrs, i, offset, attr_found_flag = 0;
     int attrSize;
@@ -41,8 +36,13 @@ int Select (int argc, char **argv)
     if(argc < 5)
         return ErrorMsgs(ARGC_INSUFFICIENT,g_print_flag);
 
+    if ((strcmp(argv[0], "delete") == 0)
+            && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
+        return ErrorMsgs(METADATA_SECURITY, g_print_flag);
+    }
+
     if(OpenRel(argv[2]) == NOTOK)
-        return ErrorMsgs(RELNOESIST, g_print_flag);
+        return ErrorMsgs(RELNOEXIST, g_print_flag);
     /* Finding the relNum of Relation */
     relNum = FindRelNum(argv[2]);
 

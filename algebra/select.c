@@ -5,12 +5,7 @@
  *      Author: Dheeraj
  */
 
-#include "../include/defs.h"
-#include "../include/error.h"
-#include "../include/globals.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+ #include "../include/select.h"
 
 /*
  * Function:  Select() 
@@ -42,7 +37,7 @@ int Select (int argc, char **argv)
         return ErrorMsgs(ARGC_INSUFFICIENT,g_print_flag);
 
     if(OpenRel(argv[2]) == NOTOK)
-        return ErrorMsgs(RELNOESIST, g_print_flag);
+        return ErrorMsgs(RELNOEXIST, g_print_flag);
     /* Finding the relNum of Source Relation */
     relNum = FindRelNum(argv[2]);
 
@@ -67,8 +62,7 @@ int Select (int argc, char **argv)
         switch(head->type){
             case INTEGER: strcpy(argument_list[count+1],"i");
                 break;
-            case STRING: strcpy(argument_list[count+1],"s");
-                strcat(argument_list[count+1],itoa(head->length));
+            case STRING: sprintf(argument_list[count+1], "s%d", head->length);
                 break;
             case FLOAT: strcpy(argument_list[count+1],"f");
                 break; 
@@ -79,7 +73,7 @@ int Select (int argc, char **argv)
             attr_found_flag = 1;
             offset = head -> offset;
             type = head -> type;
-            attrSize = head -> attrLength;
+            attrSize = head -> length;
         }
         head = head->next;
         count++;
@@ -103,8 +97,8 @@ int Select (int argc, char **argv)
     while( FindRec(relNum, &startRid, &foundRid, &recPtr, type, attrSize, 
                         offset, argv[5], atoi(argv[4])) == OK ){
         InsertRec(new_relNum, recPtr);
-        start = (*found);
-        free(found);
+        startRid = (*foundRid);
+        free(foundRid);
     }
     return OK;
 }

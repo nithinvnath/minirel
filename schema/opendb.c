@@ -37,7 +37,7 @@ int OpenDB (int argc, char **argv)
 
         getcwd(g_invoked_directory, MAXPATH);
 
-        seperate_db_path(argv[1], path, g_db_name);
+        separate_db_path(argv[1], path, g_db_name);
 
         chdir(path);
 

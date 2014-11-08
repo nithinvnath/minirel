@@ -74,13 +74,7 @@ int CreateAttrCat()
     for(i=0; i<PAGESIZE*2; i++)
         content[i] = 0;
 
-<<<<<<< HEAD
     if( access(ATTRCAT, F_OK) != -1){
-=======
-    sprintf(full_file_path, "%s/%s/%s", PATH, g_db_name, ATTRCAT);
-
-    if( access(full_file_path, F_OK) != -1){
->>>>>>> nithin
         return ErrorMsgs(CAT_FILE_ALREADY_EXIST,g_print_flag);
     } /* Catalog Files Exists */
 
