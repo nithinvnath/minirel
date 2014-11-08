@@ -31,7 +31,7 @@ int Join (int argc, char **argv)
 {
     int relNum1, relNum2, count, attr_found_flag = 0, i, ret_val;
     int num_attrs_rel1, num_attrs_rel2, num_attrs_total;
-    int offset1, offset2, attrSize1, attrSize2;
+    int offset1, offset2, attrSize1, attrSize2, new_relNum;
     datatype type1, type2;
     struct attrCatalog *head;
     char **argument_list, *recPtr1, *recPtr2;
@@ -128,7 +128,7 @@ int Join (int argc, char **argv)
     OpenRel(argv[1]);
     new_relNum = FindRelNum(argv[1]);
 
-    for(i=0; i<(numAttrs+1)*2; i++)
+    for(i = 0; i < num_attrs_total*2; i++)
         free(argument_list[i]);
     free(argument_list);
 
@@ -138,7 +138,7 @@ int Join (int argc, char **argv)
     if(type1 != type2)
         return ErrorMsgs(TYPE_MISMATCH, g_print_flag);
 
-/*    while(GetNextRec(relNum1, &start_rel1, &found_rel1, &recPtr1) == OK){
+    while(GetNextRec(relNum1, &start_rel1, &found_rel1, &recPtr1) == OK){
         while(FindRec(relNum2, &start_rel2, &recPtr2, type2, attrSize2, offset2,  )){
 
             start_rel2 = *found_rel2;
@@ -147,7 +147,7 @@ int Join (int argc, char **argv)
         start_rel1 = *found_rel1;
         free(found_rel1);
     }
-*/
+
     return OK;
 }
 

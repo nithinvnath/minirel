@@ -56,7 +56,7 @@ int Select (int argc, char **argv)
             attr_found_flag = 1;
             offset = head -> offset;
             type = head -> type;
-            attrSize = head -> attrLength;
+            attrSize = head -> length;
         }
         head = head->next;
     }
@@ -68,8 +68,8 @@ int Select (int argc, char **argv)
     while( FindRec(relNum, &startRid, &foundRid, &recPtr, type, attrSize, 
                         offset, argv[5], atoi(argv[4])) == OK ){
         DeleteRec(relNum,foundRid);
-        start = (*found);
-        free(found);
+        startRid = (*foundRid);
+        free(foundRid);
     }
     return OK;
 }
