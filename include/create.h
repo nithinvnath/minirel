@@ -12,6 +12,9 @@
 #include "../include/error.h"
 #include "../include/globals.h"
 #include "../include/helpers.h"
+#include "../include/openrel.h"
+#include "../include/insert.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>

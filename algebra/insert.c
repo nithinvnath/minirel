@@ -68,17 +68,7 @@ int Insert(int argc, char **argv) {
         }
     }
 
-    /* Now checking for duplicates */
-    Rid *foundRid, startRid = { 0, 0 };
-    char *record;
-    while (GetNextRec(relNum, &startRid, &foundRid, &record) == OK) {
-        if (compareRecords(record, recPtr, attr->length) == OK) {
-            return ErrorMsgs(DUPLICATE_TUPLE, g_print_flag);
-        }
-        startRid = *foundRid;
-        free(foundRid);
-    }
-
+    //Duplicate checking done in InsertRec
     return InsertRec(relNum, recPtr);
 }
 

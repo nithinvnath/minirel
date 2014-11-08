@@ -78,7 +78,7 @@ int Join (int argc, char **argv)
             attr_found_flag = 1;
             offset1 = head -> offset;
             type1 = head -> type;
-            attrSize1 = head -> attrLength;
+            attrSize1 = head -> length;
         }
         head = head->next;
         count++;
@@ -116,7 +116,7 @@ int Join (int argc, char **argv)
             attr_found_flag = 1;
             offset2 = head -> offset;
             type2 = head -> type;
-            attrSize2 = head -> attrLength;
+            attrSize2 = head -> length;
         }
         head = head->next;
         count++;
@@ -126,8 +126,9 @@ int Join (int argc, char **argv)
 
     ret_val = Create( num_attrs_total - 1, argument_list );
     OpenRel(argv[1]);
-    new_relNum = FindRelNum(argv[1]);
+    int new_relNum = FindRelNum(argv[1]);
 
+    //FIXME
     for(i=0; i<(numAttrs+1)*2; i++)
         free(argument_list[i]);
     free(argument_list);

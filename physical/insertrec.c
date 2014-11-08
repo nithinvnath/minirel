@@ -12,6 +12,18 @@ int InsertRec(const int relNum, const char*recPtr) {
     if (recPtr == NULL) {
         return ErrorMsgs(NULL_ARGUMENT_RECEIVED, g_print_flag);
     }
+
+    /* Checking for duplicates */
+    Rid *fRid, sRid = { 0, 0 };
+    char *record;
+    while (GetNextRec(relNum, &sRid, &fRid, &record) == OK) {
+        if (compareRecords(record, recPtr, g_catcache[relNum].recLength) == OK) {
+            return ErrorMsgs(DUPLICATE_TUPLE, g_print_flag);
+        }
+        sRid = *fRid;
+        free(fRid);
+    }
+
     Rid startRid = { 1, 0 }, foundRid;
     /* Insert record    */
     getNextFreeSlot(relNum, startRid, &foundRid);

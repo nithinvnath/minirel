@@ -15,7 +15,7 @@ int ErrorMsgs(int errorId, int printFlag) {
                 printf("Relation does not exist! Please check the name and try again.\n");
                 break;
             case ATTRNOEXIST:
-                printf("Attribute does not exist!\n");
+                printf("The attribute with given name is not present in the relation.\n");
                 break;
             case RELNUM_OUT_OF_BOUND:
                 printf("Out of bound relation number encountered\n");
@@ -68,6 +68,7 @@ Please check file system permissions and try again.\n");
             case REL_ALREADY_EXISTS:
                 printf("A relation with given already exists! Please try again with a different \
 name.\n");
+                break;
             case INVALID_ATTR_NAME:
                 printf("An attribute or relation name is invalid! Names should start with alphabet \
 and can be at most 20 characters long.\n");
@@ -103,10 +104,11 @@ if all attributes are named correctly.\n");
             case PID_OUT_OF_BOUND:
                 printf("Trying to read a page which is greater than the number of \
 pages in the relation.\n");
-            case DBNAME_EXCEED_LIMIT:    
+                break;
+            case DBNAME_EXCEED_LIMIT:
                 printf("Database Name exceeded the limit! Enter name within 20 characters.\n");
                 break;
-            case TYPE_MISMATCH:    
+            case TYPE_MISMATCH:
                 printf("Type Mismatch while performing Join! Please try similar attributes.\n");
                 break;
             default:

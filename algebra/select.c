@@ -42,7 +42,7 @@ int Select (int argc, char **argv)
         return ErrorMsgs(ARGC_INSUFFICIENT,g_print_flag);
 
     if(OpenRel(argv[2]) == NOTOK)
-        return ErrorMsgs(RELNOESIST, g_print_flag);
+        return ErrorMsgs(RELNOEXIST, g_print_flag);
     /* Finding the relNum of Source Relation */
     relNum = FindRelNum(argv[2]);
 
@@ -79,7 +79,7 @@ int Select (int argc, char **argv)
             attr_found_flag = 1;
             offset = head -> offset;
             type = head -> type;
-            attrSize = head -> attrLength;
+            attrSize = head -> length;
         }
         head = head->next;
         count++;
@@ -103,8 +103,8 @@ int Select (int argc, char **argv)
     while( FindRec(relNum, &startRid, &foundRid, &recPtr, type, attrSize, 
                         offset, argv[5], atoi(argv[4])) == OK ){
         InsertRec(new_relNum, recPtr);
-        start = (*found);
-        free(found);
+        startRid = (*foundRid);
+        free(foundRid);
     }
     return OK;
 }

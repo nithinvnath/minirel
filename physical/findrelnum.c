@@ -14,7 +14,7 @@
  *
  *  relName: Name of the relation to be found in the cache
  *
- *  returns: OK on success
+ *  returns: relnum on success
  *           NOTOK on failure
  */
 

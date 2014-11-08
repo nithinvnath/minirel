@@ -3,11 +3,7 @@
 
 /**
  * Creates a new relation with the specified name and attributes.
- * offset -- offset of attribute within record
- * length -- length of attribute
- * type -- attribute type: ``i'', ``f'', or ``s''
- * attrName -- name of attribute
- * relName -- name of relation
+ *
  * @param argc
  * @param argv
  * @return
@@ -115,7 +111,13 @@ int Create(int argc, char **argv) {
 
     return OK; /* all's fine */
 }
-
+/**
+ *
+ * @param cacheIndex
+ * @param args
+ * @param relName
+ * @param arraySize
+ */
 void createTemplate(int cacheIndex, char ***args, char *relName, int *arraySize) {
     int i;
     struct attrCatalog *attrList = g_catcache[cacheIndex].attrList;
@@ -137,6 +139,11 @@ void createTemplate(int cacheIndex, char ***args, char *relName, int *arraySize)
     }
 }
 
+/**
+ *
+ * @param args
+ * @param arraySize
+ */
 void freeAllottedMem(char **args, int arraySize) {
     int i;
     for (i = 0; i < arraySize; ++i) {

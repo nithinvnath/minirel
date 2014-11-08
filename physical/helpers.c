@@ -22,37 +22,23 @@ int readStringFromByteArray(char * string, const char *byteArray, const int offs
 }
 
 int readIntFromByteArray(const char *byteArray, const int offset) {
-
-    if (byteArray == NULL) {
-        ErrorMsgs(NULL_POINTER_EXCEPTION, g_print_flag);
-        return 0;
-    } else {
-        const char *offsetedByteArray = byteArray + offset;
-
-        return ((offsetedByteArray[0] << 24) & 0xFF000000)
-                | ((offsetedByteArray[1] << 16) & 0x00FF0000)
-                | ((offsetedByteArray[2] << 8) & 0x0000FF00) | (offsetedByteArray[3] & 0x000000FF);
-    }
+    int val;
+    memcpy(&val, byteArray + offset, sizeof(int));
+    return val;
 }
 
 float readFloatFromByteArray(const char* byteArray, const int offset) {
-
-    Flip converter;
-    converter.int_val = readIntFromByteArray(byteArray, offset);
-    return converter.float_val;
+    float val;
+    memcpy(&val, byteArray + offset, sizeof(float));
+    return val;
 }
 
 void convertIntToByteArray(int value, char *byteArray) {
-    byteArray[0] = (value >> 24) & 0xFF;
-    byteArray[1] = (value >> 16) & 0xFF;
-    byteArray[2] = (value >> 8) & 0xFF;
-    byteArray[3] = value & 0xFF;
+    memcpy(byteArray, value, sizeof(int));
 }
 
 void convertFloatToByteArray(float value, char *byteArray) {
-    Flip converter;
-    converter.float_val = value;
-    convertIntToByteArray(converter.int_val, byteArray);
+    memcpy(byteArray, value, sizeof(int));
 }
 
 /*************************************************************
@@ -129,29 +115,29 @@ Rid getLastRid(int relNum) {
  *           NOTOK on failure
  */
 
-int separate_db_path(char* db_with_path, char* path, char* dbname){
+int separate_db_path(char* db_with_path, char* path, char* dbname) {
 
     char db_path_copy[MAXPATH];
     strcpy(db_path_copy, db_with_path);
 
-    char *temp = strtok(db_path_copy,"/");
-    if(strlen(temp) > RELNAME)
+    char *temp = strtok(db_path_copy, "/");
+    if (strlen(temp) > RELNAME)
         return ErrorMsgs(DBNAME_EXCEED_LIMIT, g_print_flag);
-    strcpy(dbname,temp);
-    strcpy(path,"");
+    strcpy(dbname, temp);
+    strcpy(path, "");
 
-    if(db_with_path == NULL)
+    if (db_with_path == NULL)
         return NOTOK;
 
-    if(strlen(temp) != strlen(db_with_path)) {
-        while((temp = strtok(NULL,"/")) != NULL){
-            strcat(path,dbname);
-            strcat(path,"/");
+    if (strlen(temp) != strlen(db_with_path)) {
+        while ((temp = strtok(NULL, "/")) != NULL) {
+            strcat(path, dbname);
+            strcat(path, "/");
 
             strcpy(dbname, temp);
         }
     }
-    path[ strlen(path)-1 ] ='\0';
+    path[strlen(path) - 1] = '\0';
     return OK;
 }
 
@@ -169,12 +155,12 @@ int separate_db_path(char* db_with_path, char* path, char* dbname){
  */
 int compareRecords(char *record1, char *record2, int sizeOfRecord) {
     int i;
-    for(i=0; i<sizeOfRecord; ++i){
-        if(record1[i]!=record2[i]){
+    for (i = 0; i < sizeOfRecord; ++i) {
+        if (record1[i] != record2[i]) {
             break;
         }
     }
-    return (i!=sizeOfRecord) ? NOTOK : OK;
+    return (i != sizeOfRecord) ? NOTOK : OK;
 }
 
 /**
