@@ -8,10 +8,14 @@
 #ifndef INSERT_H_
 #define INSERT_H_
 
-#include "../include/defs.h"
-#include "../include/error.h"
-#include "../include/globals.h"
-#include "../include/helpers.h"
+#include "defs.h"
+#include "error.h"
+#include "globals.h"
+#include "helpers.h"
+#include "openrel.h"
+#include "getnextrec.h"
+#include "insertrec.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

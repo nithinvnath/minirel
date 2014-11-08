@@ -1,9 +1,4 @@
-#include "../include/defs.h"
-#include "../include/error.h"
-#include "../include/globals.h"
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
+#include "../include/closedb.h"
 
 /**
  * Closes the currently opened database and changes

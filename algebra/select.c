@@ -5,12 +5,7 @@
  *      Author: Dheeraj
  */
 
-#include "../include/defs.h"
-#include "../include/error.h"
-#include "../include/globals.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+ #include "../include/select.h"
 
 /*
  * Function:  Select() 
@@ -67,8 +62,7 @@ int Select (int argc, char **argv)
         switch(head->type){
             case INTEGER: strcpy(argument_list[count+1],"i");
                 break;
-            case STRING: strcpy(argument_list[count+1],"s");
-                strcat(argument_list[count+1],itoa(head->length));
+            case STRING: sprintf(argument_list[count+1], "s%d", head->length);
                 break;
             case FLOAT: strcpy(argument_list[count+1],"f");
                 break; 

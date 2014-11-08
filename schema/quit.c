@@ -19,8 +19,18 @@
 
 void Quit (int argc, char **argv)
 {
+    char **arg_closedb;
+    arg_closedb = malloc(sizeof(char *));
+    *arg_closedb = malloc(sizeof(char)*10);
+
+    strcpy(arg_closedb[0], "closedb");
+
     if(strcmp(g_db_name,"") != 0)
-        CloseDB();
+        CloseDB(1,arg_closedb);
+
+    free(*arg_closedb);
+    free(arg_closedb);
+
     exit(0);
 }
 
