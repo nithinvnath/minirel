@@ -1,23 +1,49 @@
+#include "../include/load.h"
 
-#include "../include/defs.h"
-#include "../include/error.h"
-#include "../include/globals.h"
-#include <stdio.h>
+/**
+ * This routine loads the specified relation, which must already have been created,
+ * with data from the specified file
+ * argv[0] - "load"
+ * argv[1] - relation name
+ * argv[2] - data file name (full path)
+ *
+ * @param argc
+ * @param argv
+ * @return OK or NOTOK
+ * @author nithin
+ */
+//FIXME should the file operations be in this layer?
+int Load(int argc, char **argv) {
+    char relName[RELNAME];
+    strncpy(relName, argv[1], RELNAME);
 
+    if (strcmp(relName, ATTRCAT) == 0 || strcmp(relName, RELCAT) == 0) {
+        return ErrorMsgs(METADATA_SECURITY, g_print_flag);
+    }
 
-Load (argc, argv)
-int	argc;
-char	**argv;
+    if (OpenRel(relName) != OK) {
+        return NOTOK;
+    }
 
-{
-    /* print command line arguments */
-    short	k;		/* iteration counter	    */
-    printf ("%s:\n", argv[0]);
-    for (k = 1 ; k < argc; ++k)
-	printf ("\targv[%d] = %s\n", k, argv[k]);
+    int relNum = FindRelNum(relName);
+    if (g_catcache[relNum].numRecs > 0) {
+        return ErrorMsg(REL_NOT_EMPTY, g_print_flag);
+    }
 
-     printf("Load \n");
-     return (OK);  /* all's fine */
+    int fd = open(argv[2], O_RDONLY);
+    if (fd < 0) {
+        return ErrorMsgs(INVALID_FILE, g_print_flag);
+    }
+
+    int recLength = g_catcache[relNum].recLength;
+    char *newRec = (char *) calloc(recLength, sizeof(char));
+
+    while (read(fd, newRec, recLength) == recLength) {
+        if (InsertRec(relNum, newRec) != OK) {
+            return NOTOK;
+        }
+    }
+
+    return OK; /* all's fine */
 }
-
 

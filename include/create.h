@@ -8,12 +8,12 @@
 #ifndef CREATE_H_
 #define CREATE_H_
 
-#include "../include/defs.h"
-#include "../include/error.h"
-#include "../include/globals.h"
-#include "../include/helpers.h"
-#include "../include/openrel.h"
-#include "../include/insert.h"
+#include "defs.h"
+#include "error.h"
+#include "globals.h"
+#include "helpers.h"
+#include "openrel.h"
+#include "insert.h"
 
 #include <stdio.h>
 #include <string.h>

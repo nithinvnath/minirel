@@ -1,5 +1,4 @@
 #include "../include/create.h"
-#include "../include/insert.h"
 
 /**
  * Creates a new relation with the specified name and attributes.

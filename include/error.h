@@ -39,6 +39,8 @@
 #define MAX_STRING_EXCEEDED         129     /* String size given exceeded the defined one */
 #define PID_OUT_OF_BOUND            130     /* Trying to read a page out of bound */
 #define TYPE_MISMATCH               131     /* Type Mismatch while performing join */ 
+#define REL_NOT_EMPTY               132     /* Relation is not empty */
+#define INVALID_FILE                133     /* The file given by path is invlaid */
 
 int ErrorMsgs(int errorId, int printFlag);
 

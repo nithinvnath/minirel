@@ -111,6 +111,12 @@ pages in the relation.\n");
             case TYPE_MISMATCH:
                 printf("Type Mismatch while performing Join! Please try similar attributes.\n");
                 break;
+            case REL_NOT_EMPTY:
+                printf("Relation is not empty! One can load only on to empty relations.\n");
+                break;
+            case INVALID_FILE:
+                printf("Cannot open file! Please check the path given and try again.\n");
+                break;
             default:
                 printf("Unexpected error!\n");
                 break;
