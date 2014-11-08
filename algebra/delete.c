@@ -36,7 +36,7 @@ int Delete (int argc, char **argv)
     if(argc < 5)
         return ErrorMsgs(ARGC_INSUFFICIENT,g_print_flag);
 
-    if ((strcmp(argv[0], "delete") == 0)
+    if ((strcmp(argv[0], "_delete") != 0)
             && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
         return ErrorMsgs(METADATA_SECURITY, g_print_flag);
     }

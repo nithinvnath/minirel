@@ -28,7 +28,7 @@ int Destroy (int argc, char **argv)
     if(argc < 2)
         return ErrorMsgs(ARGC_INSUFFICIENT,g_print_flag);
 
-    if ((strcmp(argv[0], "destroy") == 0)
+    if ((strcmp(argv[0], "_destroy") != 0)
             && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
         return ErrorMsgs(METADATA_SECURITY, g_print_flag);
     }
