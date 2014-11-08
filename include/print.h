@@ -22,4 +22,6 @@ int max(int a, int b);
 
 int Print(int argc, char **argv);
 
+void printUnderScores(int count);
+
 #endif /* PRINT_H_ */

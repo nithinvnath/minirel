@@ -25,11 +25,11 @@ int Print(int argc, char **argv) {
     int tableRowLength = 2;
     printf("| ");
     while (list != NULL) {
-        printf("%*s | ", max(strlen(list->attrName, list->length)), list->attrName);
-        tableRowLength += (3 +  max(strlen(list->attrName, list->length)));
+        printf("%*s | ", max(strlen(list->attrName), list->length), list->attrName);
+        tableRowLength += (3 +  max(strlen(list->attrName), list->length));
         list = list->next;
     }
-    printf("\n%_*\n",tableRowLength);
+    printUnderScores(tableRowLength);
     Rid *foundRid, startRid = { 0, 0 };
     char *recPtr = malloc(sizeof(char) * g_catcache[relNum].recLength);
     int intval;
@@ -42,20 +42,20 @@ int Print(int argc, char **argv) {
             switch (list->type) {
                 case INTEGER:
                     intval = readIntFromByteArray(recPtr, list->offset);
-                    printf("%*d | ", max(strlen(list->attrName, list->length)), intval);
+                    printf("%*d | ", max(strlen(list->attrName), list->length), intval);
                     break;
                 case FLOAT:
                     floatval = readFloatFromByteArray(recPtr, list->offset);
-                    printf("%*f | ", max(strlen(list->attrName, list->length)), floatval);
+                    printf("%*f | ", max(strlen(list->attrName), list->length), floatval);
                     break;
                 case STRING:
                     readStringFromByteArray(string, recPtr, list->offset, list->length);
-                    printf("%*s | ", max(strlen(list->attrName, list->length)), string);
+                    printf("%*s | ", max(strlen(list->attrName), list->length), string);
                     break;
             }
             list = list->next;
         }
-        printf("\n%_*\n",tableRowLength);
+        printUnderScores(tableRowLength);
         startRid = *foundRid;
         free(foundRid);
     }
@@ -68,3 +68,10 @@ int max(int a, int b) {
     return a > b ? a : b;
 }
 
+void printUnderScores(int count){
+    printf("\n");
+    while(count-->0){
+        printf("_");
+    }
+    printf("\n");
+}
