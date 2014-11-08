@@ -38,11 +38,13 @@ int Load(int argc, char **argv) {
     int recLength = g_catcache[relNum].recLength;
     char *newRec = (char *) calloc(recLength, sizeof(char));
 
+    g_check_duplicate_tuples = NOTOK;
     while (read(fd, newRec, recLength) == recLength) {
         if (InsertRec(relNum, newRec) != OK) {
             return NOTOK;
         }
     }
+    g_check_duplicate_tuples = OK;
 
     return OK; /* all's fine */
 }
