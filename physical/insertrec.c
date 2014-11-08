@@ -16,7 +16,7 @@ int InsertRec(const int relNum, const char*recPtr) {
     /* Checking for duplicates */
     Rid *fRid, sRid = { 0, 0 };
     char *record;
-    while (GetNextRec(relNum, &sRid, &fRid, &record) == OK) {
+    while (GetNextRec(relNum, &sRid, &fRid, &record) == OK && g_check_duplicate_tuples == OK) {
         if (compareRecords(record, recPtr, g_catcache[relNum].recLength) == OK) {
             return ErrorMsgs(DUPLICATE_TUPLE, g_print_flag);
         }

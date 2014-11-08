@@ -1,23 +1,70 @@
+#include "../include/print.h"
 
-#include "../include/defs.h"
-#include "../include/error.h"
-#include "../include/globals.h"
-#include <stdio.h>
+/**
+ * Prints out the contents of the specified relation in the form of a table
+ * argv[0]      - "print"
+ * argv[1]      - relation name
+ * argv[argc]   - NIL
+ *
+ * @param argc
+ * @param argv
+ * @return OK or NOTOK
+ */
+int Print(int argc, char **argv) {
+    char relName[20];
+    strncpy(relName, argv[1], RELNAME);
 
+    if (OpenRel(relName) != OK) {
+        return NOTOK;
+    }
 
-Print (argc, argv)
-int	argc;
-char	**argv;
+    int relNum = FindRelNum(relName);
 
-{
-    /* print command line arguments */
-    short	k;		/* iteration counter	    */
-    printf ("%s:\n", argv[0]);
-    for (k = 1 ; k < argc; ++k)
-	printf ("\targv[%d] = %s\n", k, argv[k]);
+    struct attrCatalog *list, *attrList = g_catcache[relNum].attrList;
+    list = attrList;
+    int tableRowLength = 2;
+    printf("| ");
+    while (list != NULL) {
+        printf("%*s | ", max(strlen(list->attrName, list->length)), list->attrName);
+        tableRowLength += (3 +  max(strlen(list->attrName, list->length)));
+        list = list->next;
+    }
+    printf("\n%_*\n",tableRowLength);
+    Rid *foundRid, startRid = { 0, 0 };
+    char *recPtr = malloc(sizeof(char) * g_catcache[relNum].recLength);
+    int intval;
+    float floatval;
+    char string[MAX_STRING_SIZE];
+    while (GetNextRec(relNum, &startRid, &foundRid, &recPtr) == OK) {
+        list = attrList;
+        printf("| ");
+        while (list != NULL) {
+            switch (list->type) {
+                case INTEGER:
+                    intval = readIntFromByteArray(recPtr, list->offset);
+                    printf("%*d | ", max(strlen(list->attrName, list->length)), intval);
+                    break;
+                case FLOAT:
+                    floatval = readFloatFromByteArray(recPtr, list->offset);
+                    printf("%*f | ", max(strlen(list->attrName, list->length)), floatval);
+                    break;
+                case STRING:
+                    readStringFromByteArray(string, recPtr, list->offset, list->length);
+                    printf("%*s | ", max(strlen(list->attrName, list->length)), string);
+                    break;
+            }
+            list = list->next;
+        }
+        printf("\n%_*\n",tableRowLength);
+        startRid = *foundRid;
+        free(foundRid);
+    }
 
-     printf("Print \n");
-     return (OK);  /* all's fine */
+    free(recPtr);
+    return OK; /* all's fine */
 }
 
+int max(int a, int b) {
+    return a > b ? a : b;
+}
 

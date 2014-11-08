@@ -15,7 +15,7 @@
  * @return OK if success
  */
 int Insert(int argc, char **argv) {
-    if ((strcmp(argv[0], "insert") == 0)
+    if ((strcmp(argv[0], "_insert") != 0)
             && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
         return ErrorMsgs(METADATA_SECURITY, g_print_flag);
     }
