@@ -9,6 +9,7 @@
 #define INSERTREC_H_
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "globals.h"
 #include "readpage.h"
@@ -16,7 +17,7 @@
 #include "helpers.h"
 #include "error.h"
 
-int InsertRec(const int relNum, const char*recPtr);
+int InsertRec(const int relNum, char*recPtr);
 
 int getNextFreeSlot(const int relNum, const Rid startRid, Rid *foundRid);
 

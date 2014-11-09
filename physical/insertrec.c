@@ -42,7 +42,8 @@ int InsertRec(const int relNum, char*recPtr) {
     /*  Update numRecs in catCache*/
     g_catcache[relNum].dirty = TRUE;
     g_catcache[relNum].numRecs++;
-    g_catcache[relNum].numPgs = foundRid.pid;
+    g_catcache[relNum].numPgs =
+            g_catcache[relNum].numPgs > foundRid.pid ? g_catcache[relNum].numPgs : foundRid.pid;
 
     return OK;
 }
