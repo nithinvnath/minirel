@@ -63,11 +63,11 @@ int Create(int argc, char **argv) {
         /* Filling the attribute catalog record template */
         for (j = 2; j < attrCatArraySize; j += 2) {
             if (strcmp(attrCatArgs[j], OFFSET) == 0) {
-                sprintf(attrCatArgs[j + 1], "\"%d\"", offset);
+                sprintf(attrCatArgs[j + 1], "%d", offset);
             } else if (strcmp(attrCatArgs[j], TYPE) == 0) {
                 sprintf(attrCatArgs[j + 1], "\"%c\"", type);
             } else if (strcmp(attrCatArgs[j], LENGTH) == 0) {
-                sprintf(attrCatArgs[j + 1], "\"%d\"", length);
+                sprintf(attrCatArgs[j + 1], "%d", length);
             } else if (strcmp(attrCatArgs[j], ATTRNAME) == 0) {
                 strcpy(attrCatArgs[j + 1] + 1, attrName);
             } else {
@@ -92,15 +92,15 @@ int Create(int argc, char **argv) {
 
     for (j = 2; j < relcatArraySize; j += 2) {
         if (strcmp(relcatArgs[j], RECLENGTH) == 0) {
-            sprintf(relcatArgs[j + 1], "\"%d\"", offset);
+            sprintf(relcatArgs[j + 1], "%d", offset);
         } else if (strcmp(relcatArgs[j], RECSPERPG) == 0) {
-            sprintf(relcatArgs[j + 1], "\"%d\"", recsPerPg);
+            sprintf(relcatArgs[j + 1], "%d", recsPerPg);
         } else if (strcmp(relcatArgs[j], NUMATTRS) == 0) {
-            sprintf(relcatArgs[j + 1], "\"%d\"", numAttrs);
+            sprintf(relcatArgs[j + 1], "%d", numAttrs);
         } else if (strcmp(relcatArgs[j], NUMRECS) == 0) {
-            sprintf(relcatArgs[j + 1], "\"%d\"", 0);
+            sprintf(relcatArgs[j + 1], "%d", 0);
         } else if (strcmp(relcatArgs[j], NUMPGS) == 0) {
-            sprintf(relcatArgs[j + 1], "\"%d\"", 1);
+            sprintf(relcatArgs[j + 1], "%d", 1);
         } else {
             sprintf(relcatArgs[j + 1], "\"%s\"", RELCAT);
         }

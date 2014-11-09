@@ -38,8 +38,7 @@ int Insert(int argc, char **argv) {
         if (attr == NULL) {
             return ErrorMsgs(ATTR_NOT_IN_REL, g_print_flag);
         }
-        removeQuotes(argv[i + 1]);
-        //TODO Check if the values are really ints or floats
+
         char *nptr, *endptr;
         int intval;
         float floatval;
@@ -61,6 +60,7 @@ int Insert(int argc, char **argv) {
                 convertFloatToByteArray(floatval, recPtr + attr->offset);
                 break;
             case STRING:
+                removeQuotes(argv[i + 1]);
                 strncpy(recPtr + attr->offset, argv[i + 1], attr->length);
                 break;
             default:
