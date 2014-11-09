@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include "../include/globals.h"
 #include "../include/error.h"
+#include "../include/helpers.h"
 
 /**
  * Flush the open relation's buffer pool page. This involves writing the page to disk if it's
@@ -24,10 +25,7 @@ int FlushPage(int relNum) {
         unsigned int slotmap = g_buffer[relNum].page.slotmap;
 
         /*convert slotmap to byte array */
-        slotmapbytes[0] = slotmap & 0xFF;
-        slotmapbytes[1] = (slotmap >> 8) & 0xFF;
-        slotmapbytes[2] = (slotmap >> 16) & 0xFF;
-        slotmapbytes[3] = (slotmap >> 24) & 0xFF;
+        convertIntToByteArray(slotmap, slotmapbytes);
 
         /* construct a byte array corresponding to page */
         memcpy(page, slotmapbytes, (PAGESIZE - MAXRECORD));
