@@ -27,6 +27,7 @@ int InsertRec(const int relNum, const char*recPtr) {
     Rid startRid = { 1, 0 }, foundRid;
     /* Insert record    */
     getNextFreeSlot(relNum, startRid, &foundRid);
+    ReadPage(relNum, foundRid.pid);
     unsigned int recLength = g_catcache[relNum].recLength;
     int i, j;
     int offset = (foundRid.slotnum - 1) * recLength;
@@ -36,7 +37,7 @@ int InsertRec(const int relNum, const char*recPtr) {
 
     /*  Update dirty bits and slotmap*/
     g_buffer[relNum].dirty = TRUE;
-    g_buffer[relNum].page.slotmap = (g_buffer[relNum].page.slotmap | 1 << foundRid.slotnum);
+    g_buffer[relNum].page.slotmap = (g_buffer[relNum].page.slotmap | 1 << (32 - foundRid.slotnum));
 
     /*  Update numRecs in catCache*/
     g_catcache[relNum].dirty = TRUE;
@@ -67,7 +68,7 @@ int getNextFreeSlot(const int relNum, const Rid startRid, Rid *foundRid) {
         ReadPage(relNum, curRid.pid);
         while (prevRid.slotnum <= curRid.slotnum) {
             //If slotmap says it is free
-            if (!(g_buffer[relNum].page.slotmap & (1 << curRid.slotnum))) {
+            if (!(g_buffer[relNum].page.slotmap & (1 << (32 - curRid.slotnum)))) {
                 flag = OK;
                 break;
             }

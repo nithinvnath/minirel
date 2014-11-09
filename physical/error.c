@@ -30,7 +30,7 @@ int ErrorMsgs(int errorId, int printFlag) {
                 printf("Invalid comparison operator!\n");
                 break;
             case FILE_SEEK_ERROR:
-                printf("Error while seeking!\n");
+                printf("Error while seeking in file!\n");
                 break;
             case NULL_ARGUMENT_RECEIVED:
                 printf("A NULL argument was received where non-NULL was required!\n");
