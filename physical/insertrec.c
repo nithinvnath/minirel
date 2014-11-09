@@ -7,7 +7,7 @@
  * @param   recPtr
  * @return  OK or NOTOK
  */
-int InsertRec(const int relNum, const char*recPtr) {
+int InsertRec(const int relNum, char*recPtr) {
 
     if (recPtr == NULL) {
         return ErrorMsgs(NULL_ARGUMENT_RECEIVED, g_print_flag);
