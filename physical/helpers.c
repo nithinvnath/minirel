@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "../include/globals.h"
 #include "../include/defs.h"
@@ -34,11 +35,11 @@ float readFloatFromByteArray(const char* byteArray, const int offset) {
 }
 
 void convertIntToByteArray(int value, char *byteArray) {
-    memcpy(byteArray, value, sizeof(int));
+    memcpy(byteArray, (void *)&value, sizeof(int));
 }
 
 void convertFloatToByteArray(float value, char *byteArray) {
-    memcpy(byteArray, value, sizeof(int));
+    memcpy(byteArray, (void *)&value, sizeof(int));
 }
 
 /*************************************************************
