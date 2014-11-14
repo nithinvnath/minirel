@@ -39,7 +39,7 @@ int OpenDB (int argc, char **argv)
 
         separate_db_path(argv[1], path, g_db_name);
 
-        chdir(path);
+        chdir(argv[1]);
 
         if(OpenCats() == NOTOK)
             return NOTOK;

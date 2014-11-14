@@ -15,5 +15,6 @@ gcc -c -g closerel.c
 gcc -g -c closecats.c
 gcc -g -c ../schema/destroydb.c
 gcc -g -c ../schema/opendb.c
+gcc -g -c ../schema/createdb.c
 
-gcc -g main.c flushpage.o readpage.o getnextrec.o error.o helpers.o findrec.o opencats.o openrel.o createcats.o findrelnum.o closerel.o closecats.o opendb.o destroydb.o
+gcc -g main.c flushpage.o readpage.o getnextrec.o error.o helpers.o findrec.o opencats.o openrel.o createcats.o findrelnum.o closerel.o closecats.o opendb.o destroydb.o createdb.o

@@ -19,17 +19,19 @@
 #include "../include/closecats.h"
 #include "../include/destroydb.h"
 #include "../include/opendb.h"
+#include "../include/createdb.h"
 
 int main(int argc, char** argv){
     g_print_flag = 1;
-    OpenDB(argc, argv);
-//    DestroyDB(argc, argv);
+    CreateDB(argc, argv);
+//    OpenDB(argc, argv);
+    DestroyDB(argc, argv);
 //    strcpy(g_db_name,"sample_db");
 //    CreateCats();
 //    OpenCats();
-    printf("relcat found at cache slot #%d\n",FindRelNum("relcat"));
-    printf("attrcat found at cache slot #%d\n",FindRelNum("attrcat"));
-    CloseCats();
+//    printf("relcat found at cache slot #%d\n",FindRelNum("relcat"));
+//    printf("attrcat found at cache slot #%d\n",FindRelNum("attrcat"));
+//    CloseCats();
 //    CloseRel(1);
 
     // char bin_data[4];
