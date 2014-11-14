@@ -65,7 +65,7 @@ int Create(int argc, char **argv) {
             if (strcmp(attrCatArgs[j], OFFSET) == 0) {
                 sprintf(attrCatArgs[j + 1], "%d", offset);
             } else if (strcmp(attrCatArgs[j], TYPE) == 0) {
-                sprintf(attrCatArgs[j + 1], "\"%c\"", type);
+                sprintf(attrCatArgs[j + 1], "%d", type);
             } else if (strcmp(attrCatArgs[j], LENGTH) == 0) {
                 sprintf(attrCatArgs[j + 1], "%d", length);
             } else if (strcmp(attrCatArgs[j], ATTRNAME) == 0) {

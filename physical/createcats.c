@@ -33,7 +33,7 @@ int CreateRelCat()
     file_pointer = fopen(RELCAT,"wb");
 
     //Slotmap for Page 1
-    convertIntToByteArray(0xC0000000, content);
+    convertIntToByteArray(0x00000003, content);
 
     strncpy(content + PAGESIZE - MAXRECORD, RELCAT, 6);
 
@@ -81,7 +81,7 @@ int CreateAttrCat()
     file_pointer = fopen(ATTRCAT,"wb");
 
     //Slotmap for Page 1
-    convertIntToByteArray(0xFF800000, content);
+    convertIntToByteArray(0x000001FF, content);
 
     convertIntToByteArray(0,     content + 0 + PAGESIZE - MAXRECORD);
     convertIntToByteArray(20,    content + 4 + PAGESIZE - MAXRECORD);
@@ -139,7 +139,7 @@ int CreateAttrCat()
 
     //New Page
     //Slotmap for Page 2 
-    convertIntToByteArray(0xC0000000, content + PAGESIZE);
+    convertIntToByteArray(0x00000003, content + PAGESIZE);
 
     convertIntToByteArray(12,      content + 0 + PAGESIZE*2 - MAXRECORD);
     convertIntToByteArray(20,      content + 4 + PAGESIZE*2 - MAXRECORD);
