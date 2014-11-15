@@ -13,6 +13,8 @@
 #include "globals.h"
 #include "openrel.h"
 #include "findrec.h"
+#include "findrelnum.h"
+#include "getnextrec.h"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -14,7 +14,7 @@ int Print(int argc, char **argv) {
     char relName[20];
     strncpy(relName, argv[1], RELNAME);
 
-    if (OpenRel(relName) != OK) {
+    if (OpenRel(relName) == NOTOK) {
         return NOTOK;
     }
 

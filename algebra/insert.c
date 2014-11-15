@@ -15,13 +15,18 @@
  * @return OK if success
  */
 int Insert(int argc, char **argv) {
-    if ((strcmp(argv[0], "_insert") != 0)
+/*    int k;
+    for(k=0; k<argc; k++)
+        printf("%s\n",argv[k]);
+    printf("\n");
+
+*/    if ((strcmp(argv[0], "_insert") != 0)
             && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
         return ErrorMsgs(METADATA_SECURITY, g_print_flag);
     }
 
     char relName[RELNAME], attrName[RELNAME];
-    strcpy(relName, argv[2]);
+    strcpy(relName, argv[1]);
 
     int relNum = OpenRel(relName);
     if (relNum == NOTOK) {
@@ -45,7 +50,7 @@ int Insert(int argc, char **argv) {
         switch (attr->type) {
             case INTEGER:
                 intval = strtol(argv[i + 1], &nptr, 10);
-                endptr = argv[i + 1] + (strlen(argv[i + 1] - 1));
+                endptr = argv[i + 1] + (int)(strlen(argv[i + 1]));
                 if (nptr != endptr) {
                     return ErrorMsgs(INTEGER_EXPECTED, g_print_flag);
                 }
@@ -85,6 +90,11 @@ struct attrCatalog* getAttrCatalog(struct attrCatalog *attrList, char *attrName)
 
 void removeQuotes(char *quotedString) {
     /* Values are passed as quoted string. We store it in memory after removing the quotes */
-    int length = strlen(quotedString);
-    strncpy(quotedString, quotedString + 1, length - 2);
+    /* In strncpy src and dest should not overlap */
+    int length;
+    length = strlen(quotedString);
+    char *tempString = malloc(sizeof(char)*length);
+    strcpy(tempString,quotedString);
+    strncpy(quotedString, tempString + 1 , length - 2);
+    free(tempString);
 }

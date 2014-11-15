@@ -36,7 +36,7 @@ int Create(int argc, char **argv) {
     write(fd, slotmap, (PAGESIZE - MAXRECORD));
     close(fd);
     free(slotmap);
-
+    return 1;
     /* Creating the template attribute catalog records */
     char **attrCatArgs;
     int attrCatArraySize;
@@ -50,8 +50,8 @@ int Create(int argc, char **argv) {
         attrName[strlen(attrName)] = '\"'; //To enclose it in quotes
 
         strcpy(attrFormat, argv[i + 1]);
-        type = attrFormat[i];
-        if (type != INTEGER || type != STRING || type != FLOAT) {
+        type = attrFormat[0];
+        if (type != INTEGER && type != STRING && type != FLOAT) {
             return ErrorMsgs(INVALID_ATTR_TYPE, g_print_flag);
         }
         length = getSizeOfAttr(attrFormat);
@@ -69,9 +69,11 @@ int Create(int argc, char **argv) {
             } else if (strcmp(attrCatArgs[j], LENGTH) == 0) {
                 sprintf(attrCatArgs[j + 1], "%d", length);
             } else if (strcmp(attrCatArgs[j], ATTRNAME) == 0) {
-                strcpy(attrCatArgs[j + 1] + 1, attrName);
+                strcpy(attrCatArgs[j + 1], attrName);
+//                printf("%s\n", attrCatArgs[j+1]);
             } else {
-                strcpy(attrCatArgs[j + 1] + 1, relName);
+                sprintf(attrCatArgs[j + 1],"\"%s\"",relName);
+//                strcpy(attrCatArgs[j + 1], relName);
             }
         }
         offset += length;
@@ -102,7 +104,7 @@ int Create(int argc, char **argv) {
         } else if (strcmp(relcatArgs[j], NUMPGS) == 0) {
             sprintf(relcatArgs[j + 1], "%d", 1);
         } else {
-            sprintf(relcatArgs[j + 1], "\"%s\"", RELCAT);
+            sprintf(relcatArgs[j + 1], "\"%s\"", relName);
         }
     }
     Insert(relcatArraySize, relcatArgs);
@@ -124,16 +126,16 @@ void createTemplate(int cacheIndex, char ***args, char *relName, int *arraySize)
     *arraySize = (2 * g_catcache[cacheIndex].numAttrs + 2);
 
     *args = (char **) malloc(*arraySize * sizeof(char *));
-    *args[0] = (char *) malloc(strlen("_insert") * sizeof(char));
-    strcpy(*args[0], "_insert");
-    *args[1] = (char *) malloc(strlen(relName) * sizeof(char));
-    strcpy(*args[1], relName);
+    (*args)[0] = (char *) malloc(strlen("_insert") * sizeof(char));
+    strcpy((*args)[0], "_insert");
+    (*args)[1] = (char *) malloc(strlen(relName) * sizeof(char));
+    strcpy((*args)[1], relName);
 
     i = 2;
     while (attrList != NULL) {
-        *args[i] = (char *) malloc(strlen(attrList->attrName) * sizeof(char));
-        *args[i + 1] = (char *) malloc((attrList->length + 2) * sizeof(char));
-        strcpy(*args[i], attrList->attrName);
+        (*args)[i] = (char *) malloc(strlen(attrList->attrName) * sizeof(char));
+        (*args)[i + 1] = (char *) malloc((attrList->length + 2) * sizeof(char));
+        strcpy((*args)[i], attrList->attrName);
         i += 2;
         attrList = attrList->next;
     }

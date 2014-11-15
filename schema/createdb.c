@@ -25,6 +25,7 @@ int CreateDB(int argc, char **argv) {
     chdir(dbpath);
 
     if (mkdir(dbname, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == -1) {
+        chdir(g_invoked_directory);
         if (errno == EEXIST) {
             return ErrorMsgs(DB_ALREADY_EXISTS, g_print_flag);
         } else {

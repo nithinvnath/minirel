@@ -103,7 +103,7 @@ struct attrCatalog* create_attr_cat_relcat()
     (*newnode).type   = INTEGER;
     strcpy( (*newnode).attrName, "numAttrs");
     strcpy( (*newnode).relName,  RELCAT);
-    (*newnode).next = NULL;
+    (*newnode).next = temp;
     temp = newnode;
 
     newnode = malloc(sizeof(struct attrCatalog));
@@ -112,7 +112,7 @@ struct attrCatalog* create_attr_cat_relcat()
     (*newnode).type   = INTEGER;
     strcpy( (*newnode).attrName, "recsPerPg");
     strcpy( (*newnode).relName,  RELCAT);
-    (*newnode).next = NULL;
+    (*newnode).next = temp;
     temp = newnode;
 
     newnode = malloc(sizeof(struct attrCatalog));
@@ -121,7 +121,7 @@ struct attrCatalog* create_attr_cat_relcat()
     (*newnode).type   = INTEGER;
     strcpy( (*newnode).attrName, "recLength");
     strcpy( (*newnode).relName,  RELCAT);
-    (*newnode).next = NULL;
+    (*newnode).next = temp;
     temp = newnode;
 
     newnode = malloc(sizeof(struct attrCatalog));
@@ -130,7 +130,7 @@ struct attrCatalog* create_attr_cat_relcat()
     (*newnode).type   = STRING;
     strcpy( (*newnode).attrName, "relName");
     strcpy( (*newnode).relName,  RELCAT);
-    (*newnode).next = NULL;
+    (*newnode).next = temp;
     temp = newnode;
 
     return temp;

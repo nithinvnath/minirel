@@ -20,12 +20,30 @@
 #include "../include/destroydb.h"
 #include "../include/opendb.h"
 #include "../include/createdb.h"
+#include "../include/print.h"
+#include "../include/closedb.h"
+#include "../include/create.h"
 
 int main(int argc, char** argv){
     g_print_flag = 1;
     CreateDB(argc, argv);
-//    OpenDB(argc, argv);
-    DestroyDB(argc, argv);
+    OpenDB(argc, argv);
+    char **argument;
+    argument = malloc(sizeof(char *)* 4);
+    argument[1] = malloc(sizeof(char) * 10);
+    argument[2] = malloc(sizeof(char) * 10);
+    argument[3] = malloc(sizeof(char) * 10);
+    strcpy(argument[1],"person");
+    strcpy(argument[2],"name");
+    strcpy(argument[3],"i");
+    Create(4,argument);
+
+    argument[0] = malloc(sizeof(char) * 100);
+    getcwd(argument[0],MAXPATH);
+    printf("%s\n",argument[0]);
+    CloseDB(1,argv);
+
+//    DestroyDB(argc, argv);
 //    strcpy(g_db_name,"sample_db");
 //    CreateCats();
 //    OpenCats();
@@ -34,12 +52,18 @@ int main(int argc, char** argv){
 //    CloseCats();
 //    CloseRel(1);
 
-    // char bin_data[4];
-    // float val;
-    // printf("Enter a float number: ");
-    // scanf("%f",&val);
-    // convertFloatToByteArray(val, bin_data);
-    // printf("Binary data: %x %x %x %x\n",bin_data[0], bin_data[1], bin_data[2], bin_data[3]);
-    // printf("Original data: %f\nConvertd data: %f\n",val,readFloatFromByteArray(bin_data,0));
     return 0;
 }
+/*
+    CreateDB(argc, argv);
+    char **argument;
+    argument = malloc(sizeof(char *)* 2);
+    argument[1] = malloc(sizeof(char)*10);
+    OpenDB(argc, argv);
+    strcpy(argument[1], "relcat");
+    Print(2,argument);
+    printf("\n");
+    strcpy(argument[1], "attrcat");
+    Print(2,argument);
+    CloseDB(2,argument);
+*/
