@@ -30,13 +30,12 @@ int Create(int argc, char **argv) {
     }
     //FIXME should file i/o be in physical layer?
     //Creating the file for relation and adding a page
-    int fd = open(relName, O_RDWR, S_IRWXU);
+    int fd = open(relName, O_RDWR | O_CREAT, S_IRWXU);
     char *slotmap = (char *) malloc((PAGESIZE - MAXRECORD) * sizeof(char));
     convertIntToByteArray(0, slotmap);
     write(fd, slotmap, (PAGESIZE - MAXRECORD));
     close(fd);
     free(slotmap);
-    return 1;
     /* Creating the template attribute catalog records */
     char **attrCatArgs;
     int attrCatArraySize;

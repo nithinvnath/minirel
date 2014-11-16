@@ -60,10 +60,10 @@ int getNextFreeSlot(const int relNum, const Rid startRid, Rid *foundRid) {
 
     int numPgs = g_catcache[relNum].numPgs;
     int recsPerPg = g_catcache[relNum].recsPerPg;
-    Rid prevRid, curRid = getNextRid(startRid.pid, g_buffer[relNum].page.slotmap, recsPerPg, numPgs,
+    Rid prevRid, curRid = getNextRid(startRid.pid, startRid.slotnum, recsPerPg, numPgs,
             getLastRid(relNum));
     prevRid = curRid;
-    int flag = OK;
+    int flag = NOTOK;
 
     while (curRid.pid <= numPgs && flag == NOTOK) {
         ReadPage(relNum, curRid.pid);
@@ -74,7 +74,7 @@ int getNextFreeSlot(const int relNum, const Rid startRid, Rid *foundRid) {
                 break;
             }
             prevRid = curRid;
-            curRid = getNextRid(curRid.pid, g_buffer[relNum].page.slotmap, recsPerPg, numPgs,
+            curRid = getNextRid(curRid.pid, curRid.slotnum, recsPerPg, numPgs,
                     getLastRid(relNum));
         }
     }

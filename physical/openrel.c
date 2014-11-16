@@ -24,6 +24,11 @@ int OpenRel(char* RelName) {
     struct attrCatalog *temp = NULL, *newnode = NULL;
     bool first_exec = TRUE;
     int i, j, ret_value;
+    for (i = 0; i < MAXOPEN; i++) {
+        if (g_cache_in_use[i] == TRUE && strcmp(g_catcache[i].relName,RelName) == 0)
+            return i;
+    }
+
 
     start.pid = 1;
     start.slotnum = 0;
