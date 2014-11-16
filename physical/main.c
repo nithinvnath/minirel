@@ -36,35 +36,30 @@ int main(int argc, char** argv){
     argument[1] = malloc(sizeof(char) * 10);
     argument[2] = malloc(sizeof(char) * 10);
     argument[3] = malloc(sizeof(char) * 10);
-/*    strcpy(argument[0],"create");
+
+    strcpy(argument[0],"create");
     strcpy(argument[1],"person");
     strcpy(argument[2],"name");
-    strcpy(argument[3],"s10");
+    strcpy(argument[3],"s20");
     Create(4,argument);
-*/
-/*
-    char **argument;
-    argument = malloc(sizeof(char *)* 4);
-    argument[1] = malloc(sizeof(char) * 10);
-    argument[2] = malloc(sizeof(char) * 10);
-    argument[3] = malloc(sizeof(char) * 10);
+
+    strcpy(argument[0],"insert");
     strcpy(argument[1],"person");
     strcpy(argument[2],"name");
-    strcpy(argument[3],"50");
+    strcpy(argument[3],"\"Dheeraj\"");
     Insert(4,argument);
-*/
-//    char **argument;
-//    argument = malloc(sizeof(char *)* 2);
-//    argument[1] = malloc(sizeof(char)*10);
+    strcpy(argument[3],"\"Nithin\"");
+    Insert(4,argument);
+
+    CloseDB(1,argv);
+    OpenDB(argc,argv);
+
     strcpy(argument[1], "person");
     Print(2,argument);
     printf("\n");
     strcpy(argument[1], "relcat");
     Print(2,argument);
     printf("\n");
-//    strcpy(argument[1], "person");
-//    Print(2,argument);
-//    printf("\n");
     strcpy(argument[1], "attrcat");
     Print(2,argument);
 
