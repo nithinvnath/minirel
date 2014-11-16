@@ -22,7 +22,7 @@ int Create(int argc, char **argv) {
      * after turning off the error print flag temporarily. */
     int printFlag = g_print_flag;
     g_print_flag = 0;
-    if (OpenRel(relName) == OK) {
+    if (OpenRel(relName) != NOTOK) {
         g_print_flag = printFlag;
         return ErrorMsgs(REL_ALREADY_EXISTS, g_print_flag);
     } else {
