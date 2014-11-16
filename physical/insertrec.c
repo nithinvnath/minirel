@@ -67,7 +67,7 @@ int getNextFreeSlot(const int relNum, const Rid startRid, Rid *foundRid) {
 
     while (curRid.pid <= numPgs && flag == NOTOK) {
         ReadPage(relNum, curRid.pid);
-        while (prevRid.slotnum <= curRid.slotnum) {
+        do{
             //If slotmap says it is free
             if (!(g_buffer[relNum].page.slotmap & (1 << (32 - curRid.slotnum)))) {
                 flag = OK;
@@ -76,7 +76,7 @@ int getNextFreeSlot(const int relNum, const Rid startRid, Rid *foundRid) {
             prevRid = curRid;
             curRid = getNextRid(curRid.pid, curRid.slotnum, recsPerPg, numPgs,
                     getLastRid(relNum));
-        }
+        }while(prevRid.slotnum <= curRid.slotnum);
     }
     (*foundRid) = curRid;
     return OK;

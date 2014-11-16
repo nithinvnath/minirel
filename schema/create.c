@@ -89,7 +89,7 @@ int Create(int argc, char **argv) {
 
     //Fill the template
     int j, recsPerPg;
-    recsPerPg = offset / MAXRECORD;
+    recsPerPg = MAXRECORD / offset < 32 ? MAXRECORD / offset : 32;
 
     for (j = 2; j < relcatArraySize; j += 2) {
         if (strcmp(relcatArgs[j], RECLENGTH) == 0) {

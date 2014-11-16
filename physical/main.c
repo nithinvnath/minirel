@@ -28,7 +28,7 @@ int main(int argc, char** argv){
     g_print_flag = 1;
     CreateDB(argc, argv);
     OpenDB(argc, argv);
-    char **argument;
+/*    char **argument;
     argument = malloc(sizeof(char *)* 4);
     argument[1] = malloc(sizeof(char) * 10);
     argument[2] = malloc(sizeof(char) * 10);
@@ -37,10 +37,16 @@ int main(int argc, char** argv){
     strcpy(argument[2],"name");
     strcpy(argument[3],"i");
     Create(4,argument);
+*/
+    char **argument;
+    argument = malloc(sizeof(char *)* 2);
+    argument[1] = malloc(sizeof(char)*10);
+    strcpy(argument[1], "relcat");
+    Print(2,argument);
+    printf("\n");
+    strcpy(argument[1], "attrcat");
+    Print(2,argument);
 
-    argument[0] = malloc(sizeof(char) * 100);
-    getcwd(argument[0],MAXPATH);
-    printf("%s\n",argument[0]);
     CloseDB(1,argv);
 
 //    DestroyDB(argc, argv);
