@@ -42,7 +42,7 @@ int FlushPage(int relNum) {
         }
     }
     g_buffer[relNum].dirty = FALSE;
-    g_buffer[relNum].pid = 0;
+    //g_buffer[relNum].pid = 0;
 
     return OK;
 }

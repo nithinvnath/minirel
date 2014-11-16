@@ -164,7 +164,6 @@ int OpenCats()
 
     for(i=0; i<MAXOPEN; i++){
         g_cache_timestamp[i] = 0;
-        g_cache_dirty[i] = FALSE;
     }
     /* Creating cache[0] entry for relcat */
 

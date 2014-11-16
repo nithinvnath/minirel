@@ -51,7 +51,6 @@ int OpenRel(char* RelName) {
         if (i != MAXOPEN) {
             g_cache_in_use[i] = TRUE;
             g_cache_timestamp[i] = 1;
-            g_cache_dirty[i] = FALSE;
 
             for (j = 2; j < MAXOPEN; j++) {
                 if (g_cache_in_use[j] == TRUE)

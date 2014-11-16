@@ -11,7 +11,7 @@
 int Create(int argc, char **argv) {
 
     int offset, length, i;
-    char type, attrName[RELNAME + 2], relName[RELNAME + 2], attrFormat[3];
+    char type, attrName[RELNAME + 2], relName[RELNAME + 2], attrFormat[4];
     strcpy(relName, argv[1]);
 
     if (isValidString(relName) == NOTOK) {

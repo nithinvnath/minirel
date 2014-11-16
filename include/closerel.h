@@ -14,6 +14,7 @@
 #include "helpers.h"
 #include "flushpage.h"
 #include "findrec.h"
+#include "writerec.h"
 
 #include <stdio.h>
 #include <unistd.h>

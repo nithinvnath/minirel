@@ -23,53 +23,51 @@
 #include "../include/print.h"
 #include "../include/closedb.h"
 #include "../include/create.h"
+#include "../include/insert.h"
 
 int main(int argc, char** argv){
     g_print_flag = 1;
     CreateDB(argc, argv);
     OpenDB(argc, argv);
-/*    char **argument;
+
+    char **argument;
+    argument = malloc(sizeof(char *)* 4);
+    argument[0] = malloc(sizeof(char) * 10);
+    argument[1] = malloc(sizeof(char) * 10);
+    argument[2] = malloc(sizeof(char) * 10);
+    argument[3] = malloc(sizeof(char) * 10);
+/*    strcpy(argument[0],"create");
+    strcpy(argument[1],"person");
+    strcpy(argument[2],"name");
+    strcpy(argument[3],"s10");
+    Create(4,argument);
+*/
+/*
+    char **argument;
     argument = malloc(sizeof(char *)* 4);
     argument[1] = malloc(sizeof(char) * 10);
     argument[2] = malloc(sizeof(char) * 10);
     argument[3] = malloc(sizeof(char) * 10);
     strcpy(argument[1],"person");
     strcpy(argument[2],"name");
-    strcpy(argument[3],"i");
-    Create(4,argument);
+    strcpy(argument[3],"50");
+    Insert(4,argument);
 */
-    char **argument;
-    argument = malloc(sizeof(char *)* 2);
-    argument[1] = malloc(sizeof(char)*10);
+//    char **argument;
+//    argument = malloc(sizeof(char *)* 2);
+//    argument[1] = malloc(sizeof(char)*10);
+    strcpy(argument[1], "person");
+    Print(2,argument);
+    printf("\n");
     strcpy(argument[1], "relcat");
     Print(2,argument);
     printf("\n");
+//    strcpy(argument[1], "person");
+//    Print(2,argument);
+//    printf("\n");
     strcpy(argument[1], "attrcat");
     Print(2,argument);
 
     CloseDB(1,argv);
-
-//    DestroyDB(argc, argv);
-//    strcpy(g_db_name,"sample_db");
-//    CreateCats();
-//    OpenCats();
-//    printf("relcat found at cache slot #%d\n",FindRelNum("relcat"));
-//    printf("attrcat found at cache slot #%d\n",FindRelNum("attrcat"));
-//    CloseCats();
-//    CloseRel(1);
-
     return 0;
 }
-/*
-    CreateDB(argc, argv);
-    char **argument;
-    argument = malloc(sizeof(char *)* 2);
-    argument[1] = malloc(sizeof(char)*10);
-    OpenDB(argc, argv);
-    strcpy(argument[1], "relcat");
-    Print(2,argument);
-    printf("\n");
-    strcpy(argument[1], "attrcat");
-    Print(2,argument);
-    CloseDB(2,argument);
-*/
