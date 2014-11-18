@@ -55,7 +55,7 @@ int Join (int argc, char **argv)
         return ErrorMsgs(ARGC_INSUFFICIENT,g_print_flag);
 
     if( (relNum1 = OpenRel(argv[2])) == NOTOK || (relNum2 = OpenRel(argv[4])) == NOTOK)
-        return NOTOK;
+        return ErrorMsgs(RELNOEXIST, g_print_flag);
 
     num_attrs_rel1 = g_catcache[relNum1].numAttrs;
     num_attrs_rel2 = g_catcache[relNum2].numAttrs;
@@ -97,7 +97,7 @@ int Join (int argc, char **argv)
         count++;
     }
     if(attr_found_flag == 0)
-        ErrorMsgs(ATTRNOEXIST,g_print_flag);
+        return ErrorMsgs(ATTRNOEXIST,g_print_flag);
 
     /* Next Relation's attribute list */
     attr_found_flag = 0;
@@ -134,18 +134,18 @@ int Join (int argc, char **argv)
         count++;
     }
     if(attr_found_flag == 0)
-        ErrorMsgs(ATTRNOEXIST,g_print_flag);
+        return ErrorMsgs(ATTRNOEXIST,g_print_flag);
 
     ret_val = Create( num_attrs_total - 1, argument_list );
+    if(ret_val == NOTOK)
+        return NOTOK;
+
     OpenRel(argv[1]);
     int new_relNum = FindRelNum(argv[1]);
 
     for(i = 0; i < num_attrs_total*2; i++)
         free(argument_list[i]);
     free(argument_list);
-
-    if(ret_val == NOTOK)
-        return NOTOK;
 
     if(type1 != type2)
         return ErrorMsgs(TYPE_MISMATCH, g_print_flag);

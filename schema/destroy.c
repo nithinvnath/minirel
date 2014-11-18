@@ -22,7 +22,7 @@
 
 int Destroy (int argc, char **argv)
 {
-    int pass_argc, i;
+    int pass_argc, i, relNum;
     char **pass_argv;
 
     if(argc < 2)
@@ -58,6 +58,9 @@ int Destroy (int argc, char **argv)
     strcpy(pass_argv[4], argv[1]);
 
     Delete(pass_argc, pass_argv);
+
+    relNum = FindRelNum(argv[1]);
+    g_cache_in_use[relNum] = FALSE;
 
     for (i = 0; i < 5; ++i){
         free(pass_argv[i]);

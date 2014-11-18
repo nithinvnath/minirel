@@ -24,6 +24,7 @@
 #include "../include/closedb.h"
 #include "../include/create.h"
 #include "../include/insert.h"
+#include "../include/destroy.h"
 
 int main(int argc, char** argv){
     g_print_flag = 1;
@@ -51,8 +52,9 @@ int main(int argc, char** argv){
     strcpy(argument[3],"\"Nithin\"");
     Insert(4,argument);
 
-    CloseDB(1,argv);
-    OpenDB(argc,argv);
+    strcpy(argument[0], "destroy");
+    strcpy(argument[1], "person" );
+    Destroy(2,argument);
 
     strcpy(argument[1], "person");
     Print(2,argument);

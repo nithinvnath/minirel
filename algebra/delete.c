@@ -41,10 +41,10 @@ int Delete (int argc, char **argv)
         return ErrorMsgs(METADATA_SECURITY, g_print_flag);
     }
 
-    if(OpenRel(argv[2]) == NOTOK)
+    if(OpenRel(argv[1]) == NOTOK)
         return ErrorMsgs(RELNOEXIST, g_print_flag);
     /* Finding the relNum of Relation */
-    relNum = FindRelNum(argv[2]);
+    relNum = FindRelNum(argv[1]);
 
     head = g_catcache[relNum].attrList;
     numAttrs = g_catcache[relNum].numAttrs;
@@ -52,7 +52,7 @@ int Delete (int argc, char **argv)
     while(head != NULL){
         /* This is to catch the desired attribute's specifications from Source relation. 
         Expected to happen only once in this loop */
-        if(strcmp(head->attrName, argv[3]) == 0){
+        if(strcmp(head->attrName, argv[2]) == 0){
             attr_found_flag = 1;
             offset = head -> offset;
             type = head -> type;
@@ -66,7 +66,7 @@ int Delete (int argc, char **argv)
 
     /* Finding record from Reltion and deleting corresponding Rid Entry */
     while( FindRec(relNum, &startRid, &foundRid, &recPtr, type, attrSize, 
-                        offset, argv[5], atoi(argv[4])) == OK ){
+                        offset, argv[4], atoi(argv[3])) == OK ){
         DeleteRec(relNum,foundRid);
         startRid = (*foundRid);
         free(foundRid);

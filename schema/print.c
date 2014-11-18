@@ -19,6 +19,8 @@ int Print(int argc, char **argv) {
     }
 
     int relNum = FindRelNum(relName);
+    if(relNum == NOTOK)
+        return ErrorMsgs(RELNOEXIST,g_print_flag);
 
     struct attrCatalog *list, *attrList = g_catcache[relNum].attrList;
     list = attrList;
