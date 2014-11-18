@@ -25,6 +25,7 @@
 #include "../include/create.h"
 #include "../include/insert.h"
 #include "../include/destroy.h"
+#include "../include/select.h"
 
 int main(int argc, char** argv){
     g_print_flag = 1;
@@ -32,11 +33,14 @@ int main(int argc, char** argv){
     OpenDB(argc, argv);
 
     char **argument;
-    argument = malloc(sizeof(char *)* 4);
+    argument = malloc(sizeof(char *)* 6);
     argument[0] = malloc(sizeof(char) * 10);
     argument[1] = malloc(sizeof(char) * 10);
     argument[2] = malloc(sizeof(char) * 10);
     argument[3] = malloc(sizeof(char) * 10);
+    argument[4] = malloc(sizeof(char) * 10);
+    argument[5] = malloc(sizeof(char) * 10);
+
 
     strcpy(argument[0],"create");
     strcpy(argument[1],"person");
@@ -52,19 +56,27 @@ int main(int argc, char** argv){
     strcpy(argument[3],"\"Nithin\"");
     Insert(4,argument);
 
-    strcpy(argument[0], "destroy");
+    strcpy(argument[0],"select");
+    strcpy(argument[1],"result");
+    strcpy(argument[2],"person");
+    strcpy(argument[3],"name");
+    sprintf(argument[4],"%d",EQ);
+    strcpy(argument[5],"\"Dheeraj\"");
+    Select(6,argument);
+
+/*    strcpy(argument[0], "destroy");
     strcpy(argument[1], "person" );
     Destroy(2,argument);
-
-    strcpy(argument[1], "person");
+*/
+    strcpy(argument[1], "result");
     Print(2,argument);
     printf("\n");
-    strcpy(argument[1], "relcat");
+/*    strcpy(argument[1], "relcat");
     Print(2,argument);
     printf("\n");
     strcpy(argument[1], "attrcat");
     Print(2,argument);
-
+*/
     CloseDB(1,argv);
     return 0;
 }

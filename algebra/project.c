@@ -67,7 +67,7 @@ int Project(int argc, char **argv) {
     /* Inserting data to the new relation */
     Rid startRid = { 0, 0 }, *foundRid;
     char *recPtr;
-    if (OpenRel(destRel) != OK) {
+    if (OpenRel(destRel) == NOTOK) {
         return NOTOK;
     }
     int destRelNum = FindRelNum(destRel);

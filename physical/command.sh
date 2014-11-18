@@ -24,6 +24,7 @@ gcc -g -c ../schema/print.c
 gcc -g -c ../schema/create.c
 gcc -g -c ../algebra/insert.c
 gcc -g -c ../algebra/delete.c
+gcc -g -c ../algebra/select.c
 gcc -g -c ../schema/destroy.c
 
-gcc -g main.c flushpage.o readpage.o getnextrec.o error.o helpers.o findrec.o opencats.o openrel.o createcats.o findrelnum.o closerel.o closecats.o opendb.o destroydb.o createdb.o closedb.o print.o create.o insert.o insertrec.o writerec.o delete.o destroy.o deleterec.o
+gcc -g main.c flushpage.o readpage.o getnextrec.o error.o helpers.o findrec.o opencats.o openrel.o createcats.o findrelnum.o closerel.o closecats.o opendb.o destroydb.o createdb.o closedb.o print.o create.o insert.o insertrec.o writerec.o delete.o destroy.o deleterec.o select.o

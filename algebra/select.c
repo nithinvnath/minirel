@@ -83,8 +83,6 @@ int Select (int argc, char **argv)
         ErrorMsgs(ATTRNOEXIST,g_print_flag);
 
     ret_val = Create( (numAttrs+1)*2, argument_list );
-    OpenRel(argv[1]);
-    new_relNum = FindRelNum(argv[1]);
 
     for(i=0; i<(numAttrs+1)*2; i++)
         free(argument_list[i]);
@@ -92,6 +90,12 @@ int Select (int argc, char **argv)
 
     if(ret_val == NOTOK)
         return NOTOK;
+
+    OpenRel(argv[1]);
+    new_relNum = FindRelNum(argv[1]);
+
+    if(type == STRING)
+        removeQuotes(argv[5]);
 
     /* Finding record from Source, which satisfying given condition, and Adding to Result Relation*/
     while( FindRec(relNum, &startRid, &foundRid, &recPtr, type, attrSize, 

@@ -115,6 +115,7 @@ int OpenRel(char* RelName) {
             temp->type = readIntFromByteArray(bin_data, 8);
             readStringFromByteArray(temp->attrName, bin_data, 12, RELNAME);
             readStringFromByteArray(temp->relName, bin_data, 32, RELNAME);
+            temp->next = NULL;
 
             start = *found;
             free(found);
