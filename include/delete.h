@@ -14,6 +14,7 @@
 #include "openrel.h"
 #include "findrelnum.h"
 #include "deleterec.h"
+#include "helpers.h"
 
 #include <stdio.h>
 #include <stdlib.h>

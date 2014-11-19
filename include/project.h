@@ -8,18 +8,17 @@
 #ifndef PROJECT_H_
 #define PROJECT_H_
 
-#include "../include/defs.h"
-#include "../include/error.h"
-#include "../include/globals.h"
-#include "../include/create.h"
-#include "../include/getnextrec.h"
-#include "../include/findrelnum.h"
+#include "defs.h"
+#include "error.h"
+#include "globals.h"
+#include "create.h"
+#include "getnextrec.h"
+#include "findrelnum.h"
+#include "helpers.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-struct attrCatalog* getAttrCatalog(struct attrCatalog* attrList, char *attrName);
 
 int Project(int argc, char **argv);
 

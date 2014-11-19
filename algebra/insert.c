@@ -76,27 +76,3 @@ int Insert(int argc, char **argv) {
     //Duplicate checking done in InsertRec
     return InsertRec(relNum, recPtr);
 }
-
-struct attrCatalog* getAttrCatalog(struct attrCatalog *attrList, char *attrName) {
-    struct attrCatalog *list = attrList;
-    while (list != NULL) {
-        if (strcmp(attrName, list->attrName) == 0) {
-            break;
-        }
-        list = list->next;
-    }
-    return list;
-}
-
-void removeQuotes(char *quotedString) {
-    /* Values are passed as quoted string. We store it in memory after removing the quotes */
-    /* In strncpy src and dest should not overlap */
-    int length;
-    length = strlen(quotedString);
-    char *tempString = malloc(sizeof(char)*length);
-    strcpy(tempString,quotedString);
-    strncpy(quotedString, tempString + 1 , length - 2);
-    quotedString[length - 2] = '\0';
-    quotedString[length - 1] = '\0';
-    free(tempString);
-}

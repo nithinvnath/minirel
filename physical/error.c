@@ -66,8 +66,8 @@ Please check file system permissions and try again.\n");
                 printf("Database not found with given name! Please check the database name.\n");
                 break;
             case REL_ALREADY_EXISTS:
-                printf("A relation with given already exists! Please try again with a different \
-name.\n");
+                printf("A relation with given name already exists! Please try again with a \
+different name.\n");
                 break;
             case INVALID_ATTR_NAME:
                 printf("An attribute or relation name is invalid! Names should start with alphabet \

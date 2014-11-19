@@ -20,10 +20,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-struct attrCatalog* getAttrCatalog(struct attrCatalog *attrList, char *attrName);
-
-void removeQuotes(char *quotedString);
-
 int Insert(int argc, char **argv);
 
 #endif /* INSERT_H_ */

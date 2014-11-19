@@ -27,7 +27,8 @@
 int Select (int argc, char **argv)
 {
     int relNum, new_relNum, numAttrs, count, i, ret_val, offset, attr_found_flag = 0;
-    int attrSize;
+    int attrSize, int_val;
+    float float_val;
     struct attrCatalog* head;
     datatype type;
     Rid startRid = {1,0}, *foundRid;
@@ -76,7 +77,7 @@ int Select (int argc, char **argv)
             attrSize = head -> length;
         }
         head = head->next;
-        count++;
+        count = count + 2;
     }
     /* Given attribute name never appeared in attr linkedlist */
     if(attr_found_flag == 0)
@@ -94,9 +95,19 @@ int Select (int argc, char **argv)
     OpenRel(argv[1]);
     new_relNum = FindRelNum(argv[1]);
 
-    if(type == STRING)
-        removeQuotes(argv[5]);
-
+    switch(type){
+        case STRING:
+            removeQuotes(argv[5]);
+            break;
+        case INTEGER: 
+            int_val = atoi(argv[5]);
+            convertIntToByteArray(int_val,argv[5]);
+            break;
+        case FLOAT:
+            float_val = atof(argv[5]);
+            convertFloatToByteArray(float_val, argv[5]);
+            break;
+    }
     /* Finding record from Source, which satisfying given condition, and Adding to Result Relation*/
     while( FindRec(relNum, &startRid, &foundRid, &recPtr, type, attrSize, 
                         offset, argv[5], atoi(argv[4])) == OK ){

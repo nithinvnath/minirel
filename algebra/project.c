@@ -44,12 +44,13 @@ int Project(int argc, char **argv) {
             (argc - 3) * sizeof(struct attrCatalog*));
     //Stores the array of attributes in dest relation in order they appear. To be used later
 
-    for (i = 2, j = 3; i < argc - 1; i += 2, ++j) {
+    for (i = 2, j = 3; i <= 2 * argc - 6; i += 2, ++j) {
         createArgs[i] = (char *) malloc(strlen(argv[j]) * sizeof(char));
         attr = getAttrCatalog(g_catcache[sourceRelNum].attrList, argv[j]);
         if (attr == NULL) {
             return ErrorMsgs(ATTRNOEXIST, g_print_flag);
         }
+        strcpy(createArgs[i],attr->attrName);
         createArgs[i + 1] = (char *) calloc(4, sizeof(char));
         if (attr->type == STRING) {
             sprintf(createArgs[i + 1], "s%d", attr->length);
@@ -76,12 +77,14 @@ int Project(int argc, char **argv) {
         //Iterate through each record in source rel
         char *destRec = (char *) calloc(g_catcache[destRelNum].recLength, sizeof(char));
         int offset = 0;
-        struct attrCatalog *attr = *attrArray;
-        while (attr) { //Take each attribute in dest relation
+        i = 0;
+        struct attrCatalog *attr = attrArray[i];
+        while (i < j-3) { //Take each attribute in dest relation
             strncpy(destRec + offset, recPtr + attr->offset, attr->length);
             //Copy the bytes corresponding to the attribute into dest record
+            i++;
             offset += attr->length;
-            attr = attr->next;
+            attr = attrArray[i];
         }
         //Temporarily disable the error print flag so that duplicate won't cause error.
         g_print_flag = 0;
@@ -94,21 +97,3 @@ int Project(int argc, char **argv) {
     }
     return OK;
 }
-
-/**
- * Gets the attribute catalog using the attribute name
- *
- * @param attrList
- * @param attrName
- * @return the attrCatalog struct
- */
-struct attrCatalog* getAttrCatalog(struct attrCatalog* attrList, char *attrName) {
-    while (attrList != NULL) {
-        if (strcmp(attrName, attrList->attrName) == 0) {
-            break;
-        }
-        attrList = attrList->next;
-    }
-    return attrList;
-}
-

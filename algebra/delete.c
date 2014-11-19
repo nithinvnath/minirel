@@ -26,7 +26,8 @@
 int Delete (int argc, char **argv)
 {
     int relNum, numAttrs, i, offset, attr_found_flag = 0;
-    int attrSize;
+    int attrSize, int_val;
+    float float_val;
     struct attrCatalog* head;
     datatype type;
     Rid startRid = {1,0}, *foundRid;
@@ -64,6 +65,19 @@ int Delete (int argc, char **argv)
     if(attr_found_flag == 0)
         ErrorMsgs(ATTRNOEXIST,g_print_flag);
 
+    switch(type){
+        case STRING:
+            removeQuotes(argv[4]);
+            break;
+        case INTEGER: 
+            int_val = atoi(argv[4]);
+            convertIntToByteArray(int_val,argv[4]);
+            break;
+        case FLOAT:
+            float_val = atof(argv[4]);
+            convertFloatToByteArray(float_val, argv[4]);
+            break;
+    }
     /* Finding record from Reltion and deleting corresponding Rid Entry */
     while( FindRec(relNum, &startRid, &foundRid, &recPtr, type, attrSize, 
                         offset, argv[4], atoi(argv[3])) == OK ){

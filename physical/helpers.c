@@ -216,3 +216,38 @@ int getSizeOfAttr(char *attrFormat) {
     }
     return size;
 }
+
+/**
+ * Gets the attribute catalog using the attribute name
+ *
+ * @param attrList
+ * @param attrName
+ * @return the attrCatalog struct
+ */
+struct attrCatalog* getAttrCatalog(struct attrCatalog* attrList, char *attrName) {
+    while (attrList != NULL) {
+        if (strcmp(attrName, attrList->attrName) == 0) {
+            break;
+        }
+        attrList = attrList->next;
+    }
+    return attrList;
+}
+
+/**
+ * Get rid of the quotes in quoted string
+ *
+ * @param quotedString
+ */
+void removeQuotes(char *quotedString) {
+    /* Values are passed as quoted string. We store it in memory after removing the quotes */
+    /* In strncpy src and dest should not overlap */
+    int length;
+    length = strlen(quotedString);
+    char *tempString = malloc(sizeof(char)*length);
+    strcpy(tempString,quotedString);
+    strncpy(quotedString, tempString + 1 , length - 2);
+    quotedString[length - 2] = '\0';
+    quotedString[length - 1] = '\0';
+    free(tempString);
+}

@@ -39,21 +39,21 @@ int FindRec(int relNum, Rid *startRid, Rid **foundRid, char **recPtr, const char
             case INTEGER:
                 intAttr = readIntFromByteArray(valuePtr, 0);
                 intAttr2 = readIntFromByteArray(*recPtr, attrOffset);
-                if (compareNum((float) intAttr, (float) intAttr2, compOp)) {
+                if (compareNum((float) intAttr2, (float) intAttr, compOp)) {
                     return OK;
                 }
                 break;
             case FLOAT:
                 floatAttr = readFloatFromByteArray(valuePtr, 0);
                 floatAttr2 = readFloatFromByteArray(*recPtr, attrOffset);
-                if (compareNum(floatAttr, floatAttr2, compOp)) {
+                if (compareNum(floatAttr2, floatAttr, compOp)) {
                     return OK;
                 }
                 break;
             case STRING:
                 readStringFromByteArray(stringAttr, valuePtr, 0, attrSize);
                 readStringFromByteArray(stringAttr2, *recPtr, attrOffset, attrSize);
-                if (compareStrings(stringAttr, stringAttr2, compOp)) {
+                if (compareStrings(stringAttr2, stringAttr, compOp)) {
                     return OK;
                 }
                 break;

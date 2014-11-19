@@ -26,8 +26,10 @@
 #include "../include/insert.h"
 #include "../include/destroy.h"
 #include "../include/select.h"
+#include "../include/project.h"
 
 int main(int argc, char** argv){
+
     g_print_flag = 1;
     CreateDB(argc, argv);
     OpenDB(argc, argv);
@@ -41,42 +43,61 @@ int main(int argc, char** argv){
     argument[4] = malloc(sizeof(char) * 10);
     argument[5] = malloc(sizeof(char) * 10);
 
-
     strcpy(argument[0],"create");
     strcpy(argument[1],"person");
     strcpy(argument[2],"name");
     strcpy(argument[3],"s20");
-    Create(4,argument);
+    strcpy(argument[4],"SrNo");
+    strcpy(argument[5],"i");
+    Create(6,argument);
 
     strcpy(argument[0],"insert");
     strcpy(argument[1],"person");
     strcpy(argument[2],"name");
     strcpy(argument[3],"\"Dheeraj\"");
-    Insert(4,argument);
+    strcpy(argument[4],"SrNo");
+    strcpy(argument[5],"11168");
+    Insert(6,argument);
     strcpy(argument[3],"\"Nithin\"");
-    Insert(4,argument);
+    strcpy(argument[5],"11158");
+    Insert(6,argument);
+    strcpy(argument[3],"\"Gopu\"");
+    strcpy(argument[5],"11127");
+    Insert(6,argument);
+    strcpy(argument[3],"\"ABC\"");
+    strcpy(argument[5],"11127");
+    Insert(6,argument);
+    strcpy(argument[3],"\"DEF\"");
+    strcpy(argument[5],"11158");
+    Insert(6,argument);
 
-    strcpy(argument[0],"select");
-    strcpy(argument[1],"result");
+/*
+    strcpy(argument[0],"project");
+    strcpy(argument[1],"proj");
     strcpy(argument[2],"person");
-    strcpy(argument[3],"name");
-    sprintf(argument[4],"%d",EQ);
-    strcpy(argument[5],"\"Dheeraj\"");
-    Select(6,argument);
-
-/*    strcpy(argument[0], "destroy");
-    strcpy(argument[1], "person" );
-    Destroy(2,argument);
+    strcpy(argument[3],"SrNo");
+    strcpy(argument[4],"name");
+    Project(5,argument);
 */
-    strcpy(argument[1], "result");
+
+    strcpy(argument[0],"project");
+    strcpy(argument[1],"proj2");
+    strcpy(argument[2],"person");
+    strcpy(argument[3],"SrNo");
+    Project(4,argument);
+
+    strcpy(argument[1], "proj2");
     Print(2,argument);
-    printf("\n");
-/*    strcpy(argument[1], "relcat");
+    printf("\n===================================================================================\n");
+    strcpy(argument[1], "person");
     Print(2,argument);
-    printf("\n");
+    printf("\n===================================================================================\n");
+    strcpy(argument[1], "relcat");
+    Print(2,argument);
+    printf("\n===================================================================================\n");
     strcpy(argument[1], "attrcat");
     Print(2,argument);
-*/
+
     CloseDB(1,argv);
     return 0;
 }
