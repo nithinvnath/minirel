@@ -8,7 +8,7 @@
 
 # where to look for the files
 
-HOME = <put your project directory path here> 
+HOME = ../
 
 INCLUDE  = $(HOME)/include
 
