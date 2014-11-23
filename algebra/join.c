@@ -94,7 +94,7 @@ int Join (int argc, char **argv)
             attrSize1 = head -> length;
         }
         head = head->next;
-        count++;
+        count = count + 2;
     }
     if(attr_found_flag == 0)
         return ErrorMsgs(ATTRNOEXIST,g_print_flag);
@@ -104,7 +104,13 @@ int Join (int argc, char **argv)
     head = g_catcache[relNum2].attrList;
 
     while(head != NULL){
-        /* Skipping the join attribute in 2nd relation */
+        if(strcmp(head->attrName, argv[5]) == 0){
+            attr_found_flag = 1;
+            offset2 = head -> offset;
+            type2 = head -> type;
+            attrSize2 = head -> length;
+        }
+          /* Skipping the join attribute in 2nd relation */
         if(strcmp(head->attrName,argv[5]) == 0){
             head = head->next;
             continue;
@@ -124,24 +130,18 @@ int Join (int argc, char **argv)
             case FLOAT: strcpy(argument_list[count+1],"f");
                 break; 
         }
-        if(strcmp(head->attrName, argv[5]) == 0){
-            attr_found_flag = 1;
-            offset2 = head -> offset;
-            type2 = head -> type;
-            attrSize2 = head -> length;
-        }
-        head = head->next;
-        count++;
+      head = head->next;
+        count = count + 2;
     }
     if(attr_found_flag == 0)
         return ErrorMsgs(ATTRNOEXIST,g_print_flag);
 
-    ret_val = Create( num_attrs_total - 1, argument_list );
+    ret_val = Create( num_attrs_total *2, argument_list );
     if(ret_val == NOTOK)
         return NOTOK;
 
     OpenRel(argv[1]);
-    int new_relNum = FindRelNum(argv[1]);
+    new_relNum = FindRelNum(argv[1]);
 
     for(i = 0; i < num_attrs_total*2; i++)
         free(argument_list[i]);
@@ -154,8 +154,11 @@ int Join (int argc, char **argv)
     recResult = malloc(sizeof(char)* (rec_result_len) );
 
     while(GetNextRec(relNum1, &start_rel1, &found_rel1, &recPtr1) == OK){
+        start_rel2.pid = 1;
+        start_rel2.slotnum = 0;
+
         while(FindRec(relNum2, &start_rel2, &found_rel2, &recPtr2, type2, attrSize2, offset2,
-            recPtr1 + offset1, EQ)){
+            recPtr1 + offset1, EQ) == OK){
 
             copy_binary_array(recResult, recPtr1, g_catcache[relNum1].recLength);
             copy_binary_array(recResult + g_catcache[relNum1].recLength, recPtr2, offset2);

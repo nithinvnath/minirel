@@ -27,6 +27,7 @@
 #include "../include/destroy.h"
 #include "../include/select.h"
 #include "../include/project.h"
+#include "../include/join.h"
 
 int main(int argc, char** argv){
 
@@ -35,61 +36,81 @@ int main(int argc, char** argv){
     OpenDB(argc, argv);
 
     char **argument;
-    argument = malloc(sizeof(char *)* 6);
-    argument[0] = malloc(sizeof(char) * 10);
-    argument[1] = malloc(sizeof(char) * 10);
-    argument[2] = malloc(sizeof(char) * 10);
-    argument[3] = malloc(sizeof(char) * 10);
-    argument[4] = malloc(sizeof(char) * 10);
-    argument[5] = malloc(sizeof(char) * 10);
+    argument = malloc(sizeof(char *)* 10);
+    argument[0] = malloc(sizeof(char) * 20);
+    argument[1] = malloc(sizeof(char) * 20);
+    argument[2] = malloc(sizeof(char) * 20);
+    argument[3] = malloc(sizeof(char) * 20);
+    argument[4] = malloc(sizeof(char) * 20);
+    argument[5] = malloc(sizeof(char) * 20);
+    argument[6] = malloc(sizeof(char) * 20);
+    argument[7] = malloc(sizeof(char) * 20);
 
     strcpy(argument[0],"create");
-    strcpy(argument[1],"person");
+    strcpy(argument[1],"student");
     strcpy(argument[2],"name");
     strcpy(argument[3],"s20");
     strcpy(argument[4],"SrNo");
     strcpy(argument[5],"i");
+    strcpy(argument[6],"DeptID");
+    strcpy(argument[7],"s5");
+    Create(8,argument);
+
+    strcpy(argument[0],"create");
+    strcpy(argument[1],"dept");
+    strcpy(argument[2],"name");
+    strcpy(argument[3],"s20");
+    strcpy(argument[4],"id");
+    strcpy(argument[5],"s7");
     Create(6,argument);
 
     strcpy(argument[0],"insert");
-    strcpy(argument[1],"person");
+    strcpy(argument[1],"student");
     strcpy(argument[2],"name");
     strcpy(argument[3],"\"Dheeraj\"");
     strcpy(argument[4],"SrNo");
     strcpy(argument[5],"11168");
-    Insert(6,argument);
+    strcpy(argument[6],"DeptID");
+    strcpy(argument[7],"\"CSA\"");
+    Insert(8,argument);
+
     strcpy(argument[3],"\"Nithin\"");
     strcpy(argument[5],"11158");
-    Insert(6,argument);
-    strcpy(argument[3],"\"Gopu\"");
+    strcpy(argument[7],"\"CSA\"");    
+    Insert(8,argument);
+
+    strcpy(argument[3],"\"Imthiyas\"");
     strcpy(argument[5],"11127");
-    Insert(6,argument);
-    strcpy(argument[3],"\"ABC\"");
-    strcpy(argument[5],"11127");
-    Insert(6,argument);
-    strcpy(argument[3],"\"DEF\"");
-    strcpy(argument[5],"11158");
+    strcpy(argument[7],"\"DESE\"");
+    Insert(8,argument);
+
+    strcpy(argument[0],"insert");
+    strcpy(argument[1],"dept");
+    strcpy(argument[2],"name");    
+    strcpy(argument[3],"\"Computer Science\"");
+    strcpy(argument[4],"id");
+    strcpy(argument[5],"\"CSA\"");
     Insert(6,argument);
 
-/*
-    strcpy(argument[0],"project");
-    strcpy(argument[1],"proj");
-    strcpy(argument[2],"person");
-    strcpy(argument[3],"SrNo");
-    strcpy(argument[4],"name");
-    Project(5,argument);
-*/
+    strcpy(argument[3],"\"Electronics\"");
+    strcpy(argument[5],"\"DESE\"");
+    Insert(6,argument);
 
-    strcpy(argument[0],"project");
-    strcpy(argument[1],"proj2");
-    strcpy(argument[2],"person");
-    strcpy(argument[3],"SrNo");
-    Project(4,argument);
+    strcpy(argument[0],"join");
+    strcpy(argument[1],"output");
+    strcpy(argument[2],"student");
+    strcpy(argument[3],"DeptID");
+    strcpy(argument[4],"dept");
+    strcpy(argument[5],"id");    
+    Join(6,argument);
 
-    strcpy(argument[1], "proj2");
+    strcpy(argument[1], "output");
     Print(2,argument);
     printf("\n===================================================================================\n");
-    strcpy(argument[1], "person");
+    strcpy(argument[1], "student");
+    Print(2,argument);
+    printf("\n===================================================================================\n");
+    strcpy(argument[1], "dept");
     Print(2,argument);
     printf("\n===================================================================================\n");
     strcpy(argument[1], "relcat");
