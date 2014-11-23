@@ -13,6 +13,7 @@
 #include "globals.h"
 #include "openrel.h"
 #include "findrelnum.h"
+#include "insertrec.h"
 
 #include <stdio.h>
 #include <string.h>

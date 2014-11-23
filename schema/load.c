@@ -21,13 +21,13 @@ int Load(int argc, char **argv) {
         return ErrorMsgs(METADATA_SECURITY, g_print_flag);
     }
 
-    if (OpenRel(relName) != OK) {
+    if (OpenRel(relName) == NOTOK) {
         return NOTOK;
     }
 
     int relNum = FindRelNum(relName);
     if (g_catcache[relNum].numRecs > 0) {
-        return ErrorMsg(REL_NOT_EMPTY, g_print_flag);
+        return ErrorMsgs(REL_NOT_EMPTY, g_print_flag);
     }
 
     int fd = open(argv[2], O_RDONLY);

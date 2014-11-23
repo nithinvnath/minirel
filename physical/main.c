@@ -28,6 +28,7 @@
 #include "../include/select.h"
 #include "../include/project.h"
 #include "../include/join.h"
+#include "../include/load.h"
 
 int main(int argc, char** argv){
 
@@ -45,18 +46,27 @@ int main(int argc, char** argv){
     argument[5] = malloc(sizeof(char) * 20);
     argument[6] = malloc(sizeof(char) * 20);
     argument[7] = malloc(sizeof(char) * 20);
-
+    argument[8] = malloc(sizeof(char) * 20);
+    argument[9] = malloc(sizeof(char) * 20);
+/*
     strcpy(argument[0],"create");
-    strcpy(argument[1],"student");
+    strcpy(argument[1],"test");
     strcpy(argument[2],"name");
     strcpy(argument[3],"s20");
-    strcpy(argument[4],"SrNo");
+    strcpy(argument[4],"no");
     strcpy(argument[5],"i");
-    strcpy(argument[6],"DeptID");
+    strcpy(argument[6],"id");
     strcpy(argument[7],"s5");
-    Create(8,argument);
+    strcpy(argument[8],"name2");
+    strcpy(argument[9],"s20");
+    Create(10,argument);
+*/
+    strcpy(argument[0],"load");
+    strcpy(argument[1],"test");
+    strcpy(argument[2],"input");
+    Load(3,argument);
 
-    strcpy(argument[0],"create");
+/*    strcpy(argument[0],"create");
     strcpy(argument[1],"dept");
     strcpy(argument[2],"name");
     strcpy(argument[3],"s20");
@@ -103,14 +113,15 @@ int main(int argc, char** argv){
     strcpy(argument[4],"dept");
     strcpy(argument[5],"id");    
     Join(6,argument);
-
-    strcpy(argument[1], "output");
+*/
+/*    strcpy(argument[1], "output");
     Print(2,argument);
     printf("\n===================================================================================\n");
     strcpy(argument[1], "student");
     Print(2,argument);
     printf("\n===================================================================================\n");
-    strcpy(argument[1], "dept");
+*/
+    strcpy(argument[1], "test");
     Print(2,argument);
     printf("\n===================================================================================\n");
     strcpy(argument[1], "relcat");

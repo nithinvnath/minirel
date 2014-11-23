@@ -28,5 +28,6 @@ gcc -g -c ../algebra/select.c
 gcc -g -c ../algebra/project.c
 gcc -g -c ../algebra/join.c
 gcc -g -c ../schema/destroy.c
+gcc -g -c ../schema/load.c
 
-gcc -g main.c flushpage.o readpage.o getnextrec.o error.o helpers.o findrec.o opencats.o openrel.o createcats.o findrelnum.o closerel.o closecats.o opendb.o destroydb.o createdb.o closedb.o print.o create.o insert.o insertrec.o writerec.o delete.o destroy.o deleterec.o select.o project.o join.o
+gcc -g main.c flushpage.o readpage.o getnextrec.o error.o helpers.o findrec.o opencats.o openrel.o createcats.o findrelnum.o closerel.o closecats.o opendb.o destroydb.o createdb.o closedb.o print.o create.o insert.o insertrec.o writerec.o delete.o destroy.o deleterec.o select.o project.o join.o load.o
