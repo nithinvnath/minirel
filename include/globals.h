@@ -10,12 +10,13 @@
 
 CacheEntry  g_catcache[MAXOPEN];     /* catalog cache */
 Buffer      g_buffer[MAXOPEN];       /* buffer pool */
-char g_db_name[RELNAME];             /* name of database */
 
 bool g_cache_in_use[MAXOPEN];        /* cache use bit map */
 int g_cache_timestamp[MAXOPEN];      /* The order at which they used */
 
 char g_invoked_directory[MAXPATH];   /* The directory from which invoked */
+
+int g_db_open_flag;
 
 int g_print_flag;                    /* The error print flag */
 

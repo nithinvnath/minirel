@@ -11,6 +11,9 @@
  * @return OK or NOTOK
  */
 int Print(int argc, char **argv) {
+    if(!g_db_open_flag){
+        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+    }
     char relName[20];
     strncpy(relName, argv[1], RELNAME);
 

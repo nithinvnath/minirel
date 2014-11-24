@@ -37,6 +37,12 @@ SRCS =  main.c
 
 OBJ = main.o 
 
+proj :
+	@make ALGEBRA.o
+	@make SCHEMA.o
+	@make PHYSICAL.o
+	@make minirel
+
 ALGEBRA.o :
 	@cd $(ALGEBRA) ; make $@
 	
@@ -46,13 +52,6 @@ SCHEMA.o :
 PHYSICAL.o :
 	@cd $(PHYSICAL) ; make $@
 
-
-
-proj :
-	@make ALGEBRA.o
-	@make SCHEMA.o
-	@make PHYSICAL.o
-	@make minirel
 
 minirel : $(ALGEBRA)/ALGEBRA.o $(SCHEMA)/SCHEMA.o $(PHYSICAL)/PHYSICAL.o $(PARSER)/FES.o $(OBJ) 
 	@echo generating $@

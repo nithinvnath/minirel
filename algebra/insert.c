@@ -50,22 +50,15 @@ int Insert(int argc, char **argv) {
         switch (attr->type) {
             case INTEGER:
                 intval = strtol(argv[i + 1], &nptr, 10);
-                endptr = argv[i + 1] + (int)(strlen(argv[i + 1]));
-                if (nptr != endptr) {
-                    return ErrorMsgs(INTEGER_EXPECTED, g_print_flag);
-                }
                 convertIntToByteArray(intval, recPtr + attr->offset);
                 break;
             case FLOAT:
                 floatval = strtof(argv[i + 1], &nptr);
                 endptr = argv[i + 1] + (strlen(argv[i + 1] - 1));
-                if (nptr != endptr) {
-                    return ErrorMsgs(FLOAT_EXPECTED, g_print_flag);
-                }
                 convertFloatToByteArray(floatval, recPtr + attr->offset);
                 break;
             case STRING:
-                removeQuotes(argv[i + 1]);
+                //removeQuotes(argv[i + 1]);
                 strncpy(recPtr + attr->offset, argv[i + 1], attr->length);
                 break;
             default:

@@ -17,9 +17,9 @@
  * length: length of the array
  */
 
-void copy_binary_array(char *dest, char *source, int length){
+void copy_binary_array(char *dest, char *source, int length) {
     int i;
-    for (i = 0; i < length; ++i){
+    for (i = 0; i < length; ++i) {
         dest[i] = source[i];
     }
 }
@@ -41,20 +41,22 @@ void copy_binary_array(char *dest, char *source, int length){
  *           NOTOK: otherwise
  */
 
-int Join (int argc, char **argv)
-{
+int Join(int argc, char **argv) {
+    if (!g_db_open_flag) {
+        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+    }
     int relNum1, relNum2, count, attr_found_flag = 0, i, ret_val, rec_result_len;
     int num_attrs_rel1, num_attrs_rel2, num_attrs_total;
     int offset1, offset2, attrSize1, attrSize2, new_relNum;
     datatype type1, type2;
     struct attrCatalog *head;
     char **argument_list, *recPtr1, *recPtr2, *recResult;
-    Rid start_rel1 = {1,0} , start_rel2 = {1,0}, *found_rel1, *found_rel2;
+    Rid start_rel1 = { 1, 0 }, start_rel2 = { 1, 0 }, *found_rel1, *found_rel2;
 
-    if(argc < 6)
-        return ErrorMsgs(ARGC_INSUFFICIENT,g_print_flag);
+    if (argc < 6)
+        return ErrorMsgs(ARGC_INSUFFICIENT, g_print_flag);
 
-    if( (relNum1 = OpenRel(argv[2])) == NOTOK || (relNum2 = OpenRel(argv[4])) == NOTOK)
+    if ((relNum1 = OpenRel(argv[2])) == NOTOK || (relNum2 = OpenRel(argv[4])) == NOTOK)
         return ErrorMsgs(RELNOEXIST, g_print_flag);
 
     num_attrs_rel1 = g_catcache[relNum1].numAttrs;
@@ -62,13 +64,13 @@ int Join (int argc, char **argv)
     num_attrs_total = num_attrs_rel1 + num_attrs_rel2;
 
     /* Preparing Argument list which should be passed to Create() */
-    argument_list = malloc(sizeof(char*) * (num_attrs_total*2) );
+    argument_list = malloc(sizeof(char*) * (num_attrs_total * 2));
     argument_list[0] = malloc(sizeof(char) * RELNAME);
     argument_list[1] = malloc(sizeof(char) * RELNAME);
 
-    for(count=2; count < num_attrs_total*2; count++){
+    for (count = 2; count < num_attrs_total * 2; count++) {
         argument_list[count] = malloc(sizeof(char) * RELNAME);
-        argument_list[count+1] = malloc(sizeof(char) * 4);
+        argument_list[count + 1] = malloc(sizeof(char) * 4);
     }
 
     strcpy(argument_list[0], "create");
@@ -77,93 +79,100 @@ int Join (int argc, char **argv)
     count = 2;
     head = g_catcache[relNum1].attrList;
 
-    while(head != NULL){
-        strcpy(argument_list[count],head->attrName);
-        switch(head->type){
-            case INTEGER: strcpy(argument_list[count+1],"i");
+    while (head != NULL) {
+        strcpy(argument_list[count], head->attrName);
+        switch (head->type) {
+            case INTEGER:
+                strcpy(argument_list[count + 1], "i");
                 break;
-            case STRING: sprintf(argument_list[count+1], "s%d", head->length);
+            case STRING:
+                sprintf(argument_list[count + 1], "s%d", head->length);
                 break;
-            case FLOAT: strcpy(argument_list[count+1],"f");
-                break; 
+            case FLOAT:
+                strcpy(argument_list[count + 1], "f");
+                break;
         }
-        if(strcmp(head->attrName, argv[3]) == 0){
+        if (strcmp(head->attrName, argv[3]) == 0) {
             attr_found_flag = 1;
-            offset1 = head -> offset;
-            type1 = head -> type;
-            attrSize1 = head -> length;
+            offset1 = head->offset;
+            type1 = head->type;
+            attrSize1 = head->length;
         }
         head = head->next;
         count = count + 2;
     }
-    if(attr_found_flag == 0)
-        return ErrorMsgs(ATTRNOEXIST,g_print_flag);
+    if (attr_found_flag == 0)
+        return ErrorMsgs(ATTRNOEXIST, g_print_flag);
 
     /* Next Relation's attribute list */
     attr_found_flag = 0;
     head = g_catcache[relNum2].attrList;
 
-    while(head != NULL){
-        if(strcmp(head->attrName, argv[5]) == 0){
+    while (head != NULL) {
+        if (strcmp(head->attrName, argv[5]) == 0) {
             attr_found_flag = 1;
-            offset2 = head -> offset;
-            type2 = head -> type;
-            attrSize2 = head -> length;
+            offset2 = head->offset;
+            type2 = head->type;
+            attrSize2 = head->length;
         }
-          /* Skipping the join attribute in 2nd relation */
-        if(strcmp(head->attrName,argv[5]) == 0){
+        /* Skipping the join attribute in 2nd relation */
+        if (strcmp(head->attrName, argv[5]) == 0) {
             head = head->next;
             continue;
         }
-        strcpy(argument_list[count],head->attrName);
+        strcpy(argument_list[count], head->attrName);
         /* This is to give different name for same attribute names in two Relations */
-        for(i=2; i<num_attrs_rel1+2; i=i+2)
-            if(strcmp(argument_list[i],head->attrName) == 0){
+        for (i = 2; i < num_attrs_rel1 + 2; i = i + 2)
+            if (strcmp(argument_list[i], head->attrName) == 0) {
                 strcat(argument_list[count], "_2");
             }
 
-        switch(head->type){
-            case INTEGER: strcpy(argument_list[count+1],"i");
+        switch (head->type) {
+            case INTEGER:
+                strcpy(argument_list[count + 1], "i");
                 break;
-            case STRING: sprintf(argument_list[count+1], "s%d", head->length);
+            case STRING:
+                sprintf(argument_list[count + 1], "s%d", head->length);
                 break;
-            case FLOAT: strcpy(argument_list[count+1],"f");
-                break; 
+            case FLOAT:
+                strcpy(argument_list[count + 1], "f");
+                break;
         }
-      head = head->next;
+        head = head->next;
         count = count + 2;
     }
-    if(attr_found_flag == 0)
-        return ErrorMsgs(ATTRNOEXIST,g_print_flag);
+    if (attr_found_flag == 0)
+        return ErrorMsgs(ATTRNOEXIST, g_print_flag);
 
-    ret_val = Create( num_attrs_total *2, argument_list );
-    if(ret_val == NOTOK)
+    ret_val = Create(num_attrs_total * 2, argument_list);
+    if (ret_val == NOTOK)
         return NOTOK;
 
     OpenRel(argv[1]);
     new_relNum = FindRelNum(argv[1]);
 
-    for(i = 0; i < num_attrs_total*2; i++)
+    for (i = 0; i < num_attrs_total * 2; i++)
         free(argument_list[i]);
     free(argument_list);
 
-    if(type1 != type2)
+    if (type1 != type2)
         return ErrorMsgs(TYPE_MISMATCH, g_print_flag);
 
     rec_result_len = g_catcache[relNum1].recLength + g_catcache[relNum2].recLength - attrSize2;
-    recResult = malloc(sizeof(char)* (rec_result_len) );
+    recResult = malloc(sizeof(char) * (rec_result_len));
 
-    while(GetNextRec(relNum1, &start_rel1, &found_rel1, &recPtr1) == OK){
+    while (GetNextRec(relNum1, &start_rel1, &found_rel1, &recPtr1) == OK) {
         start_rel2.pid = 1;
         start_rel2.slotnum = 0;
 
-        while(FindRec(relNum2, &start_rel2, &found_rel2, &recPtr2, type2, attrSize2, offset2,
-            recPtr1 + offset1, EQ) == OK){
+        while (FindRec(relNum2, &start_rel2, &found_rel2, &recPtr2, type2, attrSize2, offset2,
+                recPtr1 + offset1, EQ) == OK) {
 
             copy_binary_array(recResult, recPtr1, g_catcache[relNum1].recLength);
             copy_binary_array(recResult + g_catcache[relNum1].recLength, recPtr2, offset2);
             copy_binary_array(recResult + g_catcache[relNum1].recLength + offset2,
-                recPtr2 + offset2 + attrSize2, g_catcache[relNum2].recLength - offset2 - attrSize2);
+                    recPtr2 + offset2 + attrSize2,
+                    g_catcache[relNum2].recLength - offset2 - attrSize2);
 
             InsertRec(new_relNum, recResult);
 

@@ -21,34 +21,34 @@
  *           NOTOK database does not exist, or unable to open catalog
  */
 
-int OpenDB (int argc, char **argv)
-{
+int OpenDB(int argc, char **argv) {
     DIR* dir_handler;
     char path[MAXPATH];
 
-    if(argc < 2)
+    if (argc < 2)
         return ErrorMsgs(ARGC_INSUFFICIENT, g_print_flag);
 
-    if(strcmp(g_db_name,"") != 0)
+    if (g_db_open_flag != 0)
         return ErrorMsgs(DB_NOT_CLOSED, g_print_flag);
 
-    if( (dir_handler = opendir(argv[1])) != NULL ){
+    if ((dir_handler = opendir(argv[1])) != NULL) {
         closedir(dir_handler);
 
         getcwd(g_invoked_directory, MAXPATH);
 
-        separate_db_path(argv[1], path, g_db_name);
+        g_db_open_flag = 1;
 
         chdir(argv[1]);
 
-        if(OpenCats() == NOTOK)
+        if (OpenCats() == NOTOK)
             return NOTOK;
+        else
+            g_db_open_flag = 1;
     }/* database exists */
-    else{
-        return ErrorMsgs(DBNAME_INVALID,g_print_flag);
+    else {
+        return ErrorMsgs(DBNAME_INVALID, g_print_flag);
     }/* database directoy couldn't open */
 
     return OK;
 }
-
 

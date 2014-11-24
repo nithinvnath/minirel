@@ -9,10 +9,10 @@
  * @return OK or NOTOK
  */
 int CreateDB(int argc, char **argv) {
-    if(argc < 2){
+    if (argc < 2) {
         return ErrorMsgs(ARGC_INSUFFICIENT, g_print_flag);
     }
-    if (strcmp(g_db_name, "") != 0) {
+    if (g_db_open_flag != 0) {
         return ErrorMsgs(DB_NOT_CLOSED, g_print_flag);
     }
 
@@ -33,10 +33,10 @@ int CreateDB(int argc, char **argv) {
         }
     }
     chdir(dbname);
-    strcpy(g_db_name, dbname);
+    g_db_open_flag = 1;
     int returnflag = CreateCats();
 
-    strcpy(g_db_name, "");
+    g_db_open_flag = 0;
     chdir(g_invoked_directory);
 
     return returnflag;

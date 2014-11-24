@@ -10,6 +10,10 @@
 //TODO Should attribute and relation names be case sensitive
 int Create(int argc, char **argv) {
 
+    if(!g_db_open_flag){
+            return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+        }
+
     int offset, length, i;
     char type, attrName[RELNAME + 2], relName[RELNAME + 2], attrFormat[4];
     strcpy(relName, argv[1]);
@@ -21,7 +25,7 @@ int Create(int argc, char **argv) {
     /* To check if relation exists, we will call openRel
      * after turning off the error print flag temporarily. */
     int printFlag = g_print_flag;
-    g_print_flag = 0;
+    g_print_flag = 1;
     if (OpenRel(relName) != NOTOK) {
         g_print_flag = printFlag;
         return ErrorMsgs(REL_ALREADY_EXISTS, g_print_flag);
@@ -44,9 +48,9 @@ int Create(int argc, char **argv) {
     int numAttrs;
     /* Iterate through each attribute and insert it to attrcat table */
     for (i = 2, numAttrs = 0, offset = 0; i < argc; i = i + 2, numAttrs++) {
-        attrName[0] = '\"';
+        //attrName[0] = '\"';
         strncpy(attrName + 1, argv[i], RELNAME);
-        attrName[strlen(attrName)] = '\"'; //To enclose it in quotes
+        //attrName[strlen(attrName)] = '\"'; //To enclose it in quotes
 
         strcpy(attrFormat, argv[i + 1]);
         type = attrFormat[0];

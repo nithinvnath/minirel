@@ -16,6 +16,9 @@
  * @return OK if success
  */
 int Project(int argc, char **argv) {
+    if (!g_db_open_flag) {
+        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+    }
     char sourceRel[RELNAME], destRel[RELNAME];
 
     /* Creating the new relation by calling create
@@ -50,7 +53,7 @@ int Project(int argc, char **argv) {
         if (attr == NULL) {
             return ErrorMsgs(ATTRNOEXIST, g_print_flag);
         }
-        strcpy(createArgs[i],attr->attrName);
+        strcpy(createArgs[i], attr->attrName);
         createArgs[i + 1] = (char *) calloc(4, sizeof(char));
         if (attr->type == STRING) {
             sprintf(createArgs[i + 1], "s%d", attr->length);
@@ -79,7 +82,7 @@ int Project(int argc, char **argv) {
         int offset = 0;
         i = 0;
         struct attrCatalog *attr = attrArray[i];
-        while (i < j-3) { //Take each attribute in dest relation
+        while (i < j - 3) { //Take each attribute in dest relation
             strncpy(destRec + offset, recPtr + attr->offset, attr->length);
             //Copy the bytes corresponding to the attribute into dest record
             i++;

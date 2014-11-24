@@ -20,41 +20,43 @@
  *           NOTOK otherwise
  */
 
-int Destroy (int argc, char **argv)
-{
+int Destroy(int argc, char **argv) {
+    if (!g_db_open_flag) {
+        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+    }
     int pass_argc, i, relNum;
     char **pass_argv;
 
-    if(argc < 2)
-        return ErrorMsgs(ARGC_INSUFFICIENT,g_print_flag);
+    if (argc < 2)
+        return ErrorMsgs(ARGC_INSUFFICIENT, g_print_flag);
 
     if ((strcmp(argv[0], "_destroy") != 0)
             && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
         return ErrorMsgs(METADATA_SECURITY, g_print_flag);
     }
 
-    if(remove(argv[1]) != 0){
-        return ErrorMsgs(RELNOEXIST,g_print_flag);
+    if (remove(argv[1]) != 0) {
+        return ErrorMsgs(RELNOEXIST, g_print_flag);
     } /* File deletion failed*/
 
     pass_argc = 5;
     pass_argv = malloc(sizeof(char*) * 5);
 
-    for(i = 0; i < 5; i++)
+    for (i = 0; i < 5; i++)
         pass_argv[i] = malloc(sizeof(char) * RELNAME);
 
     /* _delete is passed for bypassing metadata security */
     strcpy(pass_argv[0], "_delete");
     strcpy(pass_argv[1], "attrcat");
     strcpy(pass_argv[2], "relName");
-    sprintf(pass_argv[3], "%d",EQ);
+    sprintf(pass_argv[3], "%d", EQ);
     strcpy(pass_argv[4], argv[1]);
 
     Delete(pass_argc, pass_argv);
 
     strcpy(pass_argv[1], "relcat");
     strcpy(pass_argv[2], "relName");
-    sprintf(pass_argv[3], "%d",EQ);
+    sprintf(pass_argv[3], "%d", EQ);
     strcpy(pass_argv[4], argv[1]);
 
     Delete(pass_argc, pass_argv);
@@ -62,7 +64,7 @@ int Destroy (int argc, char **argv)
     relNum = FindRelNum(argv[1]);
     g_cache_in_use[relNum] = FALSE;
 
-    for (i = 0; i < 5; ++i){
+    for (i = 0; i < 5; ++i) {
         free(pass_argv[i]);
     }
     free(pass_argv);

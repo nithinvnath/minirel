@@ -35,11 +35,11 @@ float readFloatFromByteArray(const char* byteArray, const int offset) {
 }
 
 void convertIntToByteArray(int value, char *byteArray) {
-    memcpy(byteArray, (void *)&value, sizeof(int));
+    memcpy(byteArray, (void *) &value, sizeof(int));
 }
 
 void convertFloatToByteArray(float value, char *byteArray) {
-    memcpy(byteArray, (void *)&value, sizeof(int));
+    memcpy(byteArray, (void *) &value, sizeof(int));
 }
 
 /*************************************************************
@@ -122,10 +122,12 @@ int separate_db_path(char* db_with_path, char* path, char* dbname) {
     strcpy(db_path_copy, db_with_path);
 
     char *temp = strtok(db_path_copy, "/");
-    if (strlen(temp) > RELNAME)
-        return ErrorMsgs(DBNAME_EXCEED_LIMIT, g_print_flag);
     strcpy(dbname, temp);
-    strcpy(path, "");
+    if (db_with_path[0] == '/') {
+        strcpy(path, "/");
+    } else {
+        strcpy(path, "");
+    }
 
     if (db_with_path == NULL)
         return NOTOK;
@@ -138,6 +140,9 @@ int separate_db_path(char* db_with_path, char* path, char* dbname) {
             strcpy(dbname, temp);
         }
     }
+
+    if (strlen(dbname) > RELNAME)
+        return ErrorMsgs(DBNAME_EXCEED_LIMIT, g_print_flag);
     path[strlen(path) - 1] = '\0';
     return OK;
 }
@@ -244,9 +249,9 @@ void removeQuotes(char *quotedString) {
     /* In strncpy src and dest should not overlap */
     int length;
     length = strlen(quotedString);
-    char *tempString = malloc(sizeof(char)*length);
-    strcpy(tempString,quotedString);
-    strncpy(quotedString, tempString + 1 , length - 2);
+    char *tempString = malloc(sizeof(char) * length);
+    strcpy(tempString, quotedString);
+    strncpy(quotedString, tempString + 1, length - 2);
     quotedString[length - 2] = '\0';
     quotedString[length - 1] = '\0';
     free(tempString);

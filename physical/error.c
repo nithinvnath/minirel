@@ -8,7 +8,7 @@
  * @param errorId
  */
 int ErrorMsgs(int errorId, int printFlag) {
-    if (printFlag) {
+    if (printFlag == 0) {
         printf("<ERROR %d>: ", errorId);
         switch (errorId) {
             case RELNOEXIST:

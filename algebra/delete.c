@@ -23,26 +23,28 @@
  *           NOTOK: otherwise
  */
 
-int Delete (int argc, char **argv)
-{
+int Delete(int argc, char **argv) {
+    if (!g_db_open_flag) {
+        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+    }
     int relNum, numAttrs, i, offset, attr_found_flag = 0;
     int attrSize, int_val;
     float float_val;
     struct attrCatalog* head;
     datatype type;
-    Rid startRid = {1,0}, *foundRid;
+    Rid startRid = { 1, 0 }, *foundRid;
 
     char *recPtr;
 
-    if(argc < 5)
-        return ErrorMsgs(ARGC_INSUFFICIENT,g_print_flag);
+    if (argc < 5)
+        return ErrorMsgs(ARGC_INSUFFICIENT, g_print_flag);
 
     if ((strcmp(argv[0], "_delete") != 0)
             && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
         return ErrorMsgs(METADATA_SECURITY, g_print_flag);
     }
 
-    if(OpenRel(argv[1]) == NOTOK)
+    if (OpenRel(argv[1]) == NOTOK)
         return ErrorMsgs(RELNOEXIST, g_print_flag);
     /* Finding the relNum of Relation */
     relNum = FindRelNum(argv[1]);
@@ -50,28 +52,28 @@ int Delete (int argc, char **argv)
     head = g_catcache[relNum].attrList;
     numAttrs = g_catcache[relNum].numAttrs;
 
-    while(head != NULL){
+    while (head != NULL) {
         /* This is to catch the desired attribute's specifications from Source relation. 
-        Expected to happen only once in this loop */
-        if(strcmp(head->attrName, argv[2]) == 0){
+         Expected to happen only once in this loop */
+        if (strcmp(head->attrName, argv[2]) == 0) {
             attr_found_flag = 1;
-            offset = head -> offset;
-            type = head -> type;
-            attrSize = head -> length;
+            offset = head->offset;
+            type = head->type;
+            attrSize = head->length;
         }
         head = head->next;
     }
     /* Given attribute name never appeared in attr linkedlist */
-    if(attr_found_flag == 0)
-        ErrorMsgs(ATTRNOEXIST,g_print_flag);
+    if (attr_found_flag == 0)
+        ErrorMsgs(ATTRNOEXIST, g_print_flag);
 
-    switch(type){
+    switch (type) {
         case STRING:
             removeQuotes(argv[4]);
             break;
-        case INTEGER: 
+        case INTEGER:
             int_val = atoi(argv[4]);
-            convertIntToByteArray(int_val,argv[4]);
+            convertIntToByteArray(int_val, argv[4]);
             break;
         case FLOAT:
             float_val = atof(argv[4]);
@@ -79,9 +81,9 @@ int Delete (int argc, char **argv)
             break;
     }
     /* Finding record from Reltion and deleting corresponding Rid Entry */
-    while( FindRec(relNum, &startRid, &foundRid, &recPtr, type, attrSize, 
-                        offset, argv[4], atoi(argv[3])) == OK ){
-        DeleteRec(relNum,foundRid);
+    while (FindRec(relNum, &startRid, &foundRid, &recPtr, type, attrSize, offset, argv[4],
+            atoi(argv[3])) == OK) {
+        DeleteRec(relNum, foundRid);
         startRid = (*foundRid);
         free(foundRid);
     }
