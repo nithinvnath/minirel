@@ -102,7 +102,7 @@ int Select(int argc, char **argv) {
 
     switch (type) {
         case STRING:
-            removeQuotes(argv[5]);
+            //removeQuotes(argv[5]);
             break;
         case INTEGER:
             int_val = atoi(argv[5]);
@@ -115,7 +115,7 @@ int Select(int argc, char **argv) {
     }
     /* Finding record from Source, which satisfying given condition, and Adding to Result Relation*/
     while (FindRec(relNum, &startRid, &foundRid, &recPtr, type, attrSize, offset, argv[5],
-            atoi(argv[4])) == OK) {
+            readIntFromByteArray(argv[4],0)) == OK) {
         InsertRec(new_relNum, recPtr);
         startRid = (*foundRid);
         free(foundRid);

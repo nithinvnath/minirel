@@ -48,9 +48,7 @@ int Create(int argc, char **argv) {
     int numAttrs;
     /* Iterate through each attribute and insert it to attrcat table */
     for (i = 2, numAttrs = 0, offset = 0; i < argc; i = i + 2, numAttrs++) {
-        //attrName[0] = '\"';
-        strncpy(attrName + 1, argv[i], RELNAME);
-        //attrName[strlen(attrName)] = '\"'; //To enclose it in quotes
+        strncpy(attrName, argv[i], RELNAME);
 
         strcpy(attrFormat, argv[i + 1]);
         type = attrFormat[0];
@@ -73,10 +71,8 @@ int Create(int argc, char **argv) {
                 sprintf(attrCatArgs[j + 1], "%d", length);
             } else if (strcmp(attrCatArgs[j], ATTRNAME) == 0) {
                 strcpy(attrCatArgs[j + 1], attrName);
-//                printf("%s\n", attrCatArgs[j+1]);
             } else {
-                sprintf(attrCatArgs[j + 1],"\"%s\"",relName);
-//                strcpy(attrCatArgs[j + 1], relName);
+                sprintf(attrCatArgs[j + 1],"%s",relName);
             }
         }
         offset += length;
@@ -107,7 +103,7 @@ int Create(int argc, char **argv) {
         } else if (strcmp(relcatArgs[j], NUMPGS) == 0) {
             sprintf(relcatArgs[j + 1], "%d", 1);
         } else {
-            sprintf(relcatArgs[j + 1], "\"%s\"", relName);
+            sprintf(relcatArgs[j + 1], "%s", relName);
         }
     }
     Insert(relcatArraySize, relcatArgs);

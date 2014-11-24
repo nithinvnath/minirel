@@ -83,14 +83,14 @@ int Project(int argc, char **argv) {
         i = 0;
         struct attrCatalog *attr = attrArray[i];
         while (i < j - 3) { //Take each attribute in dest relation
-            strncpy(destRec + offset, recPtr + attr->offset, attr->length);
+            memcpy(destRec + offset, recPtr + attr->offset, attr->length);
             //Copy the bytes corresponding to the attribute into dest record
             i++;
             offset += attr->length;
             attr = attrArray[i];
         }
         //Temporarily disable the error print flag so that duplicate won't cause error.
-        g_print_flag = 0;
+        g_print_flag = 1;
         InsertRec(destRelNum, destRec);
         g_print_flag = temp_flag;
         free(destRec);

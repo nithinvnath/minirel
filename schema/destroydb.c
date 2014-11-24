@@ -20,9 +20,7 @@
  */
 
 int delete_file(char* file_name, char* db_path) {
-    if (!g_db_open_flag) {
-        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
-    }
+
     char full_file_path[MAXPATH + RELNAME];
 
     sprintf(full_file_path, "%s/%s", db_path, file_name);

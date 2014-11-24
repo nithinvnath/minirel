@@ -47,17 +47,14 @@ int Destroy(int argc, char **argv) {
 
     /* _delete is passed for bypassing metadata security */
     strcpy(pass_argv[0], "_delete");
-    strcpy(pass_argv[1], "attrcat");
+    strcpy(pass_argv[1], ATTRCAT);
     strcpy(pass_argv[2], "relName");
-    sprintf(pass_argv[3], "%d", EQ);
+    convertIntToByteArray(EQ,pass_argv[3]);
     strcpy(pass_argv[4], argv[1]);
 
     Delete(pass_argc, pass_argv);
 
-    strcpy(pass_argv[1], "relcat");
-    strcpy(pass_argv[2], "relName");
-    sprintf(pass_argv[3], "%d", EQ);
-    strcpy(pass_argv[4], argv[1]);
+    strcpy(pass_argv[1], RELCAT);
 
     Delete(pass_argc, pass_argv);
 

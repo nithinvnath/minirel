@@ -68,9 +68,6 @@ int Delete(int argc, char **argv) {
         ErrorMsgs(ATTRNOEXIST, g_print_flag);
 
     switch (type) {
-        case STRING:
-            removeQuotes(argv[4]);
-            break;
         case INTEGER:
             int_val = atoi(argv[4]);
             convertIntToByteArray(int_val, argv[4]);
@@ -80,9 +77,9 @@ int Delete(int argc, char **argv) {
             convertFloatToByteArray(float_val, argv[4]);
             break;
     }
-    /* Finding record from Reltion and deleting corresponding Rid Entry */
+    /* Finding record from Relation and deleting corresponding Rid Entry */
     while (FindRec(relNum, &startRid, &foundRid, &recPtr, type, attrSize, offset, argv[4],
-            atoi(argv[3])) == OK) {
+            readIntFromByteArray(argv[3],0)) == OK) {
         DeleteRec(relNum, foundRid);
         startRid = (*foundRid);
         free(foundRid);

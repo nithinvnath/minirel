@@ -44,6 +44,7 @@ int Print(int argc, char **argv) {
         list = attrList;
         printf("| ");
         while (list != NULL) {
+            //FIXME float and int lengths
             switch (list->type) {
                 case INTEGER:
                     intval = readIntFromByteArray(recPtr, list->offset);
