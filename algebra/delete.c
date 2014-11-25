@@ -76,6 +76,8 @@ int Delete(int argc, char **argv) {
             floatVal = atof(argv[4]);
             convertFloatToByteArray(floatVal, argv[4]);
             break;
+        case STRING:
+            break;
     }
     /* Finding record from Relation and deleting corresponding Rid Entry */
     while (FindRec(relNum, &startRid, &foundRid, &recPtr, type, attrSize, offset, argv[4],

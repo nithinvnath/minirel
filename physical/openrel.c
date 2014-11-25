@@ -50,24 +50,25 @@ int OpenRel(char* relName) {
 
         if (i != MAXOPEN) {
             g_CacheInUse[i] = TRUE;
-            g_CacheTimestamp[i] = 1;
+            g_CacheTimestamp[i] = g_CacheLastTimestamp;
+            g_CacheLastTimestamp++;
 
-            for (j = 2; j < MAXOPEN; j++) {
-                if (g_CacheInUse[j] == TRUE && j != i)
-                    g_CacheTimestamp[j]++;
-            }
         }/* Found an empty slot.*/
         else {
-            for (i = 2; i < MAXOPEN; i++) {
-                if (g_CacheTimestamp[i] == MAXOPEN - 2)
-                    break;
-            }
 
-            g_CacheTimestamp[i] = 1;
-            for (j = 2; j < MAXOPEN; ++j) {
-                if (j != i)
-                    g_CacheTimestamp[j]++;
+            int minTimestamp = g_CacheTimestamp[2];
+            int indexMinTimestamp = 2;
+
+            for (i = 2; i < MAXOPEN; i++) {
+                if (g_CacheTimestamp[i] < minTimestamp){
+                    minTimestamp = g_CacheTimestamp[i];
+                    indexMinTimestamp = i;
+                }
             }
+            i = indexMinTimestamp;
+
+            g_CacheTimestamp[i] = g_CacheLastTimestamp;
+            g_CacheLastTimestamp++;
 
             /* update numRecs, numPgs in RelCat relation from g_CatCache[i] entry (if modified), and 
              free the cache entry as well as buffer slot  */
