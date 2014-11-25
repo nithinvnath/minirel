@@ -28,7 +28,7 @@ int OpenDB(int argc, char **argv) {
     if (argc < 2)
         return ErrorMsgs(ARGC_INSUFFICIENT, g_print_flag);
 
-    if (g_db_open_flag != 0)
+    if (g_db_open_flag == OK)
         return ErrorMsgs(DB_NOT_CLOSED, g_print_flag);
 
     if ((dir_handler = opendir(argv[1])) != NULL) {
@@ -36,14 +36,14 @@ int OpenDB(int argc, char **argv) {
 
         getcwd(g_invoked_directory, MAXPATH);
 
-        g_db_open_flag = 1;
+        g_db_open_flag = OK;
 
         chdir(argv[1]);
 
-        if (OpenCats() == NOTOK)
+        if (OpenCats() == NOTOK) {
+            g_print_flag = NOTOK;
             return NOTOK;
-        else
-            g_db_open_flag = 1;
+        }
     }/* database exists */
     else {
         return ErrorMsgs(DBNAME_INVALID, g_print_flag);

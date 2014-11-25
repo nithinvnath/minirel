@@ -10,7 +10,7 @@
 //TODO Should attribute and relation names be case sensitive
 int Create(int argc, char **argv) {
 
-    if(!g_db_open_flag){
+    if(g_db_open_flag != OK){
             return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
         }
 

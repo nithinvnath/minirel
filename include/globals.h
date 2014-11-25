@@ -16,7 +16,7 @@ int g_cache_timestamp[MAXOPEN];      /* The order at which they used */
 
 char g_invoked_directory[MAXPATH];   /* The directory from which invoked */
 
-int g_db_open_flag;
+int g_db_open_flag;                 /* Flag set to OK whenever a DB is open */
 
 int g_print_flag;                    /* The error print flag */
 

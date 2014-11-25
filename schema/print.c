@@ -11,7 +11,7 @@
  * @return OK or NOTOK
  */
 int Print(int argc, char **argv) {
-    if(!g_db_open_flag){
+    if (g_db_open_flag != OK) {
         return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
     }
     char relName[20];
@@ -22,8 +22,8 @@ int Print(int argc, char **argv) {
     }
 
     int relNum = FindRelNum(relName);
-    if(relNum == NOTOK)
-        return ErrorMsgs(RELNOEXIST,g_print_flag);
+    if (relNum == NOTOK)
+        return ErrorMsgs(RELNOEXIST, g_print_flag);
 
     struct attrCatalog *list, *attrList = g_catcache[relNum].attrList;
     list = attrList;
@@ -31,7 +31,7 @@ int Print(int argc, char **argv) {
     printf("| ");
     while (list != NULL) {
         printf("%*s | ", max(strlen(list->attrName), list->length), list->attrName);
-        tableRowLength += (3 +  max(strlen(list->attrName), list->length));
+        tableRowLength += (3 + max(strlen(list->attrName), list->length));
         list = list->next;
     }
     printUnderScores(tableRowLength);
@@ -74,9 +74,9 @@ int max(int a, int b) {
     return a > b ? a : b;
 }
 
-void printUnderScores(int count){
+void printUnderScores(int count) {
     printf("\n");
-    while(count-->0){
+    while (count-- > 0) {
         printf("_");
     }
     printf("\n");

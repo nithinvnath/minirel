@@ -78,7 +78,7 @@ int DestroyDB(int argc, char **argv) {
     if (argc < 2)
         return ErrorMsgs(ARGC_INSUFFICIENT, g_print_flag);
 
-    if (g_db_open_flag != 0)
+    if (g_db_open_flag == OK)
         return ErrorMsgs(DB_NOT_CLOSED, g_print_flag);
 
     if (delete_dir(argv[1]) == NOTOK)

@@ -16,7 +16,7 @@
  * @return OK if success
  */
 int Project(int argc, char **argv) {
-    if (!g_db_open_flag) {
+    if (g_db_open_flag != OK) {
         return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
     }
     char sourceRel[RELNAME], destRel[RELNAME];

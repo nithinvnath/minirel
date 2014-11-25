@@ -25,7 +25,7 @@
  */
 
 int Select(int argc, char **argv) {
-    if (!g_db_open_flag) {
+    if (g_db_open_flag != OK) {
         return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
     }
     int relNum, new_relNum, numAttrs, count, i, ret_val, offset, attr_found_flag = 0;

@@ -21,7 +21,7 @@
  */
 
 int Destroy(int argc, char **argv) {
-    if (!g_db_open_flag) {
+    if (g_db_open_flag != OK) {
         return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
     }
     int pass_argc, i, relNum;

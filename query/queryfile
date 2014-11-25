@@ -29,7 +29,7 @@ join into tastudent (students.sid, teachassist.sid);
 print tastudent;
 insert into students (sname = "Late Comer", sid = 101, gpa = 0.1);
 print students;
-delete from goodstudents where (sname < "john");
+delete from goodstudents where (sname < "John");
 print goodstudents;
 
 ; drop indexes

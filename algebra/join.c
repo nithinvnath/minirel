@@ -42,7 +42,7 @@ void copy_binary_array(char *dest, char *source, int length) {
  */
 
 int Join(int argc, char **argv) {
-    if (!g_db_open_flag) {
+    if (g_db_open_flag != OK) {
         return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
     }
     int relNum1, relNum2, count, attr_found_flag = 0, i, ret_val, rec_result_len;

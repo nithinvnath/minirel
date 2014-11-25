@@ -24,7 +24,7 @@ void Quit(int argc, char **argv) {
 
     strcpy(arg_closedb[0], "closedb");
 
-    if (g_db_open_flag != 0)
+    if (g_db_open_flag == OK)
         CloseDB(1, arg_closedb);
 
     free(*arg_closedb);

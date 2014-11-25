@@ -14,7 +14,7 @@
  */
 //FIXME should the file operations be in this layer?
 int Load(int argc, char **argv) {
-    if (!g_db_open_flag) {
+    if (g_db_open_flag != OK) {
         return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
     }
     char relName[RELNAME];
