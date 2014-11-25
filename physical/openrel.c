@@ -45,8 +45,12 @@ int OpenRel(char* relName) {
     bool isFirstExecution = TRUE;
     int i, j, returnVal;
     for (i = 0; i < MAXOPEN; i++) {
-        if (g_CacheInUse[i] == TRUE && strcmp(g_CatCache[i].relName, relName) == 0)
-            return i;
+        if (g_CacheInUse[i] == TRUE && strcmp(g_CatCache[i].relName, relName) == 0){
+
+            g_CacheTimestamp[i] = g_CacheLastTimestamp;
+            g_CacheLastTimestamp++;
+            return i;            
+        }
     }
 
     startRid.pid = 1;
