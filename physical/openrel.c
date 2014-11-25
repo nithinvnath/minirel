@@ -18,25 +18,25 @@
  *           NOTOK on failure
  */
 
-int OpenRel(char* RelName) {
-    Rid start, *found;
-    char* bin_data;
-    struct attrCatalog *temp = NULL, *newnode = NULL;
-    bool first_exec = TRUE;
-    int i, j, ret_value;
+int OpenRel(char* relName) {
+    Rid startRid, *foundRid;
+    char* byteArray;
+    struct attrCatalog *temp = NULL, *newNode = NULL;
+    bool isFirstExecution = TRUE;
+    int i, j, returnVal;
     for (i = 0; i < MAXOPEN; i++) {
-        if (g_cache_in_use[i] == TRUE && strcmp(g_catcache[i].relName,RelName) == 0)
+        if (g_CacheInUse[i] == TRUE && strcmp(g_CatCache[i].relName, relName) == 0)
             return i;
     }
 
+    startRid.pid = 1;
+    startRid.slotnum = 0;
 
-    start.pid = 1;
-    start.slotnum = 0;
+    returnVal = FindRec(RELCAT_CACHE, &startRid, &foundRid, &byteArray, 's', RELNAME, 0, relName,
+    EQ);
 
-    ret_value = FindRec(RELCAT_CACHE, &start, &found, &bin_data, 's', RELNAME, 0, RelName, EQ);
-
-    if (ret_value == NOTOK) {
-        return ErrorMsgs(RELNOEXIST, g_print_flag);
+    if (returnVal == NOTOK) {
+        return ErrorMsgs(RELNOEXIST, g_PrintFlag);
     }/* Relation does not exist with given Relation Name */
     else {
         /* -------Cache Management----------- 
@@ -44,82 +44,84 @@ int OpenRel(char* RelName) {
          fill out entries and return RelNum */
 
         for (i = 2; i < MAXOPEN; i++) {
-            if (g_cache_in_use[i] == FALSE)
+            if (g_CacheInUse[i] == FALSE)
                 break;
         }
 
         if (i != MAXOPEN) {
-            g_cache_in_use[i] = TRUE;
-            g_cache_timestamp[i] = 1;
+            g_CacheInUse[i] = TRUE;
+            g_CacheTimestamp[i] = 1;
 
             for (j = 2; j < MAXOPEN; j++) {
-                if (g_cache_in_use[j] == TRUE && j != i)
-                    g_cache_timestamp[j]++;
+                if (g_CacheInUse[j] == TRUE && j != i)
+                    g_CacheTimestamp[j]++;
             }
         }/* Found an empty slot.*/
         else {
             for (i = 2; i < MAXOPEN; i++) {
-                if (g_cache_timestamp[i] == MAXOPEN - 2)
+                if (g_CacheTimestamp[i] == MAXOPEN - 2)
                     break;
             }
 
-            g_cache_timestamp[i] = 1;
+            g_CacheTimestamp[i] = 1;
             for (j = 2; j < MAXOPEN; ++j) {
-                if(j != i)
-                    g_cache_timestamp[j]++;
+                if (j != i)
+                    g_CacheTimestamp[j]++;
             }
 
-            /* update numRecs, numPgs in RelCat relation from g_catcache[i] entry (if modified), and 
+            /* update numRecs, numPgs in RelCat relation from g_CatCache[i] entry (if modified), and 
              free the cache entry as well as buffer slot  */
-            if (g_catcache[i].dirty == TRUE) {
+            if (g_CatCache[i].dirty == TRUE) {
                 CloseRel(i);
             }
         }/* Replaced an existing cat_cahe enty*/
 
         /* position i is available */
-        strcpy(g_catcache[i].relName, RelName);
-        g_catcache[i].recLength = readIntFromByteArray(bin_data, 20);
-        g_catcache[i].recsPerPg = readIntFromByteArray(bin_data, 24);
-        g_catcache[i].numAttrs = readIntFromByteArray(bin_data, 28);
-        g_catcache[i].numRecs = readIntFromByteArray(bin_data, 32);
-        g_catcache[i].numPgs = readIntFromByteArray(bin_data, 36);
+        strcpy(g_CatCache[i].relName, relName);
+        g_CatCache[i].recLength = readIntFromByteArray(byteArray, 20);
+        g_CatCache[i].recsPerPg = readIntFromByteArray(byteArray, 24);
+        g_CatCache[i].numAttrs = readIntFromByteArray(byteArray, 28);
+        g_CatCache[i].numRecs = readIntFromByteArray(byteArray, 32);
+        g_CatCache[i].numPgs = readIntFromByteArray(byteArray, 36);
 
-        g_catcache[i].relcatRid = *found;
-        g_catcache[i].dirty = FALSE;
+        g_CatCache[i].relcatRid = *foundRid;
+        g_CatCache[i].dirty = FALSE;
 
-        g_catcache[i].relFile = open(RelName, O_RDWR);
+        g_CatCache[i].relFile = open(relName, O_RDWR);
 
-        start.pid = 1;
-        start.slotnum = 0;
+        startRid.pid = 1;
+        startRid.slotnum = 0;
 
-        ret_value = FindRec(ATTRCAT_CACHE, &start, &found, &bin_data, 's', RELNAME, 32, RelName, EQ);
+        returnVal = FindRec(ATTRCAT_CACHE, &startRid, &foundRid, &byteArray, 's', RELNAME, 32,
+                relName, EQ);
 
-        if (ret_value == NOTOK) {
-            return ErrorMsgs(NO_ATTRS_FOUND, g_print_flag);
+        if (returnVal == NOTOK) {
+            return ErrorMsgs(NO_ATTRS_FOUND, g_PrintFlag);
         }
 
-        while (ret_value == OK) {
-            newnode = malloc(sizeof(struct attrCatalog));
+        while (returnVal == OK) {
+            newNode = malloc(sizeof(struct attrCatalog));
 
-            if (first_exec == TRUE) {
-                g_catcache[i].attrList = newnode;
-                temp = newnode;
-                first_exec = FALSE;
+            if (isFirstExecution == TRUE) {
+                g_CatCache[i].attrList = newNode;
+                temp = newNode;
+                isFirstExecution = FALSE;
             } else {
-                temp->next = newnode;
-                temp = newnode;
+                temp->next = newNode;
+                temp = newNode;
             }
 
-            temp->offset = readIntFromByteArray(bin_data, 0);
-            temp->length = readIntFromByteArray(bin_data, 4);
-            temp->type = readIntFromByteArray(bin_data, 8);
-            readStringFromByteArray(temp->attrName, bin_data, 12, RELNAME);
-            readStringFromByteArray(temp->relName, bin_data, 32, RELNAME);
+            temp->offset = readIntFromByteArray(byteArray, 0);
+            temp->length = readIntFromByteArray(byteArray, 4);
+            temp->type = readIntFromByteArray(byteArray, 8);
+            readStringFromByteArray(temp->attrName, byteArray, 12, RELNAME);
+            readStringFromByteArray(temp->relName, byteArray, 32, RELNAME);
             temp->next = NULL;
 
-            start = *found;
-            free(found);
-            ret_value = FindRec(ATTRCAT_CACHE, &start, &found, &bin_data, 's', RELNAME, 32, RelName, EQ);
+            startRid = *foundRid;
+            free(foundRid);
+            returnVal = FindRec(ATTRCAT_CACHE, &startRid, &foundRid, &byteArray, 's', RELNAME, 32,
+                    relName, EQ);
         }
         return i;
     }

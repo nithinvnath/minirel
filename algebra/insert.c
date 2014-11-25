@@ -17,7 +17,7 @@ int Insert(int argc, char **argv) {
 
     if ((strcmp(argv[0], "_insert") != 0)
             && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
-        return ErrorMsgs(METADATA_SECURITY, g_print_flag);
+        return ErrorMsgs(METADATA_SECURITY, g_PrintFlag);
     }
 
     char relName[RELNAME], attrName[RELNAME];
@@ -31,12 +31,12 @@ int Insert(int argc, char **argv) {
     int i;
     /* Using calloc so that memory is initialized to zero.
      This is required while checking for duplicates in the relation */
-    char *recPtr = (char *) calloc(g_catcache[relNum].recLength, sizeof(char));
+    char *recPtr = (char *) calloc(g_CatCache[relNum].recLength, sizeof(char));
     struct attrCatalog *attr = NULL;
     for (i = 2; i < argc; i += 2) {
-        attr = getAttrCatalog(g_catcache[relNum].attrList, argv[i]);
+        attr = getAttrCatalog(g_CatCache[relNum].attrList, argv[i]);
         if (attr == NULL) {
-            return ErrorMsgs(ATTR_NOT_IN_REL, g_print_flag);
+            return ErrorMsgs(ATTR_NOT_IN_REL, g_PrintFlag);
         }
 
         char *nptr, *endptr;
@@ -53,7 +53,7 @@ int Insert(int argc, char **argv) {
                 convertFloatToByteArray(floatval, recPtr + attr->offset);
                 break;
             case STRING:
-                strncpy(recPtr + attr->offset, argv[i + 1], attr->length-1);
+                strncpy(recPtr + attr->offset, argv[i + 1], attr->length - 1);
                 break;
             default:
                 break;

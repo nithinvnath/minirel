@@ -58,7 +58,7 @@ int FindRec(int relNum, Rid *startRid, Rid **foundRid, char **recPtr, const char
                 }
                 break;
             default:
-                return ErrorMsgs(INVALID_ATTR_TYPE,g_print_flag);
+                return ErrorMsgs(INVALID_ATTR_TYPE,g_PrintFlag);
                 break;
         }
         startRid = *foundRid;

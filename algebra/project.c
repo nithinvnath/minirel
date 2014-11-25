@@ -16,24 +16,22 @@
  * @return OK if success
  */
 int Project(int argc, char **argv) {
-    if (g_db_open_flag != OK) {
-        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+    if (g_DBOpenFlag != OK) {
+        return ErrorMsgs(DB_NOT_OPEN, g_PrintFlag);
     }
     char sourceRel[RELNAME], destRel[RELNAME];
 
     /* Creating the new relation by calling create
      * Building the arguments to pass to create */
-    strncpy(sourceRel, argv[2], RELNAME-1);
-    strncpy(destRel, argv[1], RELNAME-1);
+    strncpy(sourceRel, argv[2], RELNAME - 1);
+    strncpy(destRel, argv[1], RELNAME - 1);
 
     if (OpenRel(sourceRel) == NOTOK) {
         return NOTOK;
     }
 
-    int temp_flag = g_print_flag;
-
     int sourceRelNum = FindRelNum(sourceRel);
-    struct attrCatalog *attrList = g_catcache[sourceRelNum].attrList;
+    struct attrCatalog *attrList = g_CatCache[sourceRelNum].attrList;
 
     int i, j, numCreateArgs = (argc - 3) * 2 + 2;
     char **createArgs = (char **) malloc(numCreateArgs * sizeof(char *));
@@ -49,9 +47,9 @@ int Project(int argc, char **argv) {
 
     for (i = 2, j = 3; i <= 2 * argc - 6; i += 2, ++j) {
         createArgs[i] = (char *) malloc(strlen(argv[j]) * sizeof(char));
-        attr = getAttrCatalog(g_catcache[sourceRelNum].attrList, argv[j]);
+        attr = getAttrCatalog(g_CatCache[sourceRelNum].attrList, argv[j]);
         if (attr == NULL) {
-            return ErrorMsgs(ATTRNOEXIST, g_print_flag);
+            return ErrorMsgs(ATTRNOEXIST, g_PrintFlag);
         }
         strcpy(createArgs[i], attr->attrName);
         createArgs[i + 1] = (char *) calloc(4, sizeof(char));
@@ -78,7 +76,7 @@ int Project(int argc, char **argv) {
 
     while (GetNextRec(sourceRelNum, &startRid, &foundRid, &recPtr) == OK) {
         //Iterate through each record in source rel
-        char *destRec = (char *) calloc(g_catcache[destRelNum].recLength, sizeof(char));
+        char *destRec = (char *) calloc(g_CatCache[destRelNum].recLength, sizeof(char));
         int offset = 0;
         i = 0;
         struct attrCatalog *attr = attrArray[i];
@@ -90,9 +88,10 @@ int Project(int argc, char **argv) {
             attr = attrArray[i];
         }
         //Temporarily disable the error print flag so that duplicate won't cause error.
-        g_print_flag = 1;
+        int tempFlag = g_PrintFlag;
+        g_PrintFlag = 1;
         InsertRec(destRelNum, destRec);
-        g_print_flag = temp_flag;
+        g_PrintFlag = tempFlag;
         free(destRec);
 
         startRid = *foundRid;

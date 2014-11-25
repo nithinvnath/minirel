@@ -1,9 +1,4 @@
-#include<stdlib.h>
-
-#include "../include/globals.h"
 #include "../include/getnextrec.h"
-#include "../include/readpage.h"
-#include "../include/helpers.h"
 
 /**
  * Gets the next record in sequential scan
@@ -16,8 +11,8 @@
  * @return flag - Found or not found
  */
 int GetNextRec(const int relNum, const Rid *startRid, Rid **foundRid, char **recPtr) {
-    int recsPerPg = g_catcache[relNum].recsPerPg;
-    int numPgs = g_catcache[relNum].numPgs;
+    int recsPerPg = g_CatCache[relNum].recsPerPg;
+    int numPgs = g_CatCache[relNum].numPgs;
     int flag = NOTOK;
 
     Rid curRid = getNextRid(startRid->pid, startRid->slotnum, recsPerPg, numPgs,
@@ -34,12 +29,12 @@ int GetNextRec(const int relNum, const Rid *startRid, Rid **foundRid, char **rec
         while (curRid.slotnum >= prevRid.slotnum) { //Loop till the end of cur page
 
             /*Check the slotmap to see if it is in use*/
-            if (g_buffer[relNum].page.slotmap & (1 << (32 - curRid.slotnum))) {
+            if (g_Buffer[relNum].page.slotmap & (1 << (32 - curRid.slotnum))) {
                 flag = OK;
                 *foundRid = (Rid *) malloc(sizeof(Rid));
                 (**foundRid) = curRid;
-                int offset = g_catcache[relNum].recLength * (curRid.slotnum - 1);
-                *recPtr = g_buffer[relNum].page.contents + offset;
+                int offset = g_CatCache[relNum].recLength * (curRid.slotnum - 1);
+                *recPtr = g_Buffer[relNum].page.contents + offset;
                 break;
             }
 

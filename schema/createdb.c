@@ -10,34 +10,34 @@
  */
 int CreateDB(int argc, char **argv) {
     if (argc < 2) {
-        return ErrorMsgs(ARGC_INSUFFICIENT, g_print_flag);
+        return ErrorMsgs(ARGC_INSUFFICIENT, g_PrintFlag);
     }
-    if (g_db_open_flag == OK) {
-        return ErrorMsgs(DB_NOT_CLOSED, g_print_flag);
+    if (g_DBOpenFlag == OK) {
+        return ErrorMsgs(DB_NOT_CLOSED, g_PrintFlag);
     }
 
-    char dbname[RELNAME], dbpath[MAXPATH];
-    separate_db_path(argv[1], dbpath, dbname);
+    char dbName[RELNAME], dbPath[MAXPATH];
+    separateDBPath(argv[1], dbPath, dbName);
 
     /* Stores the current working directory to be changed once done */
-    getcwd(g_invoked_directory, MAXPATH);
+    getcwd(g_InvokedDirectory, MAXPATH);
 
-    chdir(dbpath);
+    chdir(dbPath);
 
-    if (mkdir(dbname, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == -1) {
-        chdir(g_invoked_directory);
+    if (mkdir(dbName, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == -1) {
+        chdir(g_InvokedDirectory);
         if (errno == EEXIST) {
-            return ErrorMsgs(DB_ALREADY_EXISTS, g_print_flag);
+            return ErrorMsgs(DB_ALREADY_EXISTS, g_PrintFlag);
         } else {
-            return ErrorMsgs(FILE_SYSTEM_ERROR, g_print_flag);
+            return ErrorMsgs(FILE_SYSTEM_ERROR, g_PrintFlag);
         }
     }
-    chdir(dbname);
-    g_db_open_flag = OK;
+    chdir(dbName);
+    g_DBOpenFlag = OK;
     int returnflag = CreateCats();
 
-    g_db_open_flag = NOTOK;
-    chdir(g_invoked_directory);
+    g_DBOpenFlag = NOTOK;
+    chdir(g_InvokedDirectory);
 
     return returnflag;
 }

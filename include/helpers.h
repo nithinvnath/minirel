@@ -9,8 +9,14 @@
 #define HELPERS_H_
 
 #include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
 
-void readStringFromByteArray(char * string, const char *byteArray, const int offset, const int size);
+#include "globals.h"
+#include "defs.h"
+#include "error.h"
+
+int readStringFromByteArray(char * string, const char *byteArray, const int offset, const int size);
 
 int readIntFromByteArray(const char *byteArray, const int offset);
 
@@ -26,7 +32,7 @@ void convertFloatToByteArray(float value, char *byteArray);
 
 Rid getLastRid(int relNum);
 
-int separate_db_path(char* db_with_path, char* path, char* dbname);
+int separateDBPath(char* fullDBPath, char* path, char* dbName);
 
 struct attrCatalog* getAttrCatalog(struct attrCatalog *attrList, char *attrName);
 

@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void copy_binary_array(char *dest, char *source, int length);
+void copyBinaryArray(char *dest, char *source, int length);
 int Join (int argc, char **argv);
 
 #endif /* JOIN_H_ */

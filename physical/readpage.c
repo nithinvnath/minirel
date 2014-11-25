@@ -1,13 +1,4 @@
-#include <string.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include "../include/globals.h"
-#include "../include/error.h"
 #include "../include/readpage.h"
-#include "../include/flushpage.h"
-#include "../include/readpage.h"
-#include "../include/helpers.h"
 
 /**
  * Read page pid of the open relation specified by relNum
@@ -20,43 +11,43 @@
  */
 int ReadPage(int relNum, short pid) {
     if (relNum < 0 || relNum >= MAXOPEN) {
-        return ErrorMsgs(RELNUM_OUT_OF_BOUND, g_print_flag);
+        return ErrorMsgs(RELNUM_OUT_OF_BOUND, g_PrintFlag);
     }
 
-    if (pid > (g_catcache[relNum].numPgs + 1)) {
-        return ErrorMsgs(PID_OUT_OF_BOUND, g_print_flag);
+    if (pid > (g_CatCache[relNum].numPgs + 1)) {
+        return ErrorMsgs(PID_OUT_OF_BOUND, g_PrintFlag);
     }
-    if (g_buffer[relNum].pid != pid) {
+    if (g_Buffer[relNum].pid != pid) {
 
         if (FlushPage(relNum) != OK) { //Flush page
             return NOTOK;
         }
 
-        if (pid == g_catcache[relNum].numPgs + 1) { //Trying to read a fresh page into buffer.
+        if (pid == g_CatCache[relNum].numPgs + 1) { //Trying to read a fresh page into buffer.
                                     //simply set the slotmap to show all records are free
-            g_buffer[relNum].page.slotmap = 0;
+            g_Buffer[relNum].page.slotmap = 0;
         } else { //Seek the file and load data into buffer
             /* Calculating the offset */
             int offset = (pid - 1) * PAGESIZE;
             char page[PAGESIZE];
 
             /*Seek in file */
-            const int fd = g_catcache[relNum].relFile;
+            const int fd = g_CatCache[relNum].relFile;
             if (lseek(fd, offset, SEEK_SET) < 0) {
                 return NOTOK;
             }
             if (read(fd, page, PAGESIZE) < 0) { //Read Page
-                return ErrorMsgs(READ_DISK_ERROR, g_print_flag);
+                return ErrorMsgs(READ_DISK_ERROR, g_PrintFlag);
             }
 
             /*Copy the contents of page to buffer*/
-            g_buffer[relNum].page.slotmap = readIntFromByteArray(page, 0);
-            memcpy(g_buffer[relNum].page.contents, page + (PAGESIZE - MAXRECORD), MAXRECORD);
+            g_Buffer[relNum].page.slotmap = readIntFromByteArray(page, 0);
+            memcpy(g_Buffer[relNum].page.contents, page + (PAGESIZE - MAXRECORD), MAXRECORD);
         }
 
         /* set the dirty bits and pid */
-        g_buffer[relNum].pid = pid;
-        g_buffer[relNum].dirty = FALSE;
+        g_Buffer[relNum].pid = pid;
+        g_Buffer[relNum].dirty = FALSE;
 
     }
     return OK;

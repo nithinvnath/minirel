@@ -11,8 +11,8 @@
  * @return OK or NOTOK
  */
 int Print(int argc, char **argv) {
-    if (g_db_open_flag != OK) {
-        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+    if (g_DBOpenFlag != OK) {
+        return ErrorMsgs(DB_NOT_OPEN, g_PrintFlag);
     }
     char relName[20];
     strncpy(relName, argv[1], RELNAME);
@@ -23,9 +23,9 @@ int Print(int argc, char **argv) {
 
     int relNum = FindRelNum(relName);
     if (relNum == NOTOK)
-        return ErrorMsgs(RELNOEXIST, g_print_flag);
+        return ErrorMsgs(RELNOEXIST, g_PrintFlag);
 
-    struct attrCatalog *list, *attrList = g_catcache[relNum].attrList;
+    struct attrCatalog *list, *attrList = g_CatCache[relNum].attrList;
     list = attrList;
     int tableRowLength = 2;
     printf("| ");
@@ -37,7 +37,7 @@ int Print(int argc, char **argv) {
     }
     printUnderScores(tableRowLength);
     Rid *foundRid, startRid = { 0, 0 };
-    char *recPtr = malloc(sizeof(char) * g_catcache[relNum].recLength);
+    char *recPtr = malloc(sizeof(char) * g_CatCache[relNum].recLength);
     int intval;
     float floatval;
     char string[MAX_STRING_SIZE];

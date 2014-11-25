@@ -18,17 +18,17 @@
  */
 
 void Quit(int argc, char **argv) {
-    char **arg_closedb;
-    arg_closedb = malloc(sizeof(char *));
-    *arg_closedb = malloc(sizeof(char) * 10);
+    char **closeDBArguments;
+    closeDBArguments = malloc(sizeof(char *));
+    *closeDBArguments = malloc(sizeof(char) * 10);
 
-    strcpy(arg_closedb[0], "closedb");
+    strcpy(closeDBArguments[0], "closedb");
 
-    if (g_db_open_flag == OK)
-        CloseDB(1, arg_closedb);
+    if (g_DBOpenFlag == OK)
+        CloseDB(1, closeDBArguments);
 
-    free(*arg_closedb);
-    free(arg_closedb);
+    free(*closeDBArguments);
+    free(closeDBArguments);
 
 }
 

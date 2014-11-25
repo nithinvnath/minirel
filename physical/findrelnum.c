@@ -24,7 +24,7 @@ int FindRelNum(char* relName)
     bool found = FALSE;
 
     for(i=0; i<MAXOPEN; i++)
-        if(g_cache_in_use[i] == TRUE && compareStrings(g_catcache[i].relName, relName, EQ) == TRUE){
+        if(g_CacheInUse[i] == TRUE && compareStrings(g_CatCache[i].relName, relName, EQ) == TRUE){
             found = TRUE;
             break;
         }

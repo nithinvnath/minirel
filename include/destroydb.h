@@ -19,8 +19,8 @@
 #include <dirent.h>
 #include <string.h>
 
-int delete_file(char* file_name, char* db_name);
-int delete_dir(char* dir_name);
+int deleteFile(char* file_name, char* db_name);
+int deleteDir(char* dir_name);
 int DestroyDB(int argc,char **argv);
 
 

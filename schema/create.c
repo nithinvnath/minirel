@@ -11,35 +11,35 @@
  */
 int Create(int argc, char **argv) {
 
-    if (g_db_open_flag != OK) {
-        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+    if (g_DBOpenFlag != OK) {
+        return ErrorMsgs(DB_NOT_OPEN, g_PrintFlag);
     }
 
     int offset, length, i;
     char type, attrName[RELNAME], relName[RELNAME], attrFormat[4];
 
     if (isValidString(argv[1]) == NOTOK) {
-        return ErrorMsgs(INVALID_ATTR_NAME, g_print_flag);
+        return ErrorMsgs(INVALID_ATTR_NAME, g_PrintFlag);
     }
     strcpy(relName, argv[1]);
 
     /* To check if relation exists, we will call openRel
      * after turning off the error print flag temporarily. */
-    int printFlag = g_print_flag;
-    g_print_flag = 1;
+    int printFlag = g_PrintFlag;
+    g_PrintFlag = 1;
     if (OpenRel(relName) != NOTOK) {
-        g_print_flag = printFlag;
-        return ErrorMsgs(REL_ALREADY_EXISTS, g_print_flag);
+        g_PrintFlag = printFlag;
+        return ErrorMsgs(REL_ALREADY_EXISTS, g_PrintFlag);
     } else {
-        g_print_flag = printFlag;
+        g_PrintFlag = printFlag;
     }
     //Creating the file for relation and adding a page
     int fd = open(relName, O_RDWR | O_CREAT, S_IRWXU);
-    char *slotmap = (char *) malloc((PAGESIZE - MAXRECORD) * sizeof(char));
-    convertIntToByteArray(0, slotmap);
-    write(fd, slotmap, (PAGESIZE - MAXRECORD));
+    char *slotMap = (char *) malloc((PAGESIZE - MAXRECORD) * sizeof(char));
+    convertIntToByteArray(0, slotMap);
+    write(fd, slotMap, (PAGESIZE - MAXRECORD));
     close(fd);
-    free(slotmap);
+    free(slotMap);
     /* Creating the template attribute catalog records */
     char **attrCatArgs;
     int attrCatArraySize;
@@ -53,11 +53,11 @@ int Create(int argc, char **argv) {
         strcpy(attrFormat, argv[i + 1]);
         type = attrFormat[0];
         if (type != INTEGER && type != STRING && type != FLOAT) {
-            return ErrorMsgs(INVALID_ATTR_TYPE, g_print_flag);
+            return ErrorMsgs(INVALID_ATTR_TYPE, g_PrintFlag);
         }
         length = getSizeOfAttr(attrFormat);
         if (length > MAX_STRING_SIZE) {
-            return ErrorMsgs(MAX_STRING_EXCEEDED, g_print_flag);
+            return ErrorMsgs(MAX_STRING_EXCEEDED, g_PrintFlag);
         }
         int j;
 
@@ -86,7 +86,7 @@ int Create(int argc, char **argv) {
             free(destroy_args[0]);
             free(destroy_args[1]);
             free(destroy_args);
-            return ErrorMsgs(PAGE_OVERFLOW,g_print_flag);
+            return ErrorMsgs(PAGE_OVERFLOW,g_PrintFlag);
         }
         Insert(attrCatArraySize, attrCatArgs);
     }
@@ -133,8 +133,8 @@ int Create(int argc, char **argv) {
  */
 void createTemplate(int cacheIndex, char ***args, char *relName, int *arraySize) {
     int i;
-    struct attrCatalog *attrList = g_catcache[cacheIndex].attrList;
-    *arraySize = (2 * g_catcache[cacheIndex].numAttrs + 2);
+    struct attrCatalog *attrList = g_CatCache[cacheIndex].attrList;
+    *arraySize = (2 * g_CatCache[cacheIndex].numAttrs + 2);
 
     *args = (char **) malloc(*arraySize * sizeof(char *));
     (*args)[0] = (char *) malloc(strlen("_insert") * sizeof(char));

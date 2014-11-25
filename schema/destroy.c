@@ -21,22 +21,22 @@
  */
 
 int Destroy(int argc, char **argv) {
-    if (g_db_open_flag != OK) {
-        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+    if (g_DBOpenFlag != OK) {
+        return ErrorMsgs(DB_NOT_OPEN, g_PrintFlag);
     }
     int pass_argc, i, relNum;
     char **pass_argv;
 
     if (argc < 2)
-        return ErrorMsgs(ARGC_INSUFFICIENT, g_print_flag);
+        return ErrorMsgs(ARGC_INSUFFICIENT, g_PrintFlag);
 
     if ((strcmp(argv[0], "_destroy") != 0)
             && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
-        return ErrorMsgs(METADATA_SECURITY, g_print_flag);
+        return ErrorMsgs(METADATA_SECURITY, g_PrintFlag);
     }
 
     if (remove(argv[1]) != 0) {
-        return ErrorMsgs(RELNOEXIST, g_print_flag);
+        return ErrorMsgs(RELNOEXIST, g_PrintFlag);
     } /* File deletion failed*/
 
     pass_argc = 5;
@@ -59,7 +59,7 @@ int Destroy(int argc, char **argv) {
     Delete(pass_argc, pass_argv);
 
     relNum = FindRelNum(argv[1]);
-    g_cache_in_use[relNum] = FALSE;
+    g_CacheInUse[relNum] = FALSE;
 
     for (i = 0; i < 5; ++i) {
         free(pass_argv[i]);

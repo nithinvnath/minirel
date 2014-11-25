@@ -13,14 +13,14 @@
  * @author nithin
  */
 int Load(int argc, char **argv) {
-    if (g_db_open_flag != OK) {
-        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+    if (g_DBOpenFlag != OK) {
+        return ErrorMsgs(DB_NOT_OPEN, g_PrintFlag);
     }
     char relName[RELNAME];
     strncpy(relName, argv[1], RELNAME);
 
     if (strcmp(relName, ATTRCAT) == 0 || strcmp(relName, RELCAT) == 0) {
-        return ErrorMsgs(METADATA_SECURITY, g_print_flag);
+        return ErrorMsgs(METADATA_SECURITY, g_PrintFlag);
     }
 
     if (OpenRel(relName) == NOTOK) {
@@ -28,25 +28,25 @@ int Load(int argc, char **argv) {
     }
 
     int relNum = FindRelNum(relName);
-    if (g_catcache[relNum].numRecs > 0) {
-        return ErrorMsgs(REL_NOT_EMPTY, g_print_flag);
+    if (g_CatCache[relNum].numRecs > 0) {
+        return ErrorMsgs(REL_NOT_EMPTY, g_PrintFlag);
     }
 
     int fd = open(argv[2], O_RDONLY);
     if (fd < 0) {
-        return ErrorMsgs(INVALID_FILE, g_print_flag);
+        return ErrorMsgs(INVALID_FILE, g_PrintFlag);
     }
 
-    int recLength = g_catcache[relNum].recLength;
+    int recLength = g_CatCache[relNum].recLength;
     char *newRec = (char *) calloc(recLength, sizeof(char));
 
-    g_check_duplicate_tuples = NOTOK;
+    g_CheckDuplicateTuples = NOTOK;
     while (read(fd, newRec, recLength) == recLength) {
         if (InsertRec(relNum, newRec) != OK) {
             return NOTOK;
         }
     }
-    g_check_duplicate_tuples = OK;
+    g_CheckDuplicateTuples = OK;
 
     return OK; /* all's fine */
 }

@@ -9,12 +9,12 @@
  * @return OK or NOTOK
  */
 int CloseDB(int argc, char **argv) {
-    if (g_db_open_flag != OK) {
-        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+    if (g_DBOpenFlag != OK) {
+        return ErrorMsgs(DB_NOT_OPEN, g_PrintFlag);
     }
     if (CloseCats() == OK) {
-        g_db_open_flag = NOTOK;
-        chdir(g_invoked_directory);
+        g_DBOpenFlag = NOTOK;
+        chdir(g_InvokedDirectory);
         return OK;
     } else {
         return NOTOK;

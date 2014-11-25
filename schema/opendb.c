@@ -22,31 +22,31 @@
  */
 
 int OpenDB(int argc, char **argv) {
-    DIR* dir_handler;
+    DIR* directoryHandler;
     char path[MAXPATH];
 
     if (argc < 2)
-        return ErrorMsgs(ARGC_INSUFFICIENT, g_print_flag);
+        return ErrorMsgs(ARGC_INSUFFICIENT, g_PrintFlag);
 
-    if (g_db_open_flag == OK)
-        return ErrorMsgs(DB_NOT_CLOSED, g_print_flag);
+    if (g_DBOpenFlag == OK)
+        return ErrorMsgs(DB_NOT_CLOSED, g_PrintFlag);
 
-    if ((dir_handler = opendir(argv[1])) != NULL) {
-        closedir(dir_handler);
+    if ((directoryHandler = opendir(argv[1])) != NULL) {
+        closedir(directoryHandler);
 
-        getcwd(g_invoked_directory, MAXPATH);
+        getcwd(g_InvokedDirectory, MAXPATH);
 
-        g_db_open_flag = OK;
+        g_DBOpenFlag = OK;
 
         chdir(argv[1]);
 
         if (OpenCats() == NOTOK) {
-            g_print_flag = NOTOK;
+            g_PrintFlag = NOTOK;
             return NOTOK;
         }
     }/* database exists */
     else {
-        return ErrorMsgs(DBNAME_INVALID, g_print_flag);
+        return ErrorMsgs(DBNAME_INVALID, g_PrintFlag);
     }/* database directoy couldn't open */
 
     return OK;
