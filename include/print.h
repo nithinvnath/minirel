@@ -19,6 +19,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <float.h>
+
+#define MAX_NUM_LENGTH  11
 
 int max(int a, int b);
 

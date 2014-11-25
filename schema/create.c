@@ -1,5 +1,7 @@
 #include "../include/create.h"
 
+#define _DESTROY  "_destroy"
+
 /**
  * Creates a new relation with the specified name and attributes.
  *
@@ -7,20 +9,19 @@
  * @param argv
  * @return
  */
-//TODO Should attribute and relation names be case sensitive
 int Create(int argc, char **argv) {
 
-    if(g_db_open_flag != OK){
-            return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
-        }
+    if (g_db_open_flag != OK) {
+        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+    }
 
     int offset, length, i;
-    char type, attrName[RELNAME + 2], relName[RELNAME + 2], attrFormat[4];
-    strcpy(relName, argv[1]);
+    char type, attrName[RELNAME], relName[RELNAME], attrFormat[4];
 
-    if (isValidString(relName) == NOTOK) {
+    if (isValidString(argv[1]) == NOTOK) {
         return ErrorMsgs(INVALID_ATTR_NAME, g_print_flag);
     }
+    strcpy(relName, argv[1]);
 
     /* To check if relation exists, we will call openRel
      * after turning off the error print flag temporarily. */
@@ -32,7 +33,6 @@ int Create(int argc, char **argv) {
     } else {
         g_print_flag = printFlag;
     }
-    //FIXME should file i/o be in physical layer?
     //Creating the file for relation and adding a page
     int fd = open(relName, O_RDWR | O_CREAT, S_IRWXU);
     char *slotmap = (char *) malloc((PAGESIZE - MAXRECORD) * sizeof(char));
@@ -48,7 +48,7 @@ int Create(int argc, char **argv) {
     int numAttrs;
     /* Iterate through each attribute and insert it to attrcat table */
     for (i = 2, numAttrs = 0, offset = 0; i < argc; i = i + 2, numAttrs++) {
-        strncpy(attrName, argv[i], RELNAME);
+        strncpy(attrName, argv[i], RELNAME-1);
 
         strcpy(attrFormat, argv[i + 1]);
         type = attrFormat[0];
@@ -72,10 +72,22 @@ int Create(int argc, char **argv) {
             } else if (strcmp(attrCatArgs[j], ATTRNAME) == 0) {
                 strcpy(attrCatArgs[j + 1], attrName);
             } else {
-                sprintf(attrCatArgs[j + 1],"%s",relName);
+                sprintf(attrCatArgs[j + 1], "%s", relName);
             }
         }
         offset += length;
+        if(offset>MAXRECORD){
+            char **destroy_args = (char **)malloc(sizeof(char*)*2);
+            destroy_args[0] = (char *) malloc(sizeof(char)*strlen(_DESTROY));
+            destroy_args[1] = (char *) malloc(sizeof(char)*strlen(relName));
+            sprintf(destroy_args[0],"%s",_DESTROY);
+            sprintf(destroy_args[1],"%s",relName);
+            Destroy(2,(char **)destroy_args);
+            free(destroy_args[0]);
+            free(destroy_args[1]);
+            free(destroy_args);
+            return ErrorMsgs(PAGE_OVERFLOW,g_print_flag);
+        }
         Insert(attrCatArraySize, attrCatArgs);
     }
 
@@ -133,7 +145,7 @@ void createTemplate(int cacheIndex, char ***args, char *relName, int *arraySize)
     i = 2;
     while (attrList != NULL) {
         (*args)[i] = (char *) malloc(strlen(attrList->attrName) * sizeof(char));
-        (*args)[i + 1] = (char *) malloc((attrList->length + 2) * sizeof(char));
+        (*args)[i + 1] = (char *) malloc((attrList->length) * sizeof(char));
         strcpy((*args)[i], attrList->attrName);
         i += 2;
         attrList = attrList->next;

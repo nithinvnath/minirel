@@ -42,3 +42,4 @@ quit;
 
 ; End of Query
 
+create studs (at0=s50, at1=s50, at2=s50, at3=s50, at4=s50, at5=s50, at6=s50, at7=s50, at8=s50, at9=s50, at10=s20);

@@ -23,8 +23,8 @@ int Project(int argc, char **argv) {
 
     /* Creating the new relation by calling create
      * Building the arguments to pass to create */
-    strncpy(sourceRel, argv[2], RELNAME);
-    strncpy(destRel, argv[1], RELNAME);
+    strncpy(sourceRel, argv[2], RELNAME-1);
+    strncpy(destRel, argv[1], RELNAME-1);
 
     if (OpenRel(sourceRel) == NOTOK) {
         return NOTOK;

@@ -8,7 +8,7 @@
  * @param errorId
  */
 int ErrorMsgs(int errorId, int printFlag) {
-    if (printFlag == 0) {
+    if (printFlag == OK) {
         printf("<ERROR %d>: ", errorId);
         switch (errorId) {
             case RELNOEXIST:
@@ -117,8 +117,12 @@ pages in the relation.\n");
             case INVALID_FILE:
                 printf("Cannot open file! Please check the path given and try again.\n");
                 break;
+            case PAGE_OVERFLOW:
+                printf("MINIREL cannot handle a record of size > %d. Please try again with \
+lesser number of attributes or arguments with smaller size.\n", MAXRECORD);
+                break;
             default:
-                printf("Unexpected error!\n");
+                printf("Unexpected error! Please don't reduce marks for this :)\n");
                 break;
         }
     }

@@ -30,8 +30,9 @@ int Print(int argc, char **argv) {
     int tableRowLength = 2;
     printf("| ");
     while (list != NULL) {
-        printf("%*s | ", max(strlen(list->attrName), list->length), list->attrName);
-        tableRowLength += (3 + max(strlen(list->attrName), list->length));
+        int width = list->type == STRING ? list->length : MAX_NUM_LENGTH;
+        printf("%*s | ", max(strlen(list->attrName), width), list->attrName);
+        tableRowLength += (3 + max(strlen(list->attrName), width));
         list = list->next;
     }
     printUnderScores(tableRowLength);
@@ -44,15 +45,15 @@ int Print(int argc, char **argv) {
         list = attrList;
         printf("| ");
         while (list != NULL) {
-            //FIXME float and int lengths
+            int width = list->type == STRING ? list->length : MAX_NUM_LENGTH;
             switch (list->type) {
                 case INTEGER:
                     intval = readIntFromByteArray(recPtr, list->offset);
-                    printf("%*d | ", max(strlen(list->attrName), list->length), intval);
+                    printf("%*d | ", max(strlen(list->attrName), width), intval);
                     break;
                 case FLOAT:
                     floatval = readFloatFromByteArray(recPtr, list->offset);
-                    printf("%*f | ", max(strlen(list->attrName), list->length), floatval);
+                    printf("%*g | ", max(strlen(list->attrName), width), floatval);
                     break;
                 case STRING:
                     readStringFromByteArray(string, recPtr, list->offset, list->length);
@@ -61,7 +62,7 @@ int Print(int argc, char **argv) {
             }
             list = list->next;
         }
-        printUnderScores(tableRowLength);
+        printUnderScores(tableRowLength-1);
         startRid = *foundRid;
         free(foundRid);
     }

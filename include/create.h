@@ -14,6 +14,7 @@
 #include "helpers.h"
 #include "openrel.h"
 #include "insert.h"
+#include "destroy.h"
 
 #include <stdio.h>
 #include <string.h>

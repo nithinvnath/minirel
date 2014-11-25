@@ -10,10 +10,8 @@
  * Contains helper functions used throughout the project
  *
  *  Created on: 29-Oct-2014
- *      Author: nithin
+ *      Author: nithin, dheeraj
  */
-
-//FIXME Move to another folder?
 int readStringFromByteArray(char * string, const char *byteArray, const int offset, const int size) {
     if (byteArray == NULL || string == NULL) {
         return ErrorMsgs(NULL_POINTER_EXCEPTION, g_print_flag);
@@ -67,7 +65,6 @@ bool compareNum(float val1, float val2, int compOp) {
     return FALSE;
 }
 
-//TODO Ask about supported string comparison
 bool compareStrings(char *s1, char *s2, int compOp) {
     switch (compOp) {
         case EQ:

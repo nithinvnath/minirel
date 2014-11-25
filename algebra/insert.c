@@ -1,6 +1,5 @@
 #include "../include/insert.h"
 
-//TODO Should we throw error in case not all attributes are given?
 /**
  * Implementation of insert command.
  * argv[0] - insert
@@ -15,12 +14,8 @@
  * @return OK if success
  */
 int Insert(int argc, char **argv) {
-/*    int k;
-    for(k=0; k<argc; k++)
-        printf("%s\n",argv[k]);
-    printf("\n");
 
-*/    if ((strcmp(argv[0], "_insert") != 0)
+    if ((strcmp(argv[0], "_insert") != 0)
             && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
         return ErrorMsgs(METADATA_SECURITY, g_print_flag);
     }
@@ -58,8 +53,7 @@ int Insert(int argc, char **argv) {
                 convertFloatToByteArray(floatval, recPtr + attr->offset);
                 break;
             case STRING:
-                //removeQuotes(argv[i + 1]);
-                strncpy(recPtr + attr->offset, argv[i + 1], attr->length);
+                strncpy(recPtr + attr->offset, argv[i + 1], attr->length-1);
                 break;
             default:
                 break;
