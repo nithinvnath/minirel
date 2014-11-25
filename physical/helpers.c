@@ -229,4 +229,3 @@ struct attrCatalog* getAttrCatalog(struct attrCatalog* attrList, char *attrName)
     }
     return attrList;
 }
-

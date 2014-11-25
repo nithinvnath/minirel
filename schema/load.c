@@ -11,6 +11,26 @@
  * @param argv
  * @return OK or NOTOK
  * @author nithin
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      g_CheckDuplicateTuples
+ *
+ * ERRORS REPORTED:
+ *      DB_NOT_OPEN
+ *      METADATA_SECURITY
+ *      REL_NOT_EMPTY
+ *      INVALID_FILE
+ *
+ * ALGORITHM:
+ *      1. Check if DB is open and if trying to loaf  into attrcat ot relcat
+ *      2. Open relation with given name
+ *      3. Check if the relation is empty
+ *      4. Open the file given
+ *      5. Read a byte array of recLength size and call InsertRec()
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses InsertRec(), OpenRel()
+ *
  */
 int Load(int argc, char **argv) {
     if (g_DBOpenFlag != OK) {

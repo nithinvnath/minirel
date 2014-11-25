@@ -4,6 +4,7 @@
  * Implements the project command
  * Creates the result relation with the attributes given in argv,
  * then performs the projection
+ *
  * argv[0] - "project"
  * argv[1] - result relation
  * argv[2] - source relation
@@ -11,9 +12,30 @@
  * ....
  * argv[argc] - NIL
  *
- * @param argc
+ * @param argc - Argument count
  * @param argv
  * @return OK if success
+ *
+ * GLOBAL VARIABLES MODIFIED
+ *      - g_PrintFlag (but switches it back)
+ *
+ * ERRORS REPORTED:
+ *      - DB_NOT_OPEN
+ *      - ATTRNOEXIST
+ *
+ * ALGORITHM:
+ *      1. Checks if DB is open and if sourceRel exists
+ *      2. Creates a new destination relation using Create()
+ *          - This is  done by manually creating arguments to be passed.
+ *      3. Open the destination relation
+ *      4. Iterate over each record in source relation
+ *      5.      Take each attribute in destination relation
+ *      6.          Directly copy the bytes from source relation to a byte
+ *                      array at the correct offset
+ *      7.      Insert the byte array by calling InsertRec
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses: OpenRel(), FindRelNum(), Create(), GetNextRec(), InsertRec()
  */
 int Project(int argc, char **argv) {
     if (g_DBOpenFlag != OK) {

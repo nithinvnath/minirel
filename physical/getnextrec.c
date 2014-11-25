@@ -2,13 +2,29 @@
 
 /**
  * Gets the next record in sequential scan
+ *
  * @param relNum    - The relation number
  * @param startRid  - The Rid from which to begin search for next record (not including startRid).
  * @param foundRid  - The Rid of the first record after the one specified by startRid.
  * @param recPtr    - A pointer to a record-sized byte array into which the contents of the next
  *                    record (if any) will be put.
- *
  * @return flag - Found or not found
+ *
+ * @author nithin
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      <none>
+ *
+ * ERRORS REPORTED:
+ *      None on its own
+ *
+ * ALGORITHM:
+ *      1. For each page from startRid to end
+ *      2.      Read the page containing startRid
+ *      4.      For each record in page
+ *      5.          Check the slotmap and see if it is in use, if yes break and return
+ *      6. return NOTOK if no next rec
+ *
  */
 int GetNextRec(const int relNum, const Rid *startRid, Rid **foundRid, char **recPtr) {
     int recsPerPg = g_CatCache[relNum].recsPerPg;

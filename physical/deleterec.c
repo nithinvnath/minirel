@@ -3,9 +3,29 @@
 /**
  * Delete record recRid from relation relNum
  *
- * @param relNum
- * @param rid
- * @return OK or NOTOK
+ * @param relNum - the relation number
+ * @param rid    - Rid of record to be deleted
+ * @return OK - everything goes well
+ *         NOTOK - otherwise
+ * @author nithin
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      g_Buffer[relNum]
+ *      g_CatCache[relNum]
+ *
+ * ERRORS REPORTED:
+ *      NULL_ARGUMENT_RECEIVED
+ *      RELNUM_OUT_OF_BOUND
+ *      (highly doubt if these will ever come into play)
+ *
+ * ALGORITHM:
+ *      1. Check for errors
+ *      2. Read the page containing rid
+ *      3. Update the slotmap and numRecs
+ *      4. Set the buffer and cache to dirty
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses ReadPage()
  */
 int DeleteRec(const int relNum, const Rid *rid) {
     if (rid == NULL) {

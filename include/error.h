@@ -42,6 +42,7 @@
 #define REL_NOT_EMPTY               132     /* Relation is not empty */
 #define INVALID_FILE                133     /* The file given by path is invlaid */
 #define PAGE_OVERFLOW               134     /* Record length is greated than MAXRECORD */
+#define INSUFFICIENT_ATTRS          135     /* Number of attributes passed is less */
 
 int ErrorMsgs(int errorId, int printFlag);
 

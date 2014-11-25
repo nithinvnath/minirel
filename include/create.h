@@ -40,4 +40,6 @@ void createTemplate(int cacheIndex, char ***args, char *relName, int *arraySize)
 
 void freeAllottedMem(char **args, int arraySize);
 
+void deleteAttrCatEntries(char *relName);
+
 #endif /* CREATE_H_ */

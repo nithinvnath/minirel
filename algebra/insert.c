@@ -2,6 +2,8 @@
 
 /**
  * Implementation of insert command.
+ * See documentation for complete specs
+ *
  * argv[0] - insert
  * argv[1] - relation name
  * argv[2] - attr name 1
@@ -9,11 +11,36 @@
  * ...
  * argv[argc] - NIL
  *
- * @param argc
- * @param argv
+ * @param argc - Count of arguments
+ * @param argv - you know..
  * @return OK if success
+ * @author nithin
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      <NONE>
+ *
+ * ERRORS REPORTED:
+ *      - METADATA_SECURITY
+ *      - ATTR_NOT_IN_REL
+ *      - INSUFFICIENT_ATTRS
+ *      - DB_NOT_OPEN
+ *
+ * ALGORITHM:
+ *      1. Check for possible errors
+ *      2. Create a char Array of size recLength
+ *      3. Read each value from argv and convert it to a byte array
+ *      4. Copy the byte array to correct location (using offset from attrList)
+ *      5. Call InsertRec()
+ *
+ * IMPLEMENTATION NOTES:
+ *      Record duplication is checked in InsertRec()
+ *      Uses: OpenRel()
  */
 int Insert(int argc, char **argv) {
+
+    if (g_DBOpenFlag != OK) {
+        return ErrorMsgs(DB_NOT_OPEN, g_PrintFlag);
+    }
 
     if ((strcmp(argv[0], "_insert") != 0)
             && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
@@ -26,6 +53,10 @@ int Insert(int argc, char **argv) {
     int relNum = OpenRel(relName);
     if (relNum == NOTOK) {
         return NOTOK;
+    }
+
+    if (g_CatCache[relNum].numAttrs != (argc - 2) / 2) {
+        return ErrorMsgs(INSUFFICIENT_ATTRS, g_PrintFlag);
     }
 
     int i;

@@ -5,7 +5,22 @@
  * dirty, then marking the buffer page as being clean.
  *
  * @param relNum - the relation number
+ * @return OK if success
  * @author nithin
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      g_Buffer[relNum]
+ *
+ * ERRORS REPORTED:
+ *      RELNUM_OUT_OF_BOUND
+ *      FILE_SEEK_ERROR
+ *      WRITE_DISK_ERROR
+ *
+ * ALGORITHM:
+ *      1. Check if buffer is dirty. If Not, return OK
+ *      2. Construct a byte array corresponding to the page
+ *      3. Seek the file to correct position and write
+ *
  */
 int FlushPage(int relNum) {
     if (relNum < 0 || relNum >= MAXOPEN) {
@@ -36,7 +51,6 @@ int FlushPage(int relNum) {
         }
     }
     g_Buffer[relNum].dirty = FALSE;
-    //g_Buffer[relNum].pid = 0;
 
     return OK;
 }

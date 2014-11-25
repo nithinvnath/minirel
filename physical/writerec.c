@@ -8,6 +8,27 @@
  * @param recPtr
  * @param RecId
  * @return OK or NOTOK
+ * @author nithin
+ *
+ * GLOBAL VARIABLES MODIFIED
+ *      g_Buffer[relNum]
+ *
+ * ERRORS REPORTED:
+ *      NULL_ARGUMENT_RECEIVED
+ *      RELNUM_OUT_OF_BOUND
+ *
+ * ALGORITHM:
+ *      1. Check for errors in received arguments
+ *      2. Read the page given by recId using ReadPage()
+ *      3. Iterate over each character of recPtr
+ *      4.      Assign recPtr[i] to page.contents[i+offset]
+ *      5. Set the buffer as dirty
+ *
+ * IMPLEMENTATION NOTES:
+ *      We use a for loop to copy the char array instead of strcpy as
+ *      the array may contain null character which we need to get copied
+ *
+ *      Uses ReadPage()
  */
 int WriteRec(const int relNum, const char *recPtr, const Rid *recId) {
     if (recPtr == NULL || recId == NULL) {

@@ -13,7 +13,6 @@
 #include "globals.h"
 #include "helpers.h"
 #include "openrel.h"
-#include "getnextrec.h"
 #include "insertrec.h"
 
 #include <stdio.h>
