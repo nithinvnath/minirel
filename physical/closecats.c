@@ -27,9 +27,9 @@ int CloseCats()
         if(g_cache_in_use[i] == TRUE)
             CloseRel(i);
     /* Closing Relation attrcat */
-    CloseRel(1);
+    CloseRel(ATTRCAT_CACHE);
     /* Closing Relation relcat */
-    CloseRel(0); 
+    CloseRel(RELCAT_CACHE);
 
     return OK;
 }

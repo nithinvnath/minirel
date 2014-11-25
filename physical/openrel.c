@@ -21,15 +21,19 @@
 int OpenRel(char* RelName) {
     Rid start, *found;
     char* bin_data;
-    char full_rel_path[3 * RELNAME];
     struct attrCatalog *temp = NULL, *newnode = NULL;
     bool first_exec = TRUE;
     int i, j, ret_value;
+    for (i = 0; i < MAXOPEN; i++) {
+        if (g_cache_in_use[i] == TRUE && strcmp(g_catcache[i].relName,RelName) == 0)
+            return i;
+    }
+
 
     start.pid = 1;
     start.slotnum = 0;
 
-    ret_value = FindRec(0, &start, &found, &bin_data, 's', RELNAME, 0, RelName, EQ);
+    ret_value = FindRec(RELCAT_CACHE, &start, &found, &bin_data, 's', RELNAME, 0, RelName, EQ);
 
     if (ret_value == NOTOK) {
         return ErrorMsgs(RELNOEXIST, g_print_flag);
@@ -47,10 +51,9 @@ int OpenRel(char* RelName) {
         if (i != MAXOPEN) {
             g_cache_in_use[i] = TRUE;
             g_cache_timestamp[i] = 1;
-            g_cache_dirty[i] = FALSE;
 
             for (j = 2; j < MAXOPEN; j++) {
-                if (g_cache_in_use[j] == TRUE)
+                if (g_cache_in_use[j] == TRUE && j != i)
                     g_cache_timestamp[j]++;
             }
         }/* Found an empty slot.*/
@@ -62,7 +65,8 @@ int OpenRel(char* RelName) {
 
             g_cache_timestamp[i] = 1;
             for (j = 2; j < MAXOPEN; ++j) {
-                g_cache_timestamp[j]++;
+                if(j != i)
+                    g_cache_timestamp[j]++;
             }
 
             /* update numRecs, numPgs in RelCat relation from g_catcache[i] entry (if modified), and 
@@ -83,13 +87,12 @@ int OpenRel(char* RelName) {
         g_catcache[i].relcatRid = *found;
         g_catcache[i].dirty = FALSE;
 
-        sprintf(full_rel_path, "%s/%s/%s", PATH, g_db_name, RelName);
-        g_catcache[i].relFile = open(full_rel_path, O_RDWR);
+        g_catcache[i].relFile = open(RelName, O_RDWR);
 
         start.pid = 1;
         start.slotnum = 0;
 
-        ret_value = FindRec(1, &start, &found, &bin_data, 's', RELNAME, 32, RelName, EQ);
+        ret_value = FindRec(ATTRCAT_CACHE, &start, &found, &bin_data, 's', RELNAME, 32, RelName, EQ);
 
         if (ret_value == NOTOK) {
             return ErrorMsgs(NO_ATTRS_FOUND, g_print_flag);
@@ -112,10 +115,11 @@ int OpenRel(char* RelName) {
             temp->type = readIntFromByteArray(bin_data, 8);
             readStringFromByteArray(temp->attrName, bin_data, 12, RELNAME);
             readStringFromByteArray(temp->relName, bin_data, 32, RELNAME);
+            temp->next = NULL;
 
             start = *found;
             free(found);
-            ret_value = FindRec(1, &start, &found, &bin_data, 's', RELNAME, 32, RelName, EQ);
+            ret_value = FindRec(ATTRCAT_CACHE, &start, &found, &bin_data, 's', RELNAME, 32, RelName, EQ);
         }
         return i;
     }

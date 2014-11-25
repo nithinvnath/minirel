@@ -26,4 +26,18 @@ void convertFloatToByteArray(float value, char *byteArray);
 
 Rid getLastRid(int relNum);
 
+int separate_db_path(char* db_with_path, char* path, char* dbname);
+
+struct attrCatalog* getAttrCatalog(struct attrCatalog *attrList, char *attrName);
+
+void removeQuotes(char *quotedString);
+/*  Helpers for schema/physical layer */
+int compareRecords(char *record1, char *record2, int sizeOfRecord);
+
+int getN(char *sN);
+
+int isValidString(char *string);
+
+int getSizeOfAttr(char *attrFormat);
+
 #endif /* HELPERS_H_ */

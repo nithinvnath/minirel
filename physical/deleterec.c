@@ -16,9 +16,10 @@ int DeleteRec(const int relNum, const Rid *rid) {
     }
 
     if (ReadPage(relNum, rid->pid) == OK) {
-        g_buffer[relNum].page.slotmap &= ~(1 << rid->slotnum);
+        g_buffer[relNum].page.slotmap &= ~(1 << (32-rid->slotnum));
         g_buffer[relNum].dirty = TRUE;
         g_catcache[relNum].numRecs--;
+        g_catcache[relNum].dirty = TRUE;
         return OK;
     } else {
         return NOTOK;

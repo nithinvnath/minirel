@@ -7,14 +7,27 @@
  * @param   recPtr
  * @return  OK or NOTOK
  */
-int InsertRec(const int relNum, const char*recPtr) {
+int InsertRec(const int relNum, char*recPtr) {
 
     if (recPtr == NULL) {
         return ErrorMsgs(NULL_ARGUMENT_RECEIVED, g_print_flag);
     }
+
+    /* Checking for duplicates */
+    Rid *fRid, sRid = { 0, 0 };
+    char *record;
+    while (GetNextRec(relNum, &sRid, &fRid, &record) == OK && g_check_duplicate_tuples == OK) {
+        if (compareRecords(record, recPtr, g_catcache[relNum].recLength) == OK) {
+            return ErrorMsgs(DUPLICATE_TUPLE, g_print_flag);
+        }
+        sRid = *fRid;
+        free(fRid);
+    }
+
     Rid startRid = { 1, 0 }, foundRid;
     /* Insert record    */
     getNextFreeSlot(relNum, startRid, &foundRid);
+    ReadPage(relNum, foundRid.pid);
     unsigned int recLength = g_catcache[relNum].recLength;
     int i, j;
     int offset = (foundRid.slotnum - 1) * recLength;
@@ -24,12 +37,13 @@ int InsertRec(const int relNum, const char*recPtr) {
 
     /*  Update dirty bits and slotmap*/
     g_buffer[relNum].dirty = TRUE;
-    g_buffer[relNum].page.slotmap = (g_buffer[relNum].page.slotmap | 1 << foundRid.slotnum);
+    g_buffer[relNum].page.slotmap = (g_buffer[relNum].page.slotmap | 1 << (32 - foundRid.slotnum));
 
     /*  Update numRecs in catCache*/
     g_catcache[relNum].dirty = TRUE;
     g_catcache[relNum].numRecs++;
-    g_catcache[relNum].numPgs = foundRid.pid;
+    g_catcache[relNum].numPgs =
+            g_catcache[relNum].numPgs > foundRid.pid ? g_catcache[relNum].numPgs : foundRid.pid;
 
     return OK;
 }
@@ -46,23 +60,23 @@ int getNextFreeSlot(const int relNum, const Rid startRid, Rid *foundRid) {
 
     int numPgs = g_catcache[relNum].numPgs;
     int recsPerPg = g_catcache[relNum].recsPerPg;
-    Rid prevRid, curRid = getNextRid(startRid.pid, g_buffer[relNum].page.slotmap, recsPerPg, numPgs,
+    Rid prevRid, curRid = getNextRid(startRid.pid, startRid.slotnum, recsPerPg, numPgs,
             getLastRid(relNum));
     prevRid = curRid;
-    int flag = OK;
+    int flag = NOTOK;
 
     while (curRid.pid <= numPgs && flag == NOTOK) {
         ReadPage(relNum, curRid.pid);
-        while (prevRid.slotnum <= curRid.slotnum) {
+        do{
             //If slotmap says it is free
-            if (!(g_buffer[relNum].page.slotmap & (1 << curRid.slotnum))) {
+            if (!(g_buffer[relNum].page.slotmap & (1 << (32 - curRid.slotnum)))) {
                 flag = OK;
                 break;
             }
             prevRid = curRid;
-            curRid = getNextRid(curRid.pid, g_buffer[relNum].page.slotmap, recsPerPg, numPgs,
+            curRid = getNextRid(curRid.pid, curRid.slotnum, recsPerPg, numPgs,
                     getLastRid(relNum));
-        }
+        }while(prevRid.slotnum <= curRid.slotnum);
     }
     (*foundRid) = curRid;
     return OK;

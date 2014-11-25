@@ -37,6 +37,12 @@ ALGEBRA.o : $(OBJ)
 
 $(OBJ) : $(INCLUDE)/globals.h $(INCLUDE)/defs.h $(INCLUDE)/error.h 
 
+insert.o : $(INCLUDE)/insert.h
+delete.o : $(INCLUDE)/delete.h
+join.o : $(INCLUDE)/join.h
+project.o : $(INCLUDE)/project.h
+select.o : $(INCLUDE)/select.h
+
 ###############################################################
 #  misc
 ###############################################################
@@ -44,8 +50,8 @@ $(OBJ) : $(INCLUDE)/globals.h $(INCLUDE)/defs.h $(INCLUDE)/error.h
 tags:
 	ctags -t $(SRCS) $(INCLUDE)/defs.h $(INCLUDE)/error.h
 
-lint:	
-	lint $(SRCS) $(INCLUDE)/defs.h $(INCLUDE)/error.h > lint.out
+splint:	
+	splint $(SRCS) $(INCLUDE)/defs.h $(INCLUDE)/error.h > lint.out
 
 clean:  # remove all .o files and other garbage
 	rm *.o

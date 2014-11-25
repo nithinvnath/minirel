@@ -13,15 +13,15 @@ create teachassist (sid = i, fid = i, ptime = i);
 buildindex for students on sname;
 
 ; load the relation
-load students from /home/MINIREL/data/binary/Students;
-load profs from /home/MINIREL/data/binary/Profs;
-load teachassist from /home/MINIREL/data/binary/Teachassist;
+load students from /home/nithin/workspace/minirel/data/linuxbinary/Students;
+load profs from /home/nithin/workspace/minirel/data/linuxbinary/Profs;
+load teachassist from /home/nithin/workspace/minirel/data/linuxbinary/Teachassist;
  
 ; print the relation
 print students;
 
 ; perform queries
-select into goodstudents from students where (sgpa > 3.0);
+select into goodstudents from students where (gpa > 3.0);
 print goodstudents;
 project into salstat from profs (salary, status);
 print salstat;
@@ -29,7 +29,7 @@ join into tastudent (students.sid, teachassist.sid);
 print tastudent;
 insert into students (sname = "Late Comer", sid = 101, gpa = 0.1);
 print students;
-delete from goodstudents where (sname < "john");
+delete from goodstudents where (sname < "John");
 print goodstudents;
 
 ; drop indexes

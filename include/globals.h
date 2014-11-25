@@ -10,11 +10,16 @@
 
 CacheEntry  g_catcache[MAXOPEN];     /* catalog cache */
 Buffer      g_buffer[MAXOPEN];       /* buffer pool */
-char g_db_name[RELNAME];             /* name of database */
 
 bool g_cache_in_use[MAXOPEN];        /* cache use bit map */
 int g_cache_timestamp[MAXOPEN];      /* The order at which they used */
-bool g_cache_dirty[MAXOPEN];         /* Cache Entry is dirty or not */
 
-int g_print_flag;                   /* The error print flag */
+char g_invoked_directory[MAXPATH];   /* The directory from which invoked */
+
+int g_db_open_flag;                 /* Flag set to OK whenever a DB is open */
+
+int g_print_flag;                    /* The error print flag */
+
+int g_check_duplicate_tuples;         /* Flag dictates whether duplicate tuples are allowed */
+
 #endif

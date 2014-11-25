@@ -30,7 +30,8 @@ int CloseRel(int relNum)
     if(g_catcache[relNum].dirty == FALSE)
         return OK;
     else{
-        if( FindRec(0, &startRid, &foundRid, &recPtr, STRING, RELNAME, 0, g_catcache[relNum].relName, EQ) == NOTOK ){
+        if( FindRec(RELCAT_CACHE, &startRid, &foundRid, &recPtr, STRING, RELNAME, 0,
+                g_catcache[relNum].relName, EQ) == NOTOK ){
             return ErrorMsgs(RELNOEXIST, g_print_flag);
         }
         else{
@@ -38,7 +39,9 @@ int CloseRel(int relNum)
             numRecs = g_catcache[relNum].numRecs;
             convertIntToByteArray(numRecs,recPtr + 32);
             convertIntToByteArray(numPgs,recPtr + 36);
-            FlushPage(0);
+
+            WriteRec(RELCAT_CACHE,recPtr,foundRid);
+            FlushPage(RELCAT_CACHE);
 
             struct attrCatalog *temp, *linked_list_head = g_catcache[relNum].attrList;
             g_catcache[relNum].dirty = FALSE;

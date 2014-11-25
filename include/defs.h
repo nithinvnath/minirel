@@ -3,14 +3,14 @@
     */
 #ifndef DEFS_H_
 #define DEFS_H_
-//FIXME move PATH to better location?
+
 /*************************************************************
         CONSTANTS
 *************************************************************/
 #define PAGESIZE    512    /* number of bytes in a page */
 #define    MAXRECORD    508    /* PAGESIZE minus number of bytes taken up
                                    for slot map */
-
+#define MAXPATH        100  /* maximum path length that can be given */
 #define RELNAME        20    /* max length of a relation name */
 #define MAXOPEN        20      /* max number of files that can be open
                                    at the same time */
@@ -21,8 +21,9 @@
 #define RELCAT        "relcat"   /* name of the relation catalog file */
 #define ATTRCAT        "attrcat"  /* name of the attribute catalog file */
 
-
-#define PATH ".minirel_data"
+#define RELCAT_CACHE    0
+#define ATTRCAT_CACHE   1
+#define MAX_STRING_SIZE 50
 
 /*************************************************************
         COMPARISON OPERATORS
