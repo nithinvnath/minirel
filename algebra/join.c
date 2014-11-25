@@ -39,6 +39,31 @@ void copyBinaryArray(char *dest, char *source, int length) {
  *  
  *  returns: OK upon successfully performed join relation
  *           NOTOK: otherwise
+ *
+ *  GLOBAL VARIABLES MODIFIED:
+ *      <None> 
+ *
+ *  ERRORS REPORTED:
+ *      ARGC_INSUFFICIENT
+ *      RELNOEXIST
+ *      ATTRNOEXIST
+ *      TYPE_MISMATCH
+ *
+ *  ALGORITHM:
+ *   1. Check for Errors
+ *   2. Opens both relations and finds offsets of join attributes from both relations.
+ *   3. Rename the attributes in 2nd relation if names are matched from first relation (if any)
+ *   4. Creates a new relation with combined attribute set from source relations, 
+ *      without repeating join attribute.
+ *   5. Finds records of relation1 using GetNextRec()
+ *   6. Searches in relation2 for matching record using FindRec()
+ *   7. Repeats 5-6 till last record of relation1, and inserts into new relation.
+ *
+ *  IMPLEMENTATION NOTES:
+ *      Uses OpenRel, FindRelNum, GetNextRec, FindRec, InsertRec from physical layer.
+ *      Uses Create from schema layer
+ *
+ *
  */
 
 int Join(int argc, char **argv) {

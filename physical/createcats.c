@@ -5,8 +5,38 @@
  *      Author: Dheeraj
  */
 
-#include <stdio.h>
 #include "../include/createcats.h"
+
+/*
+ * Function: CreateCats() 
+ * ----------------------
+ * Creates the system catalogs and places entries in the catalogs for the catalogs
+ *
+ *  returns: OK on success
+ *           NOTOK on failure
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      <None>
+ *
+ * ERRORS REPORTED:
+ *      CAT_FILE_ALREADY_EXIST
+ *
+ * ALGORITHM:
+ *   1. Check for Errors
+ *   2. Create Relcat
+ *   3. Create Attrcat
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses only local functions except Error Handling function.
+ *
+ */
+
+int CreateCats() {
+    if (CreateRelCat() == OK && CreateAttrCat() == OK)
+        return OK;
+    else
+        return NOTOK;
+}
 
 /*
  * Function: CreateRelCat() 
@@ -155,20 +185,4 @@ int CreateAttrCat() {
 
     fclose(filePointer);
     return OK;
-}
-
-/*
- * Function: CreateCats() 
- * ----------------------
- * Creates the system catalogs and places entries in the catalogs for the catalogs
- *
- *  returns: OK on success
- *           NOTOK on failure
- */
-
-int CreateCats() {
-    if (CreateRelCat() == OK && CreateAttrCat() == OK)
-        return OK;
-    else
-        return NOTOK;
 }

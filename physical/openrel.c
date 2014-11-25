@@ -16,6 +16,26 @@
  *  
  *  returns: RelNum
  *           NOTOK on failure
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      g_CacheInUse[i] changes to TRUE to the slot which is opened for new relation
+ *      g_CacheTimestamp[i] updates to latest timestamp
+ *      g_CacheLastTimestamp updated
+ *
+ *      g_CatCache[i] entries are updated w.r.t. new relation opened.
+ *
+ * ERRORS REPORTED:
+ *      RELNOEXIST
+ *      NO_ATTRS_FOUND
+ *
+ * ALGORITHM:
+ *    1. Finds an empty slot if available.
+ *    2. Else closes an opened relation using FIFO approach.
+ *    3. Updates the catcache entries to new slot.
+ *    4. Creates cache values of attribute catalog.
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses FindRec from physical layer
  */
 
 int OpenRel(char* relName) {
@@ -25,8 +45,12 @@ int OpenRel(char* relName) {
     bool isFirstExecution = TRUE;
     int i, j, returnVal;
     for (i = 0; i < MAXOPEN; i++) {
-        if (g_CacheInUse[i] == TRUE && strcmp(g_CatCache[i].relName, relName) == 0)
-            return i;
+        if (g_CacheInUse[i] == TRUE && strcmp(g_CatCache[i].relName, relName) == 0){
+
+            g_CacheTimestamp[i] = g_CacheLastTimestamp;
+            g_CacheLastTimestamp++;
+            return i;            
+        }
     }
 
     startRid.pid = 1;

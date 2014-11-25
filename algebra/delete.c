@@ -21,6 +21,25 @@
  *  
  *  returns: OK upon successfully performed deletion
  *           NOTOK: otherwise
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *     <None> 
+ *
+ * ERRORS REPORTED:
+ *     DB_NOT_OPEN
+ *     METADATA_SECURITY
+ *     RELNOEXIST
+ *     ATTRNOEXIST
+ * 
+ * ALGORITHM:
+ *  1. check for errors.
+ *  2. Finds the details of the attribute of source relation, specified.
+ *  3. Using FindRec() finds out matching Rids, and using deleterec, we remove those Rids
+ *  4. Repeat step 3 till last matching record.
+ *
+ * IMPLEMENTATION NOTES:
+ *  Using FindRelNum, FindRec, and DeleteRec from physical layer.
+ *
  */
 
 int Delete(int argc, char **argv) {

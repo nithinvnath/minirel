@@ -17,6 +17,23 @@
  *
  *  returns: OK on success
  *           NOTOK on failure
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      g_CatCache[relNum].dirty = FALSE
+ *      g_CacheInUse[relNum] = FALSE;
+ *      g_CacheTimestamp[relNum] = 0;
+ *
+ * ERRORS REPORTED:
+ *      RELNOEXIST
+ *
+ * ALGORITHM:
+ *   1. Checks for errors.
+ *   2. FlushPage current bufferpage, which will update disk if buffer is dirty
+ *   3. checks if cache entry is dirty
+ *   4. if yes, update relcat entries for corresponding entry.
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses FlushPage, FindRec, WriteRec from physical layer.
  */
 
 int CloseRel(int relNum) {

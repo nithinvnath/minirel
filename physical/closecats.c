@@ -8,12 +8,27 @@
 #include "../include/closecats.h"
 
 /*
- * Function: CloseCat() 
+ * Function: CloseCats() 
  * ----------------------
  * Closes catalog files
  *
  *  returns: OK on success
  *           NOTOK on failure
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      <None>
+ *
+ * ERRORS REPORTED:
+ *      <None>
+ * 
+ * ALGORITHM:
+ *   1. If any of the relation is not closed, call CloseRel for that relation.
+ *   2. Call CloseRel for Attrcat
+ *   3. Call CloseRel for Relcat
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses CloseRel from physical layer.
+ * 
  */
 
 int CloseCats() {
