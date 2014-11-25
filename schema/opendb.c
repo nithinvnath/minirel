@@ -19,6 +19,24 @@
  *
  *  returns: OK    upon opening database
  *           NOTOK database does not exist, or unable to open catalog
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      g_InvokedDirectory is assigned with invoked location of minirel.
+ *      g_DBOpenFlag = OK
+ *
+ * ERRORS REPORTED:
+ *      ARGC_INSUFFICIENT
+ *      DB_NOT_CLOSED
+ *      DBNAME_INVALID
+ *
+ * ALGORITHM:
+ *   1. Checks for Errors.
+ *   2. copies current directory to g_InvokedDirectoy
+ *   3. changes to given database directory and Open cats.
+ *   
+ * IMPLEMENTATION NOTES:
+ *      Uses OpenCats from physical layer.
+ *
  */
 
 int OpenDB(int argc, char **argv) {

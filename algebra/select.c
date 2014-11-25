@@ -20,8 +20,28 @@
  * argv[5] = value
  * argv[argc] = NIL
  *  
- *  returns: OK upon successfully performed selection
+ * returns: OK upon successfully performed selection
  *           NOTOK: otherwise
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *     <None>
+ *
+ * ERRORS REPORTED:
+ *     ARGC_INSUFFICIENT
+ *     RELNOEXIST
+ *     ATTRNOEXIST
+ *
+ * ALGORITHM:
+ *   1. Checks for Errors.
+ *   2. Opens Source Relation and target relation
+ *   3. Finds records satisfying given condition using FindRec
+ *   4. Inserts into target relation, if such record is found
+ *   5. Repeats 3-4 till last matching record of source relation.
+ *
+ * IMPLEMENTATION NOTES:
+ *     Uses OpenRel, FindRelNum, FindRec, InsertRec from physical layer
+ *     Uses Create from schema layer.
+ *
  */
 
 int Select(int argc, char **argv) {
@@ -102,7 +122,6 @@ int Select(int argc, char **argv) {
 
     switch (type) {
         case STRING:
-            //removeQuotes(argv[5]);
             break;
         case INTEGER:
             intVal = atoi(argv[5]);

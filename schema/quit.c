@@ -15,6 +15,18 @@
  * argv[0] = “quit”
  * argv[argc] = NIL
  * 
+ * GLOBAL VARIABLES MODIFIED:
+ *      <None>
+ *
+ * ERRORS REPORTED:
+ *      <None>
+ *
+ * ALGORITHM:
+ *   1. If database is not closed, call CloseDB
+ *   2. Frees up allocated locations
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses CloseDB from schema layer.
  */
 
 void Quit(int argc, char **argv) {

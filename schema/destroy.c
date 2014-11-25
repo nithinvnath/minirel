@@ -18,6 +18,26 @@
  *  
  *  returns: OK upon successful deletion of relation's file & catalog entries
  *           NOTOK otherwise
+ *
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      g_CacheInUse[relNum] = FALSE // Freeing cache slot of destroying relation
+ *       
+ * ERRORS REPORTED:
+ *      ARGC_INSUFFICIENT
+ *      DB_NOT_OPEN
+ *      METADATA_SECURITY
+ *      RELNOEXIST
+ *
+ * ALGORITHM:
+ *   1. checks for relation existance and metadata security
+ *   2. Removes the file represents the relation.
+ *   3. Deletes entries of given relName from attrcat and relcat.
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses FindRelNum from physical layer
+ *      Uses delete from algebra layer
+ *
  */
 
 int Destroy(int argc, char **argv) {
