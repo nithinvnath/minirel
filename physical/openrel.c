@@ -35,7 +35,7 @@
  *    4. Creates cache values of attribute catalog.
  *
  * IMPLEMENTATION NOTES:
- *      Uses FindRec from physical layer
+ *      Uses FindRec, CloseRel from physical layer
  */
 
 int OpenRel(char* relName) {
