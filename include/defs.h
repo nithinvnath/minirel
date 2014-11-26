@@ -65,11 +65,6 @@ typedef enum type{
     STRING='s'
 }datatype;
 
-typedef union Flip{
-    float float_val;
-    int int_val;
-}Flip;
-
 /*****************************************************************/
 
 #endif /* DEFS_H_ */
