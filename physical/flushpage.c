@@ -20,6 +20,7 @@
  *      1. Check if buffer is dirty. If Not, return OK
  *      2. Construct a byte array corresponding to the page
  *      3. Seek the file to correct position and write
+ *      4. Set dirty bit to false and the pid of the buffer as 0
  *
  */
 int FlushPage(int relNum) {
@@ -51,6 +52,8 @@ int FlushPage(int relNum) {
         }
     }
     g_Buffer[relNum].dirty = FALSE;
+    g_Buffer[relNum].pid = 0;
+    g_Buffer[relNum].page.slotmap = 0;
 
     return OK;
 }

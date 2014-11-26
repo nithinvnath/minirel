@@ -13,9 +13,9 @@ create teachassist (sid = i, fid = i, ptime = i);
 buildindex for students on sname;
 
 ; load the relation
-load students from /Users/dheerajram/workspace/minirel/data/linuxbinary/Students;
-load profs from /Users/dheerajram/workspace/minirel/data/linuxbinary/Profs;
-load teachassist from /Users/dheerajram/workspace/minirel/data/linuxbinary/Teachassist;
+load students from /home/nithin/workspace/minirel/data/linuxbinary/Students;
+load profs from /home/nithin/workspace/minirel/data/linuxbinary/Profs;
+load teachassist from /home/nithin/workspace/minirel/data/linuxbinary/Teachassist;
  
 ; print the relation
 print students;

@@ -61,7 +61,6 @@ int CloseRel(int relNum) {
             struct attrCatalog *temp, *attrListHead = g_CatCache[relNum].attrList;
             g_CatCache[relNum].dirty = FALSE;
             g_CacheInUse[relNum] = FALSE;
-            g_CacheTimestamp[relNum] = 0;
             close(g_CatCache[relNum].relFile);
 
             temp = attrListHead;

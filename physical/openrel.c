@@ -45,11 +45,11 @@ int OpenRel(char* relName) {
     bool isFirstExecution = TRUE;
     int i, j, returnVal;
     for (i = 0; i < MAXOPEN; i++) {
-        if (g_CacheInUse[i] == TRUE && strcmp(g_CatCache[i].relName, relName) == 0){
+        if (g_CacheInUse[i] == TRUE && strcmp(g_CatCache[i].relName, relName) == 0) {
 
             g_CacheTimestamp[i] = g_CacheLastTimestamp;
             g_CacheLastTimestamp++;
-            return i;            
+            return i;
         }
     }
 
@@ -72,34 +72,32 @@ int OpenRel(char* relName) {
                 break;
         }
 
-        if (i != MAXOPEN) {
+        if (i != MAXOPEN) { /* Found an empty slot.*/
             g_CacheInUse[i] = TRUE;
             g_CacheTimestamp[i] = g_CacheLastTimestamp;
             g_CacheLastTimestamp++;
 
-        }/* Found an empty slot.*/
-        else {
+        } else { /* Replace an existing cat_cache entry*/
 
             int minTimestamp = g_CacheTimestamp[2];
             int indexMinTimestamp = 2;
 
             for (i = 2; i < MAXOPEN; i++) {
-                if (g_CacheTimestamp[i] < minTimestamp){
+                if (g_CacheTimestamp[i] < minTimestamp) {
                     minTimestamp = g_CacheTimestamp[i];
                     indexMinTimestamp = i;
                 }
             }
             i = indexMinTimestamp;
 
-            g_CacheTimestamp[i] = g_CacheLastTimestamp;
-            g_CacheLastTimestamp++;
-
-            /* update numRecs, numPgs in RelCat relation from g_CatCache[i] entry (if modified), and 
+            /* update numRecs, numPgs in RelCat relation from g_CatCache[i] entry (if modified), and
              free the cache entry as well as buffer slot  */
-            if (g_CatCache[i].dirty == TRUE) {
-                CloseRel(i);
-            }
-        }/* Replaced an existing cat_cahe enty*/
+            CloseRel(i);
+
+            g_CacheTimestamp[i] = g_CacheLastTimestamp;
+            g_CacheInUse[i] = TRUE;
+            g_CacheLastTimestamp++;
+        }
 
         /* position i is available */
         strcpy(g_CatCache[i].relName, relName);
