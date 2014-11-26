@@ -3,12 +3,36 @@
 /**
  * Insert the record whose contents is pointed at by recPtr into relation relNum.
  *
- * @param   relNum
- * @param   recPtr
+ * @param   relNum - Relation number
+ * @param   recPtr - A pointer to a record-sized byte array whose contents
+ *                   will be copied to an empty record slot in the relation.
  * @return  OK or NOTOK
+ *
+ * @author nithin
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      g_Buffer[relNum]
+ *      g_CatCache[relNum]
+ *
+ * ERRORS REPORTED:
+ *      NULL_ARGUMENT_RECEIVED
+ *      DUPLICATE_TUPLE
+ *
+ * ALGORITHM:
+ *      1. Check if the record pointed by recPtr already exists in the relation
+ *          (only if the check duplicates flag is set)
+ *      2. Find the first free slot in the relation by linear search
+ *      3. Copy the contents into that slot
+ *          (using a loop and not strcpy)
+ *      4. Update the dirty bit and slotmap in Buffer
+ *      5. Update the dirty bit, numRecs and numPgs in CatCache
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses ReadPage()
+ *
+ *
  */
 int InsertRec(const int relNum, char*recPtr) {
-
     if (recPtr == NULL) {
         return ErrorMsgs(NULL_ARGUMENT_RECEIVED, g_PrintFlag);
     }

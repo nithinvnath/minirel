@@ -84,7 +84,7 @@ int Insert(int argc, char **argv) {
                 convertFloatToByteArray(floatval, recPtr + attr->offset);
                 break;
             case STRING:
-                strncpy(recPtr + attr->offset, argv[i + 1], attr->length - 1);
+                strncpy(recPtr + attr->offset, argv[i + 1], attr->length);
                 break;
             default:
                 break;

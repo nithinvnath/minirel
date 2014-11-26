@@ -83,6 +83,7 @@ int Print(int argc, char **argv) {
                     break;
                 case STRING:
                     readStringFromByteArray(string, recPtr, list->offset, list->length);
+                    string[list->length]='\0';      //For strings stored without '\0'
                     printf("%*s | ", max(strlen(list->attrName), list->length), string);
                     break;
             }

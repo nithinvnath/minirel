@@ -8,6 +8,25 @@
  * @param relNum - Relation number
  * @param pid -Page identifier
  * @author nithin
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      g_Buffer[relNum]
+ *
+ * ERRORS REPORTED:
+ *      RELNUM_OUT_OF_BOUND
+ *      PID_OUT_OF_BOUND
+ *      READ_DISK_ERROR
+ *
+ * ALGORITHM:
+ *      1. Check to see if the pid in buffer matches required pid. If so return
+ *      2. Flush the page currently in buffer to disk. FlushPage()
+ *      3. If we are trying to read a new page into buffer, simply set slotmap to 0
+ *      4. Otherwise seek to appropriate file location and copy the contents to page
+ *      5. Set the dirty bit and pid in buffer
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses FlushPage()
+ *
  */
 int ReadPage(int relNum, short pid) {
     if (relNum < 0 || relNum >= MAXOPEN) {
@@ -24,7 +43,7 @@ int ReadPage(int relNum, short pid) {
         }
 
         if (pid == g_CatCache[relNum].numPgs + 1) { //Trying to read a fresh page into buffer.
-                                    //simply set the slotmap to show all records are free
+        //simply set the slotmap to show all records are free
             g_Buffer[relNum].page.slotmap = 0;
         } else { //Seek the file and load data into buffer
             /* Calculating the offset */
