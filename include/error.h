@@ -40,9 +40,10 @@
 #define PID_OUT_OF_BOUND            130     /* Trying to read a page out of bound */
 #define TYPE_MISMATCH               131     /* Type Mismatch while performing join */ 
 #define REL_NOT_EMPTY               132     /* Relation is not empty */
-#define INVALID_FILE                133     /* The file given by path is invlaid */
-#define PAGE_OVERFLOW               134     /* Record length is greated than MAXRECORD */
+#define INVALID_FILE                133     /* The file given by path is invalid */
+#define PAGE_OVERFLOW               134     /* Record length is greater than MAXRECORD */
 #define INSUFFICIENT_ATTRS          135     /* Number of attributes passed is less */
+#define ATTR_REPEATED               136     /* Insert received same attribute more than once*/
 
 int ErrorMsgs(int errorId, int printFlag);
 

@@ -48,7 +48,7 @@ int ErrorMsgs(int errorId, int printFlag) {
                 printf("No catalog found in the database!\n");
                 break;
             case CAT_FILE_ALREADY_EXIST:
-                printf("catalog file(s) already exist in the database!\n");
+                printf("Catalog file(s) already exist in the database!\n");
                 break;
             case DB_ALREADY_EXISTS:
                 printf("A DB with the given name already exists! \
@@ -123,11 +123,16 @@ lesser number of attributes or arguments with smaller size.\n", MAXRECORD);
                 break;
             case INSUFFICIENT_ATTRS:
                 printf("Number of attributes mismatch! Please pass all the attributes present and \
-its values to insert a new record. Use \n\t select into <some_name> from attrcat where (relName = \"<RELNAME>\"\
-);\n to find the attributes for a relation\n");
+its values to insert a new record. Use \n\t select into <some_name> from attrcat where (relName = \
+\"<RELNAME>\");\n to find the attributes for a relation\n");
+                break;
+            case ATTR_REPEATED:
+                printf("Attribute repeated! Please check the insert query and remove the \
+duplicate entry.\n");
                 break;
             default:
-                printf("Unexpected error! Please don't reduce marks for this :)\n");
+                printf("Congratulations! You just won 500 million GBP! Please send your \
+bank details to developer to claim the price. :)\n");
                 break;
         }
     }

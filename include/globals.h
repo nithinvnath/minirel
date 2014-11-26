@@ -12,8 +12,8 @@ CacheEntry  g_CatCache[MAXOPEN];     /* catalog cache */
 Buffer      g_Buffer[MAXOPEN];       /* buffer pool */
 
 bool g_CacheInUse[MAXOPEN];        /* cache use bit map */
-int g_CacheTimestamp[MAXOPEN];      /* The order at which they used */
-int g_CacheLastTimestamp;           /* The timestamp of last cache entry became active */
+unsigned int g_CacheTimestamp[MAXOPEN];      /* The order at which they used */
+unsigned int g_CacheLastTimestamp;           /* The timestamp of last cache entry became active */
 
 char g_InvokedDirectory[MAXPATH];   /* The directory from which invoked */
 

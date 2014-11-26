@@ -29,8 +29,9 @@
  *      1. Check for possible errors
  *      2. Create a char Array of size recLength
  *      3. Read each value from argv and convert it to a byte array
- *      4. Copy the byte array to correct location (using offset from attrList)
- *      5. Call InsertRec()
+ *      4. Check if any attribute is repeated in the arguments using "hashing"
+ *      5. Copy the byte array to correct location (using offset from attrList)
+ *      6. Call InsertRec()
  *
  * IMPLEMENTATION NOTES:
  *      Record duplication is checked in InsertRec()
@@ -64,12 +65,20 @@ int Insert(int argc, char **argv) {
      This is required while checking for duplicates in the relation */
     char *recPtr = (char *) calloc(g_CatCache[relNum].recLength, sizeof(char));
     struct attrCatalog *attr = NULL;
+
+    //The offset of a record can be used to uniquely identify it
+    int offsetMap[MAXRECORD] = {0};
+
     for (i = 2; i < argc; i += 2) {
         attr = getAttrCatalog(g_CatCache[relNum].attrList, argv[i]);
         if (attr == NULL) {
             return ErrorMsgs(ATTR_NOT_IN_REL, g_PrintFlag);
         }
-
+        if(offsetMap[attr->offset] == 1){
+            return ErrorMsgs(ATTR_REPEATED, g_PrintFlag);
+        } else {
+            offsetMap[attr->offset] = 1;
+        }
         char *nptr, *endptr;
         int intval;
         float floatval;
