@@ -1,22 +1,14 @@
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
-
-#include "../include/globals.h"
-#include "../include/defs.h"
-#include "../include/error.h"
+#include "../include/helpers.h"
 
 /*
  * Contains helper functions used throughout the project
  *
  *  Created on: 29-Oct-2014
- *      Author: nithin
+ *      Author: nithin, dheeraj
  */
-
-//FIXME Move to another folder?
 int readStringFromByteArray(char * string, const char *byteArray, const int offset, const int size) {
     if (byteArray == NULL || string == NULL) {
-        return ErrorMsgs(NULL_POINTER_EXCEPTION, g_print_flag);
+        return ErrorMsgs(NULL_POINTER_EXCEPTION, g_PrintFlag);
     }
     strncpy(string, (byteArray + offset), size);
     return OK;
@@ -61,13 +53,12 @@ bool compareNum(float val1, float val2, int compOp) {
         case LT:
             return val1 < val2 ? TRUE : FALSE;
         default:
-            ErrorMsgs(INVALID_COMP_OP, g_print_flag);
+            ErrorMsgs(INVALID_COMP_OP, g_PrintFlag);
             break;
     }
     return FALSE;
 }
 
-//TODO Ask about supported string comparison
 bool compareStrings(char *s1, char *s2, int compOp) {
     switch (compOp) {
         case EQ:
@@ -83,7 +74,7 @@ bool compareStrings(char *s1, char *s2, int compOp) {
         case LT:
             return (strcmp(s1, s2) < 0) ? TRUE : FALSE;
         default:
-            ErrorMsgs(INVALID_COMP_OP, g_print_flag);
+            ErrorMsgs(INVALID_COMP_OP, g_PrintFlag);
             break;
     }
     return FALSE;
@@ -95,8 +86,8 @@ bool compareStrings(char *s1, char *s2, int compOp) {
  * @return  last valid Rid
  */
 Rid getLastRid(int relNum) {
-    int numRecs = g_catcache[relNum].numRecs;
-    int recsPerPg = g_catcache[relNum].recsPerPg;
+    int numRecs = g_CatCache[relNum].numRecs;
+    int recsPerPg = g_CatCache[relNum].recsPerPg;
     Rid last;
     last.pid = numRecs / recsPerPg + 1;
     last.slotnum = numRecs % recsPerPg + 1;
@@ -116,33 +107,33 @@ Rid getLastRid(int relNum) {
  *           NOTOK on failure
  */
 
-int separate_db_path(char* db_with_path, char* path, char* dbname) {
+int separateDBPath(char* fullDBPath, char* path, char* dbName) {
 
-    char db_path_copy[MAXPATH];
-    strcpy(db_path_copy, db_with_path);
+    char fullDBPathCopy[MAXPATH];
+    strcpy(fullDBPathCopy, fullDBPath);
 
-    char *temp = strtok(db_path_copy, "/");
-    strcpy(dbname, temp);
-    if (db_with_path[0] == '/') {
+    char *temp = strtok(fullDBPathCopy, "/");
+    strcpy(dbName, temp);
+    if (fullDBPath[0] == '/') {
         strcpy(path, "/");
     } else {
         strcpy(path, "");
     }
 
-    if (db_with_path == NULL)
+    if (fullDBPath == NULL)
         return NOTOK;
 
-    if (strlen(temp) != strlen(db_with_path)) {
+    if (strlen(temp) != strlen(fullDBPath)) {
         while ((temp = strtok(NULL, "/")) != NULL) {
-            strcat(path, dbname);
+            strcat(path, dbName);
             strcat(path, "/");
 
-            strcpy(dbname, temp);
+            strcpy(dbName, temp);
         }
     }
 
-    if (strlen(dbname) > RELNAME)
-        return ErrorMsgs(DBNAME_EXCEED_LIMIT, g_print_flag);
+    if (strlen(dbName) > RELNAME)
+        return ErrorMsgs(DBNAME_EXCEED_LIMIT, g_PrintFlag);
     path[strlen(path) - 1] = '\0';
     return OK;
 }
@@ -237,22 +228,4 @@ struct attrCatalog* getAttrCatalog(struct attrCatalog* attrList, char *attrName)
         attrList = attrList->next;
     }
     return attrList;
-}
-
-/**
- * Get rid of the quotes in quoted string
- *
- * @param quotedString
- */
-void removeQuotes(char *quotedString) {
-    /* Values are passed as quoted string. We store it in memory after removing the quotes */
-    /* In strncpy src and dest should not overlap */
-    int length;
-    length = strlen(quotedString);
-    char *tempString = malloc(sizeof(char) * length);
-    strcpy(tempString, quotedString);
-    strncpy(quotedString, tempString + 1, length - 2);
-    quotedString[length - 2] = '\0';
-    quotedString[length - 1] = '\0';
-    free(tempString);
 }

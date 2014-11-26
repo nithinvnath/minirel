@@ -8,7 +8,7 @@
  * @param errorId
  */
 int ErrorMsgs(int errorId, int printFlag) {
-    if (printFlag == 0) {
+    if (printFlag == OK) {
         printf("<ERROR %d>: ", errorId);
         switch (errorId) {
             case RELNOEXIST:
@@ -99,7 +99,7 @@ if all attributes are named correctly.\n");
                 printf("Float value was expected but got string instead.\n");
                 break;
             case MAX_STRING_EXCEEDED:
-                printf("The maximum allowed string size is %d\n",MAX_STRING_SIZE);
+                printf("Exceeded the maximum allowed string size of %d\n",MAX_STRING_SIZE);
                 break;
             case PID_OUT_OF_BOUND:
                 printf("Trying to read a page which is greater than the number of \
@@ -117,8 +117,17 @@ pages in the relation.\n");
             case INVALID_FILE:
                 printf("Cannot open file! Please check the path given and try again.\n");
                 break;
+            case PAGE_OVERFLOW:
+                printf("MINIREL cannot handle a record of size > %d. Please try again with \
+lesser number of attributes or arguments with smaller size.\n", MAXRECORD);
+                break;
+            case INSUFFICIENT_ATTRS:
+                printf("Number of attributes mismatch! Please pass all the attributes present and \
+its values to insert a new record. Use \n\t select into <some_name> from attrcat where (relName = \"<RELNAME>\"\
+);\n to find the attributes for a relation\n");
+                break;
             default:
-                printf("Unexpected error!\n");
+                printf("Unexpected error! Please don't reduce marks for this :)\n");
                 break;
         }
     }

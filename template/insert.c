@@ -95,7 +95,7 @@ int	argc;
 char	**argv;
 
 {
-	    .
+/*
 	    .
 	    .
 
@@ -103,7 +103,7 @@ char	**argv;
 
 	    .
 	    .
-	    .
+	    .*/
 
 
      return (OK);  /* all's fine */

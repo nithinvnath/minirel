@@ -23,8 +23,8 @@
 #include <string.h>
 #include <fcntl.h> 
 
-struct attrCatalog* create_attr_cat_attrcat();
-struct attrCatalog* create_attr_cat_relcat();
+struct attrCatalog* createAttributeCatalogAttrCat();
+struct attrCatalog* createAttributeCatalogRelCat();
 
 int OpenCats();
 

@@ -15,20 +15,32 @@
  * argv[0] = “quit”
  * argv[argc] = NIL
  * 
+ * GLOBAL VARIABLES MODIFIED:
+ *      <None>
+ *
+ * ERRORS REPORTED:
+ *      <None>
+ *
+ * ALGORITHM:
+ *   1. If database is not closed, call CloseDB
+ *   2. Frees up allocated locations
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses CloseDB from schema layer.
  */
 
 void Quit(int argc, char **argv) {
-    char **arg_closedb;
-    arg_closedb = malloc(sizeof(char *));
-    *arg_closedb = malloc(sizeof(char) * 10);
+    char **closeDBArguments;
+    closeDBArguments = malloc(sizeof(char *));
+    *closeDBArguments = malloc(sizeof(char) * 10);
 
-    strcpy(arg_closedb[0], "closedb");
+    strcpy(closeDBArguments[0], "closedb");
 
-    if (g_db_open_flag == OK)
-        CloseDB(1, arg_closedb);
+    if (g_DBOpenFlag == OK)
+        CloseDB(1, closeDBArguments);
 
-    free(*arg_closedb);
-    free(arg_closedb);
+    free(*closeDBArguments);
+    free(closeDBArguments);
 
 }
 

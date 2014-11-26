@@ -1,8 +1,9 @@
 #include "../include/insert.h"
 
-//TODO Should we throw error in case not all attributes are given?
 /**
  * Implementation of insert command.
+ * See documentation for complete specs
+ *
  * argv[0] - insert
  * argv[1] - relation name
  * argv[2] - attr name 1
@@ -10,19 +11,40 @@
  * ...
  * argv[argc] - NIL
  *
- * @param argc
- * @param argv
+ * @param argc - Count of arguments
+ * @param argv - you know..
  * @return OK if success
+ * @author nithin
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      <NONE>
+ *
+ * ERRORS REPORTED:
+ *      - METADATA_SECURITY
+ *      - ATTR_NOT_IN_REL
+ *      - INSUFFICIENT_ATTRS
+ *      - DB_NOT_OPEN
+ *
+ * ALGORITHM:
+ *      1. Check for possible errors
+ *      2. Create a char Array of size recLength
+ *      3. Read each value from argv and convert it to a byte array
+ *      4. Copy the byte array to correct location (using offset from attrList)
+ *      5. Call InsertRec()
+ *
+ * IMPLEMENTATION NOTES:
+ *      Record duplication is checked in InsertRec()
+ *      Uses: OpenRel()
  */
 int Insert(int argc, char **argv) {
-/*    int k;
-    for(k=0; k<argc; k++)
-        printf("%s\n",argv[k]);
-    printf("\n");
 
-*/    if ((strcmp(argv[0], "_insert") != 0)
+    if (g_DBOpenFlag != OK) {
+        return ErrorMsgs(DB_NOT_OPEN, g_PrintFlag);
+    }
+
+    if ((strcmp(argv[0], "_insert") != 0)
             && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
-        return ErrorMsgs(METADATA_SECURITY, g_print_flag);
+        return ErrorMsgs(METADATA_SECURITY, g_PrintFlag);
     }
 
     char relName[RELNAME], attrName[RELNAME];
@@ -33,15 +55,19 @@ int Insert(int argc, char **argv) {
         return NOTOK;
     }
 
+    if (g_CatCache[relNum].numAttrs != (argc - 2) / 2) {
+        return ErrorMsgs(INSUFFICIENT_ATTRS, g_PrintFlag);
+    }
+
     int i;
     /* Using calloc so that memory is initialized to zero.
      This is required while checking for duplicates in the relation */
-    char *recPtr = (char *) calloc(g_catcache[relNum].recLength, sizeof(char));
+    char *recPtr = (char *) calloc(g_CatCache[relNum].recLength, sizeof(char));
     struct attrCatalog *attr = NULL;
     for (i = 2; i < argc; i += 2) {
-        attr = getAttrCatalog(g_catcache[relNum].attrList, argv[i]);
+        attr = getAttrCatalog(g_CatCache[relNum].attrList, argv[i]);
         if (attr == NULL) {
-            return ErrorMsgs(ATTR_NOT_IN_REL, g_print_flag);
+            return ErrorMsgs(ATTR_NOT_IN_REL, g_PrintFlag);
         }
 
         char *nptr, *endptr;
@@ -58,7 +84,6 @@ int Insert(int argc, char **argv) {
                 convertFloatToByteArray(floatval, recPtr + attr->offset);
                 break;
             case STRING:
-                //removeQuotes(argv[i + 1]);
                 strncpy(recPtr + attr->offset, argv[i + 1], attr->length);
                 break;
             default:

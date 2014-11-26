@@ -18,53 +18,74 @@
  *  
  *  returns: OK upon successful deletion of relation's file & catalog entries
  *           NOTOK otherwise
+ *
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      g_CacheInUse[relNum] = FALSE // Freeing cache slot of destroying relation
+ *       
+ * ERRORS REPORTED:
+ *      ARGC_INSUFFICIENT
+ *      DB_NOT_OPEN
+ *      METADATA_SECURITY
+ *      RELNOEXIST
+ *
+ * ALGORITHM:
+ *   1. checks for relation existance and metadata security
+ *   2. Removes the file represents the relation.
+ *   3. Deletes entries of given relName from attrcat and relcat.
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses FindRelNum from physical layer
+ *      Uses delete from algebra layer
+ *
  */
 
+#define DELETE_ARG_COUNT 5
+
 int Destroy(int argc, char **argv) {
-    if (g_db_open_flag != OK) {
-        return ErrorMsgs(DB_NOT_OPEN, g_print_flag);
+    if (g_DBOpenFlag != OK) {
+        return ErrorMsgs(DB_NOT_OPEN, g_PrintFlag);
     }
-    int pass_argc, i, relNum;
-    char **pass_argv;
+    int i, relNum;
+    char **deleteArgs;
 
     if (argc < 2)
-        return ErrorMsgs(ARGC_INSUFFICIENT, g_print_flag);
+        return ErrorMsgs(ARGC_INSUFFICIENT, g_PrintFlag);
 
     if ((strcmp(argv[0], "_destroy") != 0)
             && (strcmp(argv[1], RELCAT) == 0 || strcmp(argv[1], ATTRCAT) == 0)) {
-        return ErrorMsgs(METADATA_SECURITY, g_print_flag);
+        return ErrorMsgs(METADATA_SECURITY, g_PrintFlag);
     }
 
     if (remove(argv[1]) != 0) {
-        return ErrorMsgs(RELNOEXIST, g_print_flag);
+        return ErrorMsgs(RELNOEXIST, g_PrintFlag);
     } /* File deletion failed*/
 
-    pass_argc = 5;
-    pass_argv = malloc(sizeof(char*) * 5);
+    deleteArgs = malloc(sizeof(char*) * 5);
 
     for (i = 0; i < 5; i++)
-        pass_argv[i] = malloc(sizeof(char) * RELNAME);
+        deleteArgs[i] = malloc(sizeof(char) * RELNAME);
 
     /* _delete is passed for bypassing metadata security */
-    strcpy(pass_argv[0], "_delete");
-    strcpy(pass_argv[1], ATTRCAT);
-    strcpy(pass_argv[2], "relName");
-    convertIntToByteArray(EQ,pass_argv[3]);
-    strcpy(pass_argv[4], argv[1]);
+    strcpy(deleteArgs[0], "_delete");
+    strcpy(deleteArgs[1], ATTRCAT);
+    strcpy(deleteArgs[2], "relName");
+    convertIntToByteArray(EQ,deleteArgs[3]);
+    strcpy(deleteArgs[4], argv[1]);
 
-    Delete(pass_argc, pass_argv);
+    Delete(DELETE_ARG_COUNT, deleteArgs);
 
-    strcpy(pass_argv[1], RELCAT);
+    strcpy(deleteArgs[1], RELCAT);
 
-    Delete(pass_argc, pass_argv);
+    Delete(DELETE_ARG_COUNT, deleteArgs);
 
     relNum = FindRelNum(argv[1]);
-    g_cache_in_use[relNum] = FALSE;
+    g_CacheInUse[relNum] = FALSE;
 
     for (i = 0; i < 5; ++i) {
-        free(pass_argv[i]);
+        free(deleteArgs[i]);
     }
-    free(pass_argv);
+    free(deleteArgs);
 
     return OK;
 }

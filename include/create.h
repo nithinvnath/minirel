@@ -14,6 +14,7 @@
 #include "helpers.h"
 #include "openrel.h"
 #include "insert.h"
+#include "destroy.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -38,5 +39,7 @@ int Create(int argc, char **argv);
 void createTemplate(int cacheIndex, char ***args, char *relName, int *arraySize);
 
 void freeAllottedMem(char **args, int arraySize);
+
+void deleteAttrCatEntries(char *relName);
 
 #endif /* CREATE_H_ */

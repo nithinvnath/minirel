@@ -1,11 +1,4 @@
-#include <stdlib.h>
-
-#include "../include/globals.h"
-#include "../include/error.h"
-#include "../include/getnextrec.h"
 #include "../include/findrec.h"
-#include "../include/helpers.h"
-#include "../include/readpage.h"
 
 /**
  * Starting at record startRid in relation relNum, find the RID of the next
@@ -22,11 +15,31 @@
  * @param attrOffset - The offset into the record at which the search attribute is located.
  * @param valuePtr   - A pointer to a byte array which contains the search value
  * @param compOp     - Comparison operator
+ * @return OK or NOTOK
+ *
+ * @author nithin
+ *
+ * GLOBAL VARIABLES MODIFIED:
+ *      <none>
+ *
+ * ERRORS REPORTED:
+ *      INVALID_ATTR_TYPE
+ *
+ * ALGORITHM:
+ *      1. Read the page of relNum containing Rid. Call ReadPage()
+ *      2. For each record from startRid
+ *      3.      Compare the corresponding attribute with given value
+ *      4.      Return if match is found
+ *
+ * IMPLEMENTATION NOTES:
+ *      Uses ReadPage(), GetNextRec()
  */
 int FindRec(int relNum, Rid *startRid, Rid **foundRid, char **recPtr, const char attrType,
         const int attrSize, const int attrOffset, const char *valuePtr, const int compOp) {
     unsigned short pid = startRid->pid;
-    ReadPage(relNum, pid);
+    if (ReadPage(relNum, pid) != OK) {
+        return NOTOK;
+    }
     int intAttr, intAttr2;
     float floatAttr, floatAttr2;
     char *stringAttr, *stringAttr2;
@@ -34,7 +47,7 @@ int FindRec(int relNum, Rid *startRid, Rid **foundRid, char **recPtr, const char
     stringAttr2 = (char *) malloc(sizeof(char) * attrSize);
     *foundRid = NULL;
 
-    while (GetNextRec(relNum, startRid, foundRid, recPtr)==OK) {
+    while (GetNextRec(relNum, startRid, foundRid, recPtr) == OK) {
         switch (attrType) {
             case INTEGER:
                 intAttr = readIntFromByteArray(valuePtr, 0);
@@ -58,7 +71,7 @@ int FindRec(int relNum, Rid *startRid, Rid **foundRid, char **recPtr, const char
                 }
                 break;
             default:
-                return ErrorMsgs(INVALID_ATTR_TYPE,g_print_flag);
+                return ErrorMsgs(INVALID_ATTR_TYPE, g_PrintFlag);
                 break;
         }
         startRid = *foundRid;

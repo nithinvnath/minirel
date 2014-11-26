@@ -16,6 +16,19 @@
  *
  *  returns: relnum on success
  *           NOTOK on failure
+ * GLOBAL VARIABLES MODIFIED:
+ *      <None>
+ *
+ * ERRORS REPORTED:
+ *      <None>
+ *
+ * ALGORITHM:
+ *   1. Checks all cache entries and matches with given relName
+ *   2. If there is a match with opened relation, return it's relNum.
+ *   3. If not found, returns NOTOK.
+ *
+ * IMPLEMENTATION NOTES:
+ *      <None>
  */
 
 int FindRelNum(char* relName)
@@ -24,7 +37,7 @@ int FindRelNum(char* relName)
     bool found = FALSE;
 
     for(i=0; i<MAXOPEN; i++)
-        if(g_cache_in_use[i] == TRUE && compareStrings(g_catcache[i].relName, relName, EQ) == TRUE){
+        if(g_CacheInUse[i] == TRUE && compareStrings(g_CatCache[i].relName, relName, EQ) == TRUE){
             found = TRUE;
             break;
         }

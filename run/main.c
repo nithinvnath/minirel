@@ -6,8 +6,8 @@ extern parser();
 int main() {
     printf("Welcome to MINIREL database system\n\n");
     /* Initialize the global variables */
-    g_db_open_flag = NOTOK;
-    g_print_flag = OK;
+    g_DBOpenFlag = NOTOK;
+    g_PrintFlag = OK;
     /*-------------------------------- */
     parser();
     printf("\n\nGoodbye from MINIREL\n");

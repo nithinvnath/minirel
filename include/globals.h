@@ -8,18 +8,19 @@
 #include "buffer.h"
 #include "defs.h"
 
-CacheEntry  g_catcache[MAXOPEN];     /* catalog cache */
-Buffer      g_buffer[MAXOPEN];       /* buffer pool */
+CacheEntry  g_CatCache[MAXOPEN];     /* catalog cache */
+Buffer      g_Buffer[MAXOPEN];       /* buffer pool */
 
-bool g_cache_in_use[MAXOPEN];        /* cache use bit map */
-int g_cache_timestamp[MAXOPEN];      /* The order at which they used */
+bool g_CacheInUse[MAXOPEN];        /* cache use bit map */
+int g_CacheTimestamp[MAXOPEN];      /* The order at which they used */
+int g_CacheLastTimestamp;           /* The timestamp of last cache entry became active */
 
-char g_invoked_directory[MAXPATH];   /* The directory from which invoked */
+char g_InvokedDirectory[MAXPATH];   /* The directory from which invoked */
 
-int g_db_open_flag;                 /* Flag set to OK whenever a DB is open */
+int g_DBOpenFlag;                   /* Flag set to OK whenever a DB is open */
 
-int g_print_flag;                    /* The error print flag */
+int g_PrintFlag;                    /* The error print flag */
 
-int g_check_duplicate_tuples;         /* Flag dictates whether duplicate tuples are allowed */
+int g_CheckDuplicateTuples;         /* Flag dictates whether duplicate tuples are allowed */
 
 #endif
