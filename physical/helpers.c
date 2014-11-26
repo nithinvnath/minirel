@@ -95,13 +95,13 @@ Rid getLastRid(int relNum) {
 }
 
 /*
- * Function: separate_db_path() 
+ * Function: separateDbPath() 
  * ----------------------------
  * Separates dbname and path from the the string, dbname with path
  *
- *  db_with_path : full path of database
+ *  fullDBPath : full path of database
  *  path         : path of database without dbname
- *  dbname       : database name
+ *  dbName       : database name
  *
  *  returns: OK on success
  *           NOTOK on failure

@@ -8,23 +8,6 @@
 #include "../include/join.h"
 
 /*
- * Function:  copyBinaryArray()
- * ------------------------------
- * copies binary array from source to destination.
- *
- * dest : destination array
- * source: source array
- * length: length of the array
- */
-
-void copyBinaryArray(char *dest, char *source, int length) {
-    int i;
-    for (i = 0; i < length; ++i) {
-        dest[i] = source[i];
-    }
-}
-
-/*
  * Function:  Join() 
  * ------------------------
  * implements natural join
@@ -209,4 +192,21 @@ int Join(int argc, char **argv) {
     }
 
     return OK;
+}
+
+/*
+ * Function:  copyBinaryArray()
+ * ------------------------------
+ * copies binary array from source to destination.
+ *
+ * dest : destination array
+ * source: source array
+ * length: length of the array
+ */
+
+void copyBinaryArray(char *dest, char *source, int length) {
+    int i;
+    for (i = 0; i < length; ++i) {
+        dest[i] = source[i];
+    }
 }
