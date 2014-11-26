@@ -31,7 +31,7 @@
  *      Didn't want to give too much width to the float columns as I hope those will be rare cases
  *      (A case of CISC vs RISC?)
  *
- *      Uses OpenRel(), GetNextRec()
+ *      Uses OpenRel(), GetNextRec(), FindRelNum()
  */
 int Print(int argc, char **argv) {
     if (g_DBOpenFlag != OK) {

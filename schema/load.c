@@ -29,7 +29,7 @@
  *      5. Read a byte array of recLength size and call InsertRec()
  *
  * IMPLEMENTATION NOTES:
- *      Uses InsertRec(), OpenRel()
+ *      Uses InsertRec(), OpenRel(), FindRelNum()
  *
  */
 int Load(int argc, char **argv) {

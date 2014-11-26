@@ -80,7 +80,8 @@ int Destroy(int argc, char **argv) {
     Delete(DELETE_ARG_COUNT, deleteArgs);
 
     relNum = FindRelNum(argv[1]);
-    g_CacheInUse[relNum] = FALSE;
+    if(relNum != NOTOK)
+        g_CacheInUse[relNum] = FALSE;
 
     for (i = 0; i < 5; ++i) {
         free(deleteArgs[i]);
