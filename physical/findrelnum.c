@@ -31,17 +31,16 @@
  *      <None>
  */
 
-int FindRelNum(char* relName)
-{
+int FindRelNum(char* relName) {
     int i;
     bool found = FALSE;
 
-    for(i=0; i<MAXOPEN; i++)
-        if(g_CacheInUse[i] == TRUE && compareStrings(g_CatCache[i].relName, relName, EQ) == TRUE){
+    for (i = 0; i < MAXOPEN; i++)
+        if (g_CacheInUse[i] == TRUE && compareStrings(g_CatCache[i].relName, relName, EQ) == TRUE) {
             found = TRUE;
             break;
         }
-    if(found == FALSE)
+    if (found == FALSE)
         return NOTOK;
     else
         return i;

@@ -41,6 +41,7 @@ proj :
 	@make ALGEBRA.o
 	@make SCHEMA.o
 	@make PHYSICAL.o
+	@make FES.o
 	@make minirel
 
 ALGEBRA.o :
@@ -52,6 +53,8 @@ SCHEMA.o :
 PHYSICAL.o :
 	@cd $(PHYSICAL) ; make $@
 
+FES.o :
+	@cd $(PARSER) ; make $@
 
 minirel : $(ALGEBRA)/ALGEBRA.o $(SCHEMA)/SCHEMA.o $(PHYSICAL)/PHYSICAL.o $(PARSER)/FES.o $(OBJ) 
 	@echo generating $@

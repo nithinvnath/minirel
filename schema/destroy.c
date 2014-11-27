@@ -70,7 +70,7 @@ int Destroy(int argc, char **argv) {
     strcpy(deleteArgs[0], "_delete");
     strcpy(deleteArgs[1], ATTRCAT);
     strcpy(deleteArgs[2], "relName");
-    convertIntToByteArray(EQ,deleteArgs[3]);
+    convertIntToByteArray(EQ, deleteArgs[3]);
     strcpy(deleteArgs[4], argv[1]);
 
     Delete(DELETE_ARG_COUNT, deleteArgs);

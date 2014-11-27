@@ -67,14 +67,14 @@ int Insert(int argc, char **argv) {
     struct attrCatalog *attr = NULL;
 
     //The offset of a record can be used to uniquely identify it
-    int offsetMap[MAXRECORD] = {0};
+    int offsetMap[MAXRECORD] = { 0 };
 
     for (i = 2; i < argc; i += 2) {
         attr = getAttrCatalog(g_CatCache[relNum].attrList, argv[i]);
         if (attr == NULL) {
             return ErrorMsgs(ATTR_NOT_IN_REL, g_PrintFlag);
         }
-        if(offsetMap[attr->offset] == 1){
+        if (offsetMap[attr->offset] == 1) {
             return ErrorMsgs(ATTR_REPEATED, g_PrintFlag);
         } else {
             offsetMap[attr->offset] = 1;

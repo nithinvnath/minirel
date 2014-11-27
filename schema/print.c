@@ -60,7 +60,7 @@ int Print(int argc, char **argv) {
         tableRowLength += (3 + max(strlen(list->attrName), width));
         list = list->next;
     }
-    printUnderScores(tableRowLength);
+    printUnderScores(tableRowLength - 1);
 
     Rid *foundRid, startRid = { 0, 0 };
     char *recPtr = malloc(sizeof(char) * g_CatCache[relNum].recLength);
@@ -83,7 +83,7 @@ int Print(int argc, char **argv) {
                     break;
                 case STRING:
                     readStringFromByteArray(string, recPtr, list->offset, list->length);
-                    string[list->length]='\0';      //For strings stored without '\0'
+                    string[list->length] = '\0';      //For strings stored without '\0'
                     printf("%*s | ", max(strlen(list->attrName), list->length), string);
                     break;
             }
