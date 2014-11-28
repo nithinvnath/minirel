@@ -106,7 +106,7 @@ int Select(int argc, char **argv) {
     }
     /* Given attribute name never appeared in attr linkedlist */
     if (attrFoundFlag == 0)
-        ErrorMsgs(ATTRNOEXIST, g_PrintFlag);
+        return ErrorMsgs(ATTRNOEXIST, g_PrintFlag);
 
     retVal = Create((numAttrs + 1) * 2, createArgumentList);
 
